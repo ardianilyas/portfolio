@@ -29,7 +29,7 @@
           </h1>
 
           <!-- DESCRIPTION -->
-          <p class="mt-8 text-sm md:text-base text-gray-400 leading-relaxed md:max-w-md">
+          <p class="mt-8 text-xs font-light md:text-base text-gray-400 leading-relaxed md:max-w-md">
             Full-stack web developer with a passion for clean frontend, scalable backend, 
             and great user experience (mainly focusing on backend).
           </p>
@@ -48,6 +48,7 @@
           <!-- ROWS -->
           <div class="divide-y divide-gray-200/60">
             <InfoRow label="Full Name" value="Ardian Ilyas Fernanda" />
+            <InfoRow label="Interest" value="Food, Coding, Gaming, Music, Film" />
             <InfoRow label="Age" :value="age" />
             <InfoRow label="Education" value="Bachelor's Degree of Information Systems" />
             <InfoRow label="University" value="Amikom Yogyakarta University" last />
