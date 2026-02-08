@@ -7,7 +7,7 @@
     <!-- CONTAINER WITH SIDE BORDERS -->
     <div class="container mx-auto border-l border-r border-gray-300 py-8">
 
-      <a href="https://github.com/ardianilyas" target="_blank" class="text-center text-sm text-gray-500">
+      <a href="https://github.com/ardianilyas" target="_blank" class="text-center flex items-center justify-center text-sm text-gray-500">
         developed by <span class="font-medium text-gray-700">ardianilyas</span>
       </a>
 
