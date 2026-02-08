@@ -1,11 +1,12 @@
 <template>
-  <SectionHeader 
-    :index="1" 
-    :total="3" 
-    title="Introduction" 
-  />
+  
+  <section class="relative bg-white" id="introduction">
 
-  <section class="relative bg-white">
+    <SectionHeader 
+      :index="1" 
+      :total="3" 
+      title="Introduction" 
+    />
 
     <div class="container mx-auto border-x border-gray-200/60">
 

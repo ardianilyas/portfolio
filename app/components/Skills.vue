@@ -1,11 +1,13 @@
 <template>
-  <SectionHeader 
-    :index="2"
-    :total="3"
-    title="Skills"
-  />
+  
+  <section class="relative bg-white" id="skills">
 
-  <section class="relative bg-white">
+    <SectionHeader 
+      :index="2"
+      :total="3"
+      title="Skills"
+    />
+
     <div class="container mx-auto border-x border-gray-200/80">
 
       <!-- GRID HEADER -->

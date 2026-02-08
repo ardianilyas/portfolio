@@ -1,5 +1,5 @@
 <template>
-  <section class="relative bg-white">
+  <section class="relative bg-white" id="projects">
 
     <!-- SECTION HEADER -->
     <SectionHeader 
