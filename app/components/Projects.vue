@@ -3,48 +3,47 @@
 
     <!-- SECTION HEADER -->
     <SectionHeader 
-      :index="3" 
-      :total="3" 
-      title="Projects" 
+      :index="3"
+      :total="3"
+      title="Projects"
     />
 
-    <div class="container mx-auto border-l border-r border-gray-300">
+    <div class="container mx-auto border-x border-gray-200">
 
-      <!-- TABLE HEADER (RESPONSIVE) -->
-      <div class="grid grid-cols-1 md:grid-cols-3 border-b border-gray-300 
-                  px-8 py-6 md:px-16 md:py-8 text-sm md:text-base font-semibold text-gray-500 gap-2">
+      <!-- TABLE HEADER -->
+      <div 
+        class="hidden md:grid md:grid-cols-3 border-b border-gray-200 
+               px-6 md:px-16 py-6 text-sm font-medium text-gray-500 tracking-wide">
         <div>Project</div>
-        <div class="md:block hidden">Tech Stack</div>
+        <div>Tech Stack</div>
         <div>Link</div>
       </div>
 
-      <!-- RESPONSIVE PROJECT ROW COMPONENT -->
+      <!-- PROJECT ROWS -->
       <ProjectRow
         name="Personal Portfolio"
         tech="Nuxt, Vue, TailwindCSS"
-        github="https://github.com/USERNAME/portfolio"
+        github="https://github.com/ardianilyas/portfolio"
       />
 
       <ProjectRow
-        name="E-commerce API"
-        tech="Node.js, Express, PostgreSQL"
-        github="https://github.com/USERNAME/ecommerce-api"
+        name="Zavo - Donation Platform App"
+        tech="NextJS, tRPC, Drizzle ORM, PostgreSQL, Pusher, TailwindCSS, Xendit"
+        github="https://github.com/ardianilyas/zavo"
       />
 
       <ProjectRow
-        name="Task Manager App"
-        tech="Laravel, MySQL"
-        github="https://github.com/USERNAME/task-manager"
+        name="Patungan - Content Monetization App"
+        tech="Laravel, Xendit, Reverb, Octane, Redis, PostgreSQL"
+        github="https://github.com/ardianilyas/patungan"
       />
 
       <ProjectRow
-        name="Real-Time Chat App"
-        tech="Socket.IO, Node.js"
-        github="https://github.com/USERNAME/chat-app"
+        name="Bux - Expense Tracker App"
+        tech="NextJS, tRPC, Drizzle ORM, PostgreSQL, React Query, TailwindCSS"
+        github="https://github.com/ardianilyas/bux"
         :last="true"
       />
-
     </div>
-
   </section>
 </template>

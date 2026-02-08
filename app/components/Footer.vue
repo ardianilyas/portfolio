@@ -7,9 +7,9 @@
     <!-- CONTAINER WITH SIDE BORDERS -->
     <div class="container mx-auto border-l border-r border-gray-300 py-8">
 
-      <a href="https://github.com/ardianilyas" target="_blank" class="text-center flex items-center justify-center text-sm text-gray-500">
-        developed by <span class="font-medium text-gray-700">ardianilyas</span>
-      </a>
+      <p class="text-center text-sm text-gray-500">
+        Copyright &copy; {{ new Date().getFullYear() }} | Developed by : <a href="https://github.com/ardianilyas" target="_blank" class="font-medium text-orange-500 underline hover:text-orange-600"> ardianilyas</a>
+      </p>
 
     </div>
 

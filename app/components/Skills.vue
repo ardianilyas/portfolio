@@ -1,14 +1,17 @@
 <template>
   <SectionHeader 
-    :index="2" 
-    :total="3" 
+    :index="2"
+    :total="3"
     title="Skills"
   />
+
   <section class="relative bg-white">
-    <div class="container mx-auto border-l border-r border-gray-300">
+    <div class="container mx-auto border-x border-gray-200/80">
 
       <!-- GRID HEADER -->
-      <div class="grid grid-cols-2 border-b border-gray-300 px-16 py-8 text-sm font-semibold text-gray-500">
+      <div 
+        class="hidden md:grid md:grid-cols-2 border-b border-gray-200 px-6 md:px-16 py-6 
+               text-xs md:text-sm font-medium text-gray-500 tracking-wide">
         <div>Category</div>
         <div>Technologies</div>
       </div>
