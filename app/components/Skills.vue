@@ -1,6 +1,6 @@
 <template>
   
-  <section class="relative bg-white" id="skills">
+  <section class="relative bg-white dark:bg-gray-950 transition-colors duration-300" id="skills">
 
     <SectionHeader 
       :index="2"
@@ -8,12 +8,12 @@
       title="Skills"
     />
 
-    <div class="container mx-auto border-x border-gray-200/80">
+    <div class="container mx-auto border-x border-gray-200/80 dark:border-gray-800">
 
       <!-- GRID HEADER -->
       <div 
-        class="hidden md:grid md:grid-cols-2 border-b border-gray-200 px-6 md:px-16 py-6 
-               text-xs md:text-sm font-medium text-gray-500 tracking-wide">
+        class="hidden md:grid md:grid-cols-2 border-b border-gray-200 dark:border-gray-800 px-6 md:px-16 py-6 
+               text-xs md:text-sm font-medium text-gray-500 dark:text-gray-400 tracking-wide">
         <div>Category</div>
         <div>Technologies</div>
       </div>

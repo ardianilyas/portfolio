@@ -1,5 +1,5 @@
 <template>
-  <section class="relative bg-white" id="projects">
+  <section class="relative bg-white dark:bg-gray-950 transition-colors duration-300" id="projects">
 
     <!-- SECTION HEADER -->
     <SectionHeader 
@@ -8,12 +8,12 @@
       title="Projects"
     />
 
-    <div class="container mx-auto border-x border-gray-200">
+    <div class="container mx-auto border-x border-gray-200 dark:border-gray-800">
 
       <!-- TABLE HEADER -->
       <div 
-        class="hidden md:grid md:grid-cols-3 border-b border-gray-200 
-               px-6 md:px-16 py-6 text-sm font-medium text-gray-500 tracking-wide">
+        class="hidden md:grid md:grid-cols-3 border-b border-gray-200 dark:border-gray-800 
+               px-6 md:px-16 py-6 text-sm font-medium text-gray-500 dark:text-gray-400 tracking-wide">
         <div>Project</div>
         <div>Tech Stack</div>
         <div>Link</div>

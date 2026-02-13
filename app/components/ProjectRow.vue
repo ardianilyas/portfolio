@@ -3,24 +3,24 @@
     :href="github"
     target="_blank"
     class="group grid grid-cols-1 md:grid-cols-3
-           border-gray-200 px-6 py-6 md:px-16 md:py-8
-           hover:bg-orange-50 transition-colors cursor-pointer gap-3"
-    :class="{ 'border-b border-gray-200': !last }"
+           border-gray-200 dark:border-gray-800 px-6 py-6 md:px-16 md:py-8
+           hover:bg-orange-50 dark:hover:bg-orange-950/30 transition-colors cursor-pointer gap-3"
+    :class="{ 'border-b border-gray-200 dark:border-gray-800': !last }"
   >
     <!-- PROJECT NAME -->
-    <div class="text-sm md:text-base font-semibold text-gray-700
+    <div class="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300
                 transition-colors group-hover:text-orange-500">
       {{ name }}
     </div>
 
     <!-- TECH STACK -->
-    <div class="text-sm text-gray-600 md:block hidden
+    <div class="text-sm text-gray-600 dark:text-gray-400 md:block hidden
                 transition-colors group-hover:text-orange-500 leading-relaxed">
       {{ tech }}
     </div>
 
     <!-- GITHUB LINK -->
-    <div class="flex items-center gap-2 text-sm md:text-base text-gray-700
+    <div class="flex items-center gap-2 text-sm md:text-base text-gray-700 dark:text-gray-300
                 transition-colors group-hover:text-orange-500">
       View on GitHub
       <svg 

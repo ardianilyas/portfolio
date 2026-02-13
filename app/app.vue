@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full min-h-screen bg-gray-50">
+  <div class="relative w-full min-h-screen bg-gray-50 dark:bg-gray-950">
     <Navbar /> 
     <Hero />
     <Skills />
@@ -10,6 +10,9 @@
 
 <script setup lang="ts">
   useHead({
-    title: "Ardian Ilyas"
+    title: "Ardian Ilyas",
+    meta: [
+      { name: "theme-color", content: "#f97316" }
+    ]
   })
 </script>
