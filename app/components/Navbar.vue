@@ -1,5 +1,5 @@
 <template>
-  <nav class="sticky top-0 left-0 z-50 bg-white dark:bg-gray-950 transition-colors duration-300">
+  <nav ref="navRef" class="sticky top-0 left-0 z-50 bg-white dark:bg-gray-950 transition-colors duration-300">
 
     <!-- Main navbar bar -->
     <div class="container mx-auto px-6 md:px-12 py-4 md:py-6 border-l border-r border-gray-200 dark:border-gray-800">
@@ -58,7 +58,7 @@
             <li>
               <a
                 href="#introduction"
-                @click="isOpen = false"
+                @click.prevent="scrollTo('introduction')"
                 class="block px-6 py-3 text-sm text-neutral-500 dark:text-neutral-400 
                        hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-orange-500 transition-colors"
               >#introduction</a>
@@ -66,7 +66,7 @@
             <li class="border-t border-gray-100 dark:border-gray-800/50">
               <a
                 href="#skills"
-                @click="isOpen = false"
+                @click.prevent="scrollTo('skills')"
                 class="block px-6 py-3 text-sm text-neutral-500 dark:text-neutral-400 
                        hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-orange-500 transition-colors"
               >#skills</a>
@@ -74,7 +74,7 @@
             <li class="border-t border-gray-100 dark:border-gray-800/50">
               <a
                 href="#projects"
-                @click="isOpen = false"
+                @click.prevent="scrollTo('projects')"
                 class="block px-6 py-3 text-sm text-neutral-500 dark:text-neutral-400 
                        hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-orange-500 transition-colors"
               >#projects</a>
@@ -91,4 +91,20 @@
 
 <script setup lang="ts">
 const isOpen = ref(false)
+const navRef = ref<HTMLElement | null>(null)
+
+function scrollTo(id: string) {
+  // Close menu first
+  isOpen.value = false
+  // Wait for the dropdown close transition (200ms) to finish before scrolling
+  setTimeout(() => {
+    const el = document.getElementById(id)
+    if (el) {
+      // Manually calculate offset to account for the sticky navbar
+      const navHeight = navRef.value?.offsetHeight ?? 80
+      const top = el.getBoundingClientRect().top + window.scrollY - navHeight
+      window.scrollTo({ top, behavior: 'smooth' })
+    }
+  }, 250)
+}
 </script>

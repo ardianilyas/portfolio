@@ -4,7 +4,16 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 4.5rem;
+  scroll-padding-top: 5rem;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html.light,
+html:not(.dark) {
+  color-scheme: light;
 }
 
 body {

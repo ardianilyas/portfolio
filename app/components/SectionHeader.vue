@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 transition-colors duration-300">
+  <div class="relative w-full border-t border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 transition-colors duration-300">
 
     <!-- CONTAINER -->
     <div class="container mx-auto relative border-l border-r border-gray-200 dark:border-gray-800">

@@ -25,7 +25,7 @@
           </div>
 
           <!-- HEADING -->
-          <h1 class="text-4xl md:text-5xl font-semibold leading-tight tracking-tight dark:text-white">
+          <h1 class="text-4xl md:text-5xl font-semibold leading-tight tracking-tight text-gray-900 dark:text-white">
             Hi, I'm <span class="text-orange-500">ardianilyas</span>.
           </h1>
 
