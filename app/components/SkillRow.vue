@@ -3,7 +3,7 @@
     :class="[
       'group flex flex-col md:grid md:grid-cols-2 px-6 md:px-16 py-6 transition-colors',
       !last ? 'border-b border-gray-200 dark:border-gray-800' : '',
-      'hover:bg-gray-50 dark:hover:bg-gray-900'
+      'hover:bg-orange-50 dark:hover:bg-orange-900'
     ]"
   >
     <!-- Category -->
