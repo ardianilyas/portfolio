@@ -18,41 +18,43 @@
       </div>
 
       <!-- SKILL ROWS -->
-      <SkillRow 
-        label="Programming Languages"
-        :tech="languages"
-      />
+      <ClientOnly>
+        <SkillRow 
+          label="Programming Languages"
+          :tech="languages"
+        />
 
-      <SkillRow 
-        label="Frontend"
-        :tech="frontend"
-      />
+        <SkillRow 
+          label="Frontend"
+          :tech="frontend"
+        />
 
-      <SkillRow 
-        label="Backend"
-        :tech="backend"
-      />
-      
-      <SkillRow 
-        label="Testing"
-        :tech="testing"
-      />
+        <SkillRow 
+          label="Backend"
+          :tech="backend"
+        />
+        
+        <SkillRow 
+          label="Testing"
+          :tech="testing"
+        />
 
-      <SkillRow 
-        label="Database"
-        :tech="database"
-      />
+        <SkillRow 
+          label="Database"
+          :tech="database"
+        />
 
-      <SkillRow 
-        label="ORM"
-        :tech="orm"
-      />
+        <SkillRow 
+          label="ORM"
+          :tech="orm"
+        />
 
-      <SkillRow 
-        label="Tools"
-        :tech="tools"
-        :last="true"
-      />
+        <SkillRow 
+          label="Tools"
+          :tech="tools"
+          :last="true"
+        />
+      </ClientOnly>
 
     </div>
   </section>

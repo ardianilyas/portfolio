@@ -14,13 +14,13 @@
     <!-- Technologies -->
     <div class="flex flex-wrap gap-4 items-center">
       <div
-        v-for="item in tech"
-        :key="item.name"
+        v-for="item in resolvedTech"
+        :key="`${item.name}-${colorMode.value}`"
         class="skill-icon-wrapper"
       >
         <img
-          v-if="resolvedIcon(item)"
-          :src="resolvedIcon(item)"
+          v-if="item.resolvedIcon"
+          :src="item.resolvedIcon"
           :alt="item.name"
           class="skill-icon"
           loading="lazy"
@@ -43,17 +43,30 @@ const props = defineProps({
   last: { type: Boolean, default: false }
 });
 
-function resolvedIcon(item) {
-  if (!item.icon) return null;
+// colorMode.value is reactive and resolves 'system' preference to actual 'dark'/'light'
+const isDark = computed(() => colorMode.value === 'dark');
 
-  // If icon is an object with light/dark variants
-  if (typeof item.icon === 'object' && item.icon.light && item.icon.dark) {
-    return colorMode.value === 'dark' ? item.icon.dark : item.icon.light;
-  }
-
-  // Single icon string
-  return item.icon;
-}
+// Compute resolved icons reactively
+const resolvedTech = computed(() => {
+  return props.tech.map(item => {
+    let iconUrl = null;
+    
+    if (item.icon) {
+      // If icon is an object with light/dark variants
+      if (typeof item.icon === 'object' && item.icon.light && item.icon.dark) {
+        iconUrl = isDark.value ? item.icon.dark : item.icon.light;
+      } else {
+        // Single icon string
+        iconUrl = item.icon;
+      }
+    }
+    
+    return {
+      ...item,
+      resolvedIcon: iconUrl
+    };
+  });
+});
 </script>
 
 <style scoped>
