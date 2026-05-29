@@ -1,212 +1,115 @@
 <template>
-  <section class="relative bg-white dark:bg-gray-950 transition-colors duration-300" id="skills">
-
-    <SectionHeader 
-      :index="2"
-      :total="3"
-      title="Skills"
-    />
-
-    <div class="container mx-auto border-x border-gray-200/80 dark:border-gray-800">
-
-      <!-- GRID HEADER -->
-      <div 
-        class="hidden md:grid md:grid-cols-[200px_1fr] border-b border-gray-200 dark:border-gray-800 px-6 md:px-16 py-6 
-               text-xs md:text-sm font-medium text-gray-500 dark:text-gray-400 tracking-wide">
-        <div>Category</div>
-        <div>Technologies</div>
+  <section class="w-full bg-white" id="skills">
+    <!-- Centered content wrapper -->
+    <div class="w-full max-w-5xl mx-auto px-6 md:px-12 py-16">
+      <div class="mb-12">
+        <div class="inline-flex items-center gap-1.5 mb-2 text-xs font-semibold tracking-wider text-zinc-400 uppercase">
+          <span>Proficiencies</span>
+        </div>
+        <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-zinc-900">
+          Skills
+        </h2>
       </div>
 
-      <!-- SKILL ROWS -->
-      <ClientOnly>
-        <SkillRow 
-          label="Programming Languages"
-          :tech="languages"
-        />
-
-        <SkillRow 
-          label="Frontend"
-          :tech="frontend"
-        />
-
-        <SkillRow 
-          label="Backend"
-          :tech="backend"
-        />
+      <!-- Attio-style 2-Column Grid Table of Skills -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-zinc-200/80 border border-zinc-200/80 rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
         
-        <SkillRow 
-          label="Testing"
-          :tech="testing"
-        />
+        <!-- Category 1: Languages -->
+        <div class="flex flex-col bg-white divide-y divide-zinc-100">
+          <div class="px-6 py-4 bg-zinc-50/50 text-[11px] font-bold uppercase tracking-wider text-zinc-400 border-b border-zinc-100">
+            Programming Languages
+          </div>
+          <div v-for="skill in languages" :key="skill.name" class="flex items-center justify-between px-6 py-4 hover:bg-zinc-50/30 transition-colors group">
+            <div class="flex items-center gap-3">
+              <img :src="skill.logo" :alt="skill.name" class="w-5 h-5 object-contain group-hover:scale-105 transition-transform" />
+              <span class="text-sm font-semibold text-zinc-800">{{ skill.name }}</span>
+            </div>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-zinc-100 border border-zinc-200/60 text-zinc-500">
+              {{ skill.level }}
+            </span>
+          </div>
+        </div>
 
-        <SkillRow 
-          label="Database"
-          :tech="database"
-        />
+        <!-- Category 2: Frontend -->
+        <div class="flex flex-col bg-white divide-y divide-zinc-100">
+          <div class="px-6 py-4 bg-zinc-50/50 text-[11px] font-bold uppercase tracking-wider text-zinc-400 border-b border-zinc-100">
+            Frontend Stack
+          </div>
+          <div v-for="skill in frontend" :key="skill.name" class="flex items-center justify-between px-6 py-4 hover:bg-zinc-50/30 transition-colors group">
+            <div class="flex items-center gap-3">
+              <img :src="skill.logo" :alt="skill.name" class="w-5 h-5 object-contain group-hover:scale-105 transition-transform" />
+              <span class="text-sm font-semibold text-zinc-800">{{ skill.name }}</span>
+            </div>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-zinc-100 border border-zinc-200/60 text-zinc-500">
+              {{ skill.level }}
+            </span>
+          </div>
+        </div>
 
-        <SkillRow 
-          label="ORM"
-          :tech="orm"
-        />
+        <!-- Category 3: Backend -->
+        <div class="flex flex-col bg-white divide-y divide-zinc-100">
+          <div class="px-6 py-4 bg-zinc-50/50 text-[11px] font-bold uppercase tracking-wider text-zinc-400 border-b border-zinc-100">
+            Backend & Infrastructure
+          </div>
+          <div v-for="skill in backend" :key="skill.name" class="flex items-center justify-between px-6 py-4 hover:bg-zinc-50/30 transition-colors group">
+            <div class="flex items-center gap-3">
+              <img :src="skill.logo" :alt="skill.name" class="w-5 h-5 object-contain group-hover:scale-105 transition-transform" />
+              <span class="text-sm font-semibold text-zinc-800">{{ skill.name }}</span>
+            </div>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-zinc-100 border border-zinc-200/60 text-zinc-500">
+              {{ skill.level }}
+            </span>
+          </div>
+        </div>
 
-        <SkillRow 
-          label="Tools"
-          :tech="tools"
-          :last="true"
-        />
-      </ClientOnly>
+        <!-- Category 4: ORM & Testing -->
+        <div class="flex flex-col bg-white divide-y divide-zinc-100">
+          <div class="px-6 py-4 bg-zinc-50/50 text-[11px] font-bold uppercase tracking-wider text-zinc-400 border-b border-zinc-100">
+            ORM & Testing
+          </div>
+          <div v-for="skill in testing" :key="skill.name" class="flex items-center justify-between px-6 py-4 hover:bg-zinc-50/30 transition-colors group">
+            <div class="flex items-center gap-3">
+              <img :src="skill.logo" :alt="skill.name" class="w-5 h-5 object-contain group-hover:scale-105 transition-transform" />
+              <span class="text-sm font-semibold text-zinc-800">{{ skill.name }}</span>
+            </div>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-zinc-100 border border-zinc-200/60 text-zinc-500">
+              {{ skill.level }}
+            </span>
+          </div>
+        </div>
 
+      </div>
     </div>
   </section>
 </template>
 
 <script setup>
 const languages = [
-  {
-    name: 'JavaScript',
-    icon: 'https://svgl.app/library/javascript.svg'
-  },
-  {
-    name: 'TypeScript',
-    icon: 'https://svgl.app/library/typescript.svg'
-  },
-  {
-    name: 'PHP',
-    icon: {
-      light: 'https://svgl.app/library/php.svg',
-      dark: 'https://svgl.app/library/php_dark.svg'
-    }
-  },
-  {
-    name: 'Go',
-    icon: {
-      light: 'https://svgl.app/library/golang.svg',
-      dark: 'https://svgl.app/library/golang_dark.svg'
-    }
-  }
+  { name: 'JavaScript', logo: '/icons/javascript.svg', level: 'Advanced' },
+  { name: 'TypeScript', logo: '/icons/typescript.svg', level: 'Advanced' },
+  { name: 'PHP', logo: '/icons/php.svg', level: 'Advanced' },
+  { name: 'Golang', logo: '/icons/golang.svg', level: 'Intermediate' }
 ];
 
 const frontend = [
-  {
-    name: 'Vue.js',
-    icon: 'https://svgl.app/library/vue.svg'
-  },
-  {
-    name: 'NuxtJS',
-    icon: 'https://svgl.app/library/nuxt.svg'
-  },
-  {
-    name: 'React',
-    icon: {
-      light: 'https://svgl.app/library/react_light.svg',
-      dark: 'https://svgl.app/library/react_dark.svg'
-    }
-  },
-  {
-    name: 'Next.js',
-    icon: 'https://svgl.app/library/nextjs_icon_dark.svg'
-  },
-  {
-    name: 'TailwindCSS',
-    icon: 'https://svgl.app/library/tailwindcss.svg'
-  },
-  {
-    name: 'Shadcn UI',
-    icon: {
-      light: 'https://svgl.app/library/shadcn-ui.svg',
-      dark: 'https://svgl.app/library/shadcn-ui_dark.svg'
-    }
-  }
+  { name: 'Next.js', logo: '/icons/nextjs.svg', level: 'Advanced' },
+  { name: 'Vue.js', logo: '/icons/vue.svg', level: 'Advanced' },
+  { name: 'NuxtJS', logo: '/icons/nuxt.svg', level: 'Advanced' },
+  { name: 'Tailwind CSS', logo: '/icons/tailwindcss.svg', level: 'Advanced' }
 ];
 
 const backend = [
-  {
-    name: 'Express',
-    icon: {
-      light: 'https://svgl.app/library/expressjs.svg',
-      dark: 'https://svgl.app/library/expressjs_dark.svg'
-    }
-  },
-  {
-    name: 'Laravel',
-    icon: 'https://svgl.app/library/laravel.svg'
-  },
-  {
-    name: 'Gin',
-    icon: '/icons/gin.svg'
-  },
-  {
-    name: 'InertiaJS',
-    icon: '/icons/inertiajs.svg'
-  }
+  { name: 'ExpressJS', logo: '/icons/expressjs.svg', level: 'Advanced' },
+  { name: 'Laravel', logo: '/icons/laravel.svg', level: 'Advanced' },
+  { name: 'Redis', logo: '/icons/redis.svg', level: 'Intermediate' }
 ];
 
 const testing = [
-  {
-    name: 'PEST',
-    icon: '/icons/pest.svg'
-  },
-  {
-    name: 'Vitest',
-    icon: 'https://svgl.app/library/vitest.svg'
-  }
-];
-
-const database = [
-  {
-    name: 'PostgreSQL',
-    icon: 'https://svgl.app/library/postgresql.svg'
-  },
-  {
-    name: 'MySQL',
-    icon: {
-      light: 'https://svgl.app/library/mysql-icon-light.svg',
-      dark: 'https://svgl.app/library/mysql-icon-dark.svg'
-    }
-  }
-];
-
-const orm = [
-  {
-    name: 'Prisma',
-    icon: {
-      light: 'https://svgl.app/library/prisma.svg',
-      dark: 'https://svgl.app/library/prisma_dark.svg'
-    }
-  },
-  {
-    name: 'Drizzle',
-    icon: {
-      light: 'https://svgl.app/library/drizzle-orm_light.svg',
-      dark: 'https://svgl.app/library/drizzle-orm_dark.svg'
-    }
-  }
-];
-
-const tools = [
-  {
-    name: 'VSCode',
-    icon: 'https://svgl.app/library/vscode.svg'
-  },
-  {
-    name: 'Figma',
-    icon: 'https://svgl.app/library/figma.svg'
-  },
-  {
-    name: 'Git',
-    icon: 'https://svgl.app/library/git.svg'
-  },
-  {
-    name: 'Postman',
-    icon: 'https://svgl.app/library/postman.svg'
-  },
-  {
-    name: 'TablePlus',
-    icon: null
-  },
-  {
-    name: 'Safari',
-    icon: 'https://svgl.app/library/safari.svg'
-  }
+  { name: 'Drizzle', logo: '/icons/drizzle.svg', level: 'Advanced' },
+  { name: 'Prisma', logo: '/icons/prisma.svg', level: 'Advanced' },
+  { name: 'Vitest', logo: '/icons/vitest.svg', level: 'Advanced' }
 ];
 </script>
+
+
+

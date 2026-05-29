@@ -1,38 +1,43 @@
 <template>
-  <nav ref="navRef" class="sticky top-0 left-0 z-50 bg-white dark:bg-gray-950 transition-colors duration-300">
-
-    <!-- Main navbar bar -->
-    <div class="container mx-auto px-6 md:px-12 py-4 md:py-6 border-l border-r border-gray-200 dark:border-gray-800">
+  <nav ref="navRef" class="sticky top-0 left-0 z-50 bg-white/80 backdrop-blur-md border-b border-zinc-200/80 w-full">
+    <!-- Main navbar bar inside a centered wrapper -->
+    <div class="w-full max-w-5xl mx-auto px-6 md:px-12 py-4">
       <div class="flex items-center justify-between">
-
-        <!-- Logo -->
-        <h3 class="text-lg md:text-xl font-medium text-neutral-900 dark:text-white">ardianilyas_</h3>
-
-        <!-- Desktop nav links -->
-        <div class="hidden md:flex items-center gap-4">
-          <ul class="flex gap-4 [&>li>a]:text-sm [&>li>a]:text-neutral-400 [&>li>a]:hover:text-orange-500 dark:[&>li>a]:text-neutral-500 dark:[&>li>a]:hover:text-orange-500">
-            <li><a href="#introduction">#introduction</a></li>
-            <li><a href="#skills">#skills</a></li>
-            <li><a href="#projects">#projects</a></li>
-          </ul>
-          <ThemeSwitcher />
+        <!-- Logo + Status Badge -->
+        <div class="flex items-center gap-4">
+          <h3 class="text-lg font-bold text-zinc-900 tracking-tight font-sans">ardianilyas.</h3>
+          
+          <!-- Attio-like status indicator badge -->
+          <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-semibold text-emerald-800">
+            <span class="relative flex h-1.5 w-1.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+            </span>
+            Available for work
+          </div>
         </div>
 
-        <!-- Mobile: theme + hamburger -->
+        <!-- Desktop nav links -->
+        <div class="hidden md:flex items-center gap-6">
+          <ul class="flex gap-6 [&>li>a]:text-xs [&>li>a]:font-semibold [&>li>a]:tracking-wide [&>li>a]:text-zinc-500 [&>li>a]:hover:text-zinc-900 [&>li>a]:transition-colors">
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#tools">Tools</a></li>
+            <li><a href="#projects">Projects</a></li>
+          </ul>
+        </div>
+
+        <!-- Mobile hamburger -->
         <div class="flex items-center gap-3 md:hidden">
-          <ThemeSwitcher />
           <button
             @click="isOpen = !isOpen"
-            class="p-2 rounded-full border border-gray-200 dark:border-gray-700 
-                   hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+            class="p-2 -mr-2 text-zinc-900 transition-colors cursor-pointer"
             aria-label="Toggle menu"
           >
-            <!-- Hamburger icon -->
-            <svg v-if="!isOpen" class="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <svg v-if="!isOpen" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
-            <!-- Close icon -->
-            <svg v-else class="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -49,58 +54,39 @@
       leave-from-class="opacity-100 translate-y-0"
       leave-to-class="opacity-0 -translate-y-2"
     >
-      <div
-        v-if="isOpen"
-        class="md:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950"
-      >
-        <div class="container mx-auto border-l border-r border-gray-200 dark:border-gray-800">
-          <ul class="flex flex-col">
+      <div v-if="isOpen" class="md:hidden bg-white border-b border-zinc-200/80 w-full">
+        <div class="max-w-5xl mx-auto">
+          <ul class="flex flex-col px-6 py-4 space-y-4">
             <li>
-              <a
-                href="#introduction"
-                @click.prevent="scrollTo('introduction')"
-                class="block px-6 py-3 text-sm text-neutral-500 dark:text-neutral-400 
-                       hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-orange-500 transition-colors"
-              >#introduction</a>
+              <a href="#about" @click.prevent="scrollTo('about')" class="block text-sm font-semibold text-zinc-600 hover:text-zinc-900">About</a>
             </li>
-            <li class="border-t border-gray-100 dark:border-gray-800/50">
-              <a
-                href="#skills"
-                @click.prevent="scrollTo('skills')"
-                class="block px-6 py-3 text-sm text-neutral-500 dark:text-neutral-400 
-                       hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-orange-500 transition-colors"
-              >#skills</a>
+            <li>
+              <a href="#skills" @click.prevent="scrollTo('skills')" class="block text-sm font-semibold text-zinc-600 hover:text-zinc-900">Skills</a>
             </li>
-            <li class="border-t border-gray-100 dark:border-gray-800/50">
-              <a
-                href="#projects"
-                @click.prevent="scrollTo('projects')"
-                class="block px-6 py-3 text-sm text-neutral-500 dark:text-neutral-400 
-                       hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-orange-500 transition-colors"
-              >#projects</a>
+            <li>
+              <a href="#tools" @click.prevent="scrollTo('tools')" class="block text-sm font-semibold text-zinc-600 hover:text-zinc-900">Tools</a>
+            </li>
+            <li>
+              <a href="#projects" @click.prevent="scrollTo('projects')" class="block text-sm font-semibold text-zinc-600 hover:text-zinc-900">Projects</a>
             </li>
           </ul>
         </div>
       </div>
     </Transition>
-
-    <!-- Bottom border full width -->
-    <div class="absolute bottom-0 left-0 w-full h-px bg-gray-200 dark:bg-gray-800"></div>
   </nav>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+
 const isOpen = ref(false)
 const navRef = ref<HTMLElement | null>(null)
 
 function scrollTo(id: string) {
-  // Close menu first
   isOpen.value = false
-  // Wait for the dropdown close transition (200ms) to finish before scrolling
   setTimeout(() => {
     const el = document.getElementById(id)
     if (el) {
-      // Manually calculate offset to account for the sticky navbar
       const navHeight = navRef.value?.offsetHeight ?? 80
       const top = el.getBoundingClientRect().top + window.scrollY - navHeight
       window.scrollTo({ top, behavior: 'smooth' })
