@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     head: {
       title: "Ardian Ilyas — Backend Developer",
       link: [
+        { rel: "preconnect", href: "https://rsms.me/" },
         { rel: "preconnect", href: "https://fonts.googleapis.com" },
         {
           rel: "preconnect",

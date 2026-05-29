@@ -4,14 +4,14 @@
       <div class="flex items-center justify-between h-14 md:h-16">
 
         <!-- Logo -->
-        <a href="#" class="font-semibold text-base" style="font-family: var(--font-mono); color: var(--color-primary);">
+        <a href="#" class="font-semibold text-base" style="font-family: var(--font-sans); color: var(--color-primary);">
           ardianilyas_
         </a>
 
         <!-- Desktop nav links -->
         <div class="hidden md:flex items-center gap-6">
           <a v-for="link in navLinks" :key="link.id" :href="'#' + link.id"
-             class="nav-link" style="font-family: var(--font-mono);">
+             class="nav-link" style="font-family: var(--font-sans);">
             {{ link.label }}
           </a>
         </div>
@@ -44,7 +44,7 @@
           <a v-for="link in navLinks" :key="link.id"
              :href="'#' + link.id"
              @click.prevent="scrollTo(link.id)"
-             class="mobile-nav-link" style="font-family: var(--font-mono);">
+             class="mobile-nav-link" style="font-family: var(--font-sans);">
             {{ link.label }}
           </a>
         </div>

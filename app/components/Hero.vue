@@ -96,8 +96,8 @@ const floatingIcons = [
   padding: 10px 24px;
   font-size: 13px;
   font-weight: 500;
-  font-family: var(--font-mono);
-  letter-spacing: 0.02em;
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
   border: 1px solid var(--color-primary);
   color: var(--color-bg);
   background-color: var(--color-primary);
@@ -116,8 +116,8 @@ const floatingIcons = [
   padding: 10px 16px;
   font-size: 13px;
   font-weight: 500;
-  font-family: var(--font-mono);
-  letter-spacing: 0.02em;
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
   color: var(--color-muted);
   transition: color 0.2s ease;
   text-decoration: none;

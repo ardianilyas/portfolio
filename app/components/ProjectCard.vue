@@ -45,15 +45,19 @@ defineProps<{
   display: flex;
   flex-direction: column;
   padding: 20px 24px;
-  border: 1px solid var(--color-rule);
-  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  background-color: #FFFFFF;
   text-decoration: none;
-  transition: border-color 0.15s ease;
+  transition: all 0.25s ease;
   cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03), 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .project-card:hover {
-  border-color: var(--color-muted);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06), 0 4px 8px rgba(0, 0, 0, 0.03);
+  transform: translateY(-2px);
 }
 
 .project-name {
@@ -74,10 +78,10 @@ defineProps<{
 }
 
 .project-tag {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   padding: 3px 8px;
   border-radius: 4px;
   background-color: var(--color-surface);
@@ -91,7 +95,7 @@ defineProps<{
   gap: 8px;
   margin-top: auto;
   padding-top: 16px;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 12px;
   color: var(--color-hint);
   transition: color 0.2s ease;

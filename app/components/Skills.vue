@@ -1,15 +1,16 @@
 <template>
   <section id="skills" style="background-color: var(--color-bg);">
+    <!-- Top rule above SectionHeader -->
+    <div class="w-full h-px" style="background-color: var(--color-rule);"></div>
 
     <SectionHeader label="SKILLS" title="What I work with" />
 
-    <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-10 md:py-14 overflow-visible">
+    <!-- We remove the max-w from the wrapper so borders can go full width -->
+    <div class="w-full py-10 md:py-14 overflow-visible flex flex-col">
 
-      <!-- Category rows stacked vertically -->
-      <div class="flex flex-col gap-8 overflow-visible">
-
-        <!-- Programming Languages -->
-        <div class="skill-row">
+      <!-- Programming Languages -->
+      <div class="w-full">
+        <div class="max-w-[1100px] mx-auto px-6 md:px-10 skill-row">
           <div class="skill-row-label">Programming Languages</div>
           <div class="skill-row-icons">
             <div 
@@ -27,12 +28,14 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Divider -->
-        <div class="w-full h-px" style="background-color: var(--color-rule);"></div>
+      <!-- Divider -->
+      <div class="w-full h-px my-8" style="background-color: var(--color-rule);"></div>
 
-        <!-- Frontend -->
-        <div class="skill-row">
+      <!-- Frontend -->
+      <div class="w-full">
+        <div class="max-w-[1100px] mx-auto px-6 md:px-10 skill-row">
           <div class="skill-row-label">Frontend</div>
           <div class="skill-row-icons">
             <div 
@@ -50,12 +53,14 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Divider -->
-        <div class="w-full h-px" style="background-color: var(--color-rule);"></div>
+      <!-- Divider -->
+      <div class="w-full h-px my-8" style="background-color: var(--color-rule);"></div>
 
-        <!-- Backend -->
-        <div class="skill-row">
+      <!-- Backend -->
+      <div class="w-full">
+        <div class="max-w-[1100px] mx-auto px-6 md:px-10 skill-row">
           <div class="skill-row-label">Backend</div>
           <div class="skill-row-icons">
             <div 
@@ -80,8 +85,8 @@
             </div>
           </div>
         </div>
-
       </div>
+
     </div>
 
     <!-- Bottom rule -->
@@ -129,10 +134,10 @@ const backend = [
 }
 
 .skill-row-label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--color-hint);
 }

@@ -50,11 +50,11 @@
 }
 
 .footer-name {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-bg);
-  letter-spacing: 0.02em;
+  letter-spacing: -0.01em;
 }
 
 .footer-tagline {
@@ -80,9 +80,9 @@
 }
 
 .footer-copyright {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   color: var(--color-hint);
   text-align: center;
 }
