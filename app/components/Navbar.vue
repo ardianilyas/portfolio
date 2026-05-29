@@ -1,38 +1,28 @@
 <template>
-  <nav ref="navRef" class="sticky top-0 left-0 z-50 bg-white dark:bg-gray-950 transition-colors duration-300">
-
-    <!-- Main navbar bar -->
-    <div class="container mx-auto px-6 md:px-12 py-4 md:py-6 border-l border-r border-gray-200 dark:border-gray-800">
-      <div class="flex items-center justify-between">
+  <nav ref="navRef" class="sticky top-0 left-0 z-50" style="background-color: var(--color-bg);">
+    <div class="max-w-[1100px] mx-auto px-6 md:px-10">
+      <div class="flex items-center justify-between h-14 md:h-16">
 
         <!-- Logo -->
-        <h3 class="text-lg md:text-xl font-medium text-neutral-900 dark:text-white">ardianilyas_</h3>
+        <a href="#" class="font-semibold text-base" style="font-family: var(--font-mono); color: var(--color-primary);">
+          ardianilyas_
+        </a>
 
         <!-- Desktop nav links -->
-        <div class="hidden md:flex items-center gap-4">
-          <ul class="flex gap-4 [&>li>a]:text-sm [&>li>a]:text-neutral-400 [&>li>a]:hover:text-orange-500 dark:[&>li>a]:text-neutral-500 dark:[&>li>a]:hover:text-orange-500">
-            <li><a href="#introduction">#introduction</a></li>
-            <li><a href="#skills">#skills</a></li>
-            <li><a href="#projects">#projects</a></li>
-          </ul>
-          <ThemeSwitcher />
+        <div class="hidden md:flex items-center gap-6">
+          <a v-for="link in navLinks" :key="link.id" :href="'#' + link.id"
+             class="nav-link" style="font-family: var(--font-mono);">
+            {{ link.label }}
+          </a>
         </div>
 
-        <!-- Mobile: theme + hamburger -->
-        <div class="flex items-center gap-3 md:hidden">
-          <ThemeSwitcher />
-          <button
-            @click="isOpen = !isOpen"
-            class="p-2 rounded-full border border-gray-200 dark:border-gray-700 
-                   hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
-            aria-label="Toggle menu"
-          >
-            <!-- Hamburger icon -->
-            <svg v-if="!isOpen" class="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <!-- Mobile hamburger -->
+        <div class="flex items-center md:hidden">
+          <button @click="isOpen = !isOpen" class="hamburger-btn" aria-label="Toggle menu">
+            <svg v-if="!isOpen" class="w-4 h-4" style="color: var(--color-muted);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
-            <!-- Close icon -->
-            <svg v-else class="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <svg v-else class="w-4 h-4" style="color: var(--color-muted);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -40,7 +30,7 @@
       </div>
     </div>
 
-    <!-- Mobile dropdown menu -->
+    <!-- Mobile dropdown -->
     <Transition
       enter-active-class="transition-all duration-300 ease-out"
       enter-from-class="opacity-0 -translate-y-2"
@@ -49,43 +39,20 @@
       leave-from-class="opacity-100 translate-y-0"
       leave-to-class="opacity-0 -translate-y-2"
     >
-      <div
-        v-if="isOpen"
-        class="md:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950"
-      >
-        <div class="container mx-auto border-l border-r border-gray-200 dark:border-gray-800">
-          <ul class="flex flex-col">
-            <li>
-              <a
-                href="#introduction"
-                @click.prevent="scrollTo('introduction')"
-                class="block px-6 py-3 text-sm text-neutral-500 dark:text-neutral-400 
-                       hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-orange-500 transition-colors"
-              >#introduction</a>
-            </li>
-            <li class="border-t border-gray-100 dark:border-gray-800/50">
-              <a
-                href="#skills"
-                @click.prevent="scrollTo('skills')"
-                class="block px-6 py-3 text-sm text-neutral-500 dark:text-neutral-400 
-                       hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-orange-500 transition-colors"
-              >#skills</a>
-            </li>
-            <li class="border-t border-gray-100 dark:border-gray-800/50">
-              <a
-                href="#projects"
-                @click.prevent="scrollTo('projects')"
-                class="block px-6 py-3 text-sm text-neutral-500 dark:text-neutral-400 
-                       hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-orange-500 transition-colors"
-              >#projects</a>
-            </li>
-          </ul>
+      <div v-if="isOpen" class="md:hidden border-t" style="border-color: var(--color-rule); background-color: var(--color-bg);">
+        <div class="max-w-[1100px] mx-auto">
+          <a v-for="link in navLinks" :key="link.id"
+             :href="'#' + link.id"
+             @click.prevent="scrollTo(link.id)"
+             class="mobile-nav-link" style="font-family: var(--font-mono);">
+            {{ link.label }}
+          </a>
         </div>
       </div>
     </Transition>
 
-    <!-- Bottom border full width -->
-    <div class="absolute bottom-0 left-0 w-full h-px bg-gray-200 dark:bg-gray-800"></div>
+    <!-- Bottom border -->
+    <div class="absolute bottom-0 left-0 w-full h-px" style="background-color: var(--color-rule);"></div>
   </nav>
 </template>
 
@@ -93,18 +60,56 @@
 const isOpen = ref(false)
 const navRef = ref<HTMLElement | null>(null)
 
+const navLinks = [
+  { id: 'hero', label: 'About' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'tools', label: 'Tools' },
+  { id: 'portfolio', label: 'Projects' },
+]
+
 function scrollTo(id: string) {
-  // Close menu first
   isOpen.value = false
-  // Wait for the dropdown close transition (200ms) to finish before scrolling
   setTimeout(() => {
     const el = document.getElementById(id)
     if (el) {
-      // Manually calculate offset to account for the sticky navbar
-      const navHeight = navRef.value?.offsetHeight ?? 80
+      const navHeight = navRef.value?.offsetHeight ?? 64
       const top = el.getBoundingClientRect().top + window.scrollY - navHeight
       window.scrollTo({ top, behavior: 'smooth' })
     }
   }, 250)
 }
 </script>
+
+<style scoped>
+.nav-link {
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--color-muted);
+  transition: color 0.2s ease;
+}
+.nav-link:hover {
+  color: var(--color-primary);
+}
+.hamburger-btn {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--color-rule);
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+.hamburger-btn:hover {
+  background-color: var(--color-surface);
+}
+.mobile-nav-link {
+  display: block;
+  padding: 12px 24px;
+  font-size: 13px;
+  color: var(--color-muted);
+  transition: all 0.2s;
+  border-bottom: 1px solid var(--color-rule);
+}
+.mobile-nav-link:hover {
+  color: var(--color-primary);
+  background-color: var(--color-surface);
+}
+</style>

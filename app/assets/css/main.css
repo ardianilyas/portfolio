@@ -1,21 +1,81 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+/* ── Google Fonts ─────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
+/* ── Design Tokens ────────────────────────────────────── */
+:root {
+  --color-primary: #111110;
+  --color-bg: #FAFAF8;
+  --color-surface: #F1EFE8;
+  --color-rule: #D3D1C7;
+  --color-muted: #73726C;
+  --color-hint: #9C9A92;
+
+  --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'DM Mono', 'SF Mono', 'Fira Code', monospace;
+}
+
+/* ── Base ──────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
 }
 
-html.dark {
-  color-scheme: dark;
-}
-
-html.light,
-html:not(.dark) {
-  color-scheme: light;
-}
-
 body {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-primary);
+  font-size: 14px;
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Section Label (monospace caps eyebrow) ────────────── */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-hint);
+}
+
+/* ── Heading Tracking ─────────────────────────────────── */
+h1, h2, h3 {
+  letter-spacing: -0.02em;
+}
+
+/* ── Fade-Up Animation (page load stagger) ────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fade-up {
+    animation: fadeUp 0.5s ease-out both;
+  }
+
+  .fade-up-delay-1 { animation-delay: 80ms; }
+  .fade-up-delay-2 { animation-delay: 160ms; }
+  .fade-up-delay-3 { animation-delay: 240ms; }
+  .fade-up-delay-4 { animation-delay: 320ms; }
+  .fade-up-delay-5 { animation-delay: 400ms; }
+}
+
+/* ── Float animation for hero icons ───────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
 }
