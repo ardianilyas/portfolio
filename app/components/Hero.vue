@@ -128,32 +128,37 @@ const floatingIcons = [
 
 .floating-icon {
   position: absolute;
-  padding: 14px;
-  border-radius: 14px;
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-rule);
-  transition: border-color 0.2s ease;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: #FFFFFF;
+  border: none;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02);
+  cursor: pointer;
 }
 
 .floating-icon:hover {
-  border-color: var(--color-primary);
+  transform: scale(1.15) !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.03);
+  z-index: 30;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .floating-icon {
-    animation: float 3s ease-in-out infinite;
+    animation: float 3.5s ease-in-out infinite;
   }
 }
 
 .icon-grayscale {
   filter: grayscale(1);
-  opacity: 0.55;
+  opacity: 0.6;
   transition: all 0.3s ease;
 }
 
 .floating-icon:hover .icon-grayscale {
   filter: grayscale(0);
   opacity: 1;
+  transform: scale(1.05);
 }
 
 .scroll-indicator {

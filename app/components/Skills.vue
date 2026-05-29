@@ -3,16 +3,26 @@
 
     <SectionHeader label="SKILLS" title="What I work with" />
 
-    <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-10 md:py-14">
+    <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-10 md:py-14 overflow-visible">
 
       <!-- Category rows stacked vertically -->
-      <div class="flex flex-col gap-6">
+      <div class="flex flex-col gap-8 overflow-visible">
 
         <!-- Programming Languages -->
         <div class="skill-row">
           <div class="skill-row-label">Programming Languages</div>
           <div class="skill-row-icons">
-            <div v-for="s in languages" :key="s.name" class="icon-cell" :title="s.name">
+            <div 
+              v-for="(s, index) in languages" 
+              :key="s.name" 
+              class="icon-cell group" 
+              :title="s.name"
+              :style="{
+                '--card-rotate': `${(index - (languages.length - 1)/2) * 5}deg`,
+                '--card-y': `${Math.abs(index - (languages.length - 1)/2) * Math.abs(index - (languages.length - 1)/2) * 3}px`,
+                '--card-z': 10 - Math.round(Math.abs(index - (languages.length - 1)/2))
+              }"
+            >
               <img :src="s.icon" :alt="s.name" class="skill-logo" />
             </div>
           </div>
@@ -25,7 +35,17 @@
         <div class="skill-row">
           <div class="skill-row-label">Frontend</div>
           <div class="skill-row-icons">
-            <div v-for="s in frontend" :key="s.name" class="icon-cell" :title="s.name">
+            <div 
+              v-for="(s, index) in frontend" 
+              :key="s.name" 
+              class="icon-cell group" 
+              :title="s.name"
+              :style="{
+                '--card-rotate': `${(index - (frontend.length - 1)/2) * 5}deg`,
+                '--card-y': `${Math.abs(index - (frontend.length - 1)/2) * Math.abs(index - (frontend.length - 1)/2) * 3}px`,
+                '--card-z': 10 - Math.round(Math.abs(index - (frontend.length - 1)/2))
+              }"
+            >
               <img :src="s.icon" :alt="s.name" class="skill-logo" />
             </div>
           </div>
@@ -38,9 +58,25 @@
         <div class="skill-row">
           <div class="skill-row-label">Backend</div>
           <div class="skill-row-icons">
-            <div v-for="s in backend" :key="s.name" class="icon-cell" :title="s.name">
-              <img v-if="s.icon" :src="s.icon" :alt="s.name" class="skill-logo" />
-              <span v-else class="icon-text-fallback">{{ s.name }}</span>
+            <div 
+              v-for="(s, index) in backend" 
+              :key="s.name" 
+              class="icon-cell group" 
+              :title="s.name"
+              :style="{
+                '--card-rotate': `${(index - (backend.length - 1)/2) * 5}deg`,
+                '--card-y': `${Math.abs(index - (backend.length - 1)/2) * Math.abs(index - (backend.length - 1)/2) * 3}px`,
+                '--card-z': 10 - Math.round(Math.abs(index - (backend.length - 1)/2))
+              }"
+            >
+              <!-- REST API server inline SVG for visual cohesion -->
+              <svg v-if="s.name === 'REST API'" class="skill-logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="8" rx="2" />
+                <rect x="2" y="13" width="20" height="8" rx="2" />
+                <line x1="6" y1="7" x2="6.01" y2="7" stroke-width="3" />
+                <line x1="6" y1="17" x2="6.01" y2="17" stroke-width="3" />
+              </svg>
+              <img v-else :src="s.icon" :alt="s.name" class="skill-logo" />
             </div>
           </div>
         </div>
@@ -80,7 +116,8 @@ const backend = [
 .skill-row {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 16px;
+  overflow: visible;
 }
 
 @media (min-width: 768px) {
@@ -102,46 +139,66 @@ const backend = [
 
 .skill-row-icons {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  flex-direction: row;
   align-items: center;
+  padding: 12px 8px;
+  overflow: visible;
+}
+
+/* Tailwind space-x negative equivalent */
+.skill-row-icons > * + * {
+  margin-left: -14px;
 }
 
 .icon-cell {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  border: 1px solid var(--color-rule);
-  background-color: var(--color-surface);
-  transition: border-color 0.2s ease;
-  cursor: default;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  border: none;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  transform: translateY(var(--card-y)) rotate(var(--card-rotate));
+  z-index: var(--card-z);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), z-index 0.4s, box-shadow 0.4s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02);
+  flex-shrink: 0;
 }
 
+/* Hover effects */
 .icon-cell:hover {
-  border-color: var(--color-primary);
+  transform: translateY(calc(var(--card-y) - 10px)) rotate(var(--card-rotate)) scale(1.15);
+  z-index: 50 !important;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.03);
 }
 
 .skill-logo {
-  width: 22px;
-  height: 22px;
+  width: 30px;
+  height: 30px;
   object-fit: contain;
-  filter: grayscale(1) opacity(0.5);
-  transition: filter 0.2s ease;
+  filter: grayscale(1) opacity(0.6);
+  transition: all 0.3s ease;
 }
 
 .icon-cell:hover .skill-logo {
   filter: grayscale(0) opacity(1);
+  transform: scale(1.05);
 }
 
-.icon-text-fallback {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 500;
+.skill-logo-svg {
+  width: 30px;
+  height: 30px;
   color: var(--color-hint);
-  text-align: center;
-  line-height: 1.1;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+.icon-cell:hover .skill-logo-svg {
+  color: var(--color-primary);
+  opacity: 1;
+  transform: scale(1.05);
 }
 </style>

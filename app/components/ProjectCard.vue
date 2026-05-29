@@ -53,7 +53,7 @@ defineProps<{
 }
 
 .project-card:hover {
-  border-color: var(--color-primary);
+  border-color: var(--color-muted);
 }
 
 .project-name {
