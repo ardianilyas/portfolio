@@ -1,6 +1,15 @@
 <template>
-  <nav ref="navRef" class="sticky top-0 left-0 z-50" style="background-color: var(--color-bg);">
-    <div class="max-w-[1100px] mx-auto px-6 md:px-10">
+  <nav ref="navRef" class="sticky top-0 left-0" style="background-color: var(--color-bg); z-index: 70;">
+    <!-- Vertical lines background inside navbar -->
+    <div class="absolute inset-0 pointer-events-none z-0">
+      <div class="relative max-w-[1100px] mx-auto h-full px-6 md:px-10">
+        <div class="absolute top-0 bottom-0 left-0 w-px" style="background-color: var(--color-rule);"></div>
+        <div class="absolute top-0 bottom-0 right-0 w-px" style="background-color: var(--color-rule);"></div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="relative z-10 max-w-[1100px] mx-auto px-6 md:px-10">
       <div class="flex items-center justify-between h-14 md:h-16">
 
         <!-- Logo -->
@@ -52,7 +61,7 @@
     </Transition>
 
     <!-- Bottom border -->
-    <div class="absolute bottom-0 left-0 w-full h-px" style="background-color: var(--color-rule);"></div>
+    <GridDivider className="absolute bottom-0 left-0" />
   </nav>
 </template>
 

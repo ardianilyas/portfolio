@@ -1,7 +1,7 @@
 <template>
-  <section id="skills" style="background-color: var(--color-bg);">
+  <section id="skills">
     <!-- Top rule above SectionHeader -->
-    <div class="w-full h-px" style="background-color: var(--color-rule);"></div>
+    <GridDivider />
 
     <SectionHeader label="SKILLS" title="What I work with" />
 
@@ -31,7 +31,7 @@
       </div>
 
       <!-- Divider -->
-      <div class="w-full h-px my-8" style="background-color: var(--color-rule);"></div>
+      <GridDivider className="my-8" />
 
       <!-- Frontend -->
       <div class="w-full">
@@ -56,7 +56,7 @@
       </div>
 
       <!-- Divider -->
-      <div class="w-full h-px my-8" style="background-color: var(--color-rule);"></div>
+      <GridDivider className="my-8" />
 
       <!-- Backend -->
       <div class="w-full">
@@ -90,7 +90,7 @@
     </div>
 
     <!-- Bottom rule -->
-    <div class="w-full h-px" style="background-color: var(--color-rule);"></div>
+    <GridDivider />
   </section>
 </template>
 
@@ -168,7 +168,7 @@ const backend = [
   cursor: pointer;
   transform: translateY(var(--card-y)) rotate(var(--card-rotate));
   z-index: var(--card-z);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), z-index 0.4s, box-shadow 0.4s;
+  transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02);
   flex-shrink: 0;
 }
@@ -185,7 +185,7 @@ const backend = [
   height: 30px;
   object-fit: contain;
   filter: grayscale(1) opacity(0.6);
-  transition: all 0.3s ease;
+  transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .icon-cell:hover .skill-logo {
@@ -198,7 +198,7 @@ const backend = [
   height: 30px;
   color: var(--color-hint);
   opacity: 0.6;
-  transition: all 0.3s ease;
+  transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .icon-cell:hover .skill-logo-svg {

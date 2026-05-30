@@ -1,5 +1,5 @@
 <template>
-  <section id="portfolio" style="background-color: var(--color-bg);">
+  <section id="portfolio">
 
     <SectionHeader label="PORTFOLIO" title="Selected Projects" />
 
@@ -19,7 +19,7 @@
     </div>
 
     <!-- Bottom rule -->
-    <div class="w-full h-px" style="background-color: var(--color-rule);"></div>
+    <GridDivider />
   </section>
 </template>
 

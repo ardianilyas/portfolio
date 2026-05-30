@@ -45,7 +45,7 @@
 
 <style scoped>
 .footer-wrapper {
-  background-color: var(--color-primary);
+  background-color: #2A2B2E;
   color: var(--color-bg);
 }
 

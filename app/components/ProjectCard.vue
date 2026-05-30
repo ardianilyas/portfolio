@@ -49,14 +49,14 @@ defineProps<{
   border-radius: 12px;
   background-color: #FFFFFF;
   text-decoration: none;
-  transition: all 0.25s ease;
+  transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03), 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .project-card:hover {
-  border-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06), 0 4px 8px rgba(0, 0, 0, 0.03);
+  border-color: var(--color-primary);
+  box-shadow: none;
   transform: translateY(-2px);
 }
 

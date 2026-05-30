@@ -1,5 +1,5 @@
 <template>
-  <section id="tools" style="background-color: var(--color-bg);">
+  <section id="tools">
 
     <SectionHeader label="TOOLS" title="My toolbox" />
 
@@ -69,7 +69,7 @@
     </div>
 
     <!-- Bottom rule -->
-    <div class="w-full h-px" style="background-color: var(--color-rule);"></div>
+    <GridDivider />
   </section>
 </template>
 
@@ -105,7 +105,7 @@ const toolsRow2 = computed(() => tools.slice(4, 8))
   cursor: pointer;
   z-index: var(--card-z);
   transform: translateY(var(--card-y)) rotate(var(--card-rotate));
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), z-index 0.4s, box-shadow 0.4s, background-color 0.3s ease;
+  transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02);
   flex-shrink: 0;
 }
@@ -146,7 +146,7 @@ const toolsRow2 = computed(() => tools.slice(4, 8))
   height: 36px;
   object-fit: contain;
   filter: grayscale(1) opacity(0.6);
-  transition: all 0.3s ease;
+  transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
   color: var(--color-hint);
 }
 

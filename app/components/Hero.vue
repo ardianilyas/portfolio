@@ -1,5 +1,5 @@
 <template>
-  <section id="hero" class="relative flex items-center" style="background-color: var(--color-bg);">
+  <section id="hero" class="relative flex items-center">
 
     <div class="max-w-[1100px] mx-auto px-6 md:px-10 w-full py-14 md:py-20">
       <div class="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-10 md:gap-16 items-center">
@@ -13,7 +13,7 @@
           </span>
 
           <!-- Headline -->
-          <h1 class="text-[36px] sm:text-[44px] md:text-[52px] font-bold leading-[1.08] tracking-tight fade-up fade-up-delay-1" style="color: var(--color-primary);">
+          <h1 class="font-bold leading-[1.08] tracking-tight fade-up fade-up-delay-1" style="color: var(--color-primary); font-size: clamp(36px, 6vw, 56px);">
             Ardian Ilyas<span class="blinking-cursor">_</span>
           </h1>
 
@@ -101,8 +101,8 @@ const floatingIcons = [
   border: 1px solid var(--color-primary);
   color: var(--color-bg);
   background-color: var(--color-primary);
-  border-radius: 6px;
-  transition: all 0.2s ease;
+  border-radius: 12px;
+  transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
   text-decoration: none;
 }
 .cta-primary:hover {
@@ -119,7 +119,7 @@ const floatingIcons = [
   font-family: var(--font-sans);
   letter-spacing: -0.01em;
   color: var(--color-muted);
-  transition: color 0.2s ease;
+  transition: color 150ms cubic-bezier(0.2, 0, 0, 1);
   text-decoration: none;
 }
 .cta-ghost:hover {
