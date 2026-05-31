@@ -16,7 +16,7 @@
             :key="s.name" 
             class="skill-pill"
           >
-            <img :src="s.icon" :alt="s.name" class="pill-icon" loading="lazy" />
+            <img :src="s.icon" :alt="s.name" class="pill-icon" :class="{'scale-[0.85]': s.name === 'Shadcn UI'}" loading="lazy" />
             <span class="pill-text">{{ s.name }}</span>
           </div>
         </div>
@@ -34,7 +34,7 @@
             :key="s.name" 
             class="skill-pill"
           >
-            <img :src="s.icon" :alt="s.name" class="pill-icon" loading="lazy" />
+            <img :src="s.icon" :alt="s.name" class="pill-icon" :class="{'scale-[0.85]': s.name === 'Shadcn UI'}" loading="lazy" />
             <span class="pill-text">{{ s.name }}</span>
           </div>
         </div>
@@ -52,7 +52,7 @@
             :key="s.name" 
             class="skill-pill"
           >
-            <img :src="s.icon" :alt="s.name" class="pill-icon" loading="lazy" />
+            <img :src="s.icon" :alt="s.name" class="pill-icon" :class="{'scale-[0.85]': s.name === 'Shadcn UI'}" loading="lazy" />
             <span class="pill-text">{{ s.name }}</span>
           </div>
         </div>
