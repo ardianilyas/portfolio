@@ -1,8 +1,18 @@
 <template>
-  <div class="relative w-full min-h-screen bg-gray-50 dark:bg-gray-950">
-    <Navbar /> 
+  <div class="relative w-full min-h-screen" style="background-color: var(--color-bg); color: var(--color-primary);">
+
+    <!-- Vertical container lines -->
+    <div class="container-lines" aria-hidden="true">
+      <div class="container-lines-inner">
+        <div class="line line-left"></div>
+        <div class="line line-right"></div>
+      </div>
+    </div>
+
+    <Navbar />
     <Hero />
     <Skills />
+    <Tools />
     <Projects />
     <Footer />
   </div>
@@ -12,7 +22,57 @@
   useHead({
     title: "Ardian Ilyas",
     meta: [
-      { name: "theme-color", content: "#f97316" }
+      { name: "description", content: "Backend-focused web developer specializing in JavaScript, TypeScript, PHP, and Golang. Building scalable server-side applications with ExpressJS, Laravel, and modern frameworks." },
+      { name: "theme-color", content: "#FAFAF8" }
     ]
   })
 </script>
+
+<style scoped>
+.container-lines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container-lines-inner {
+  position: relative;
+  max-width: 1100px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (min-width: 768px) {
+  .container-lines-inner {
+    padding: 0 40px;
+  }
+}
+
+.line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--color-rule);
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .line {
+    display: block;
+  }
+}
+
+.line-left {
+  left: 0;
+}
+
+.line-right {
+  right: 0;
+}
+</style>
