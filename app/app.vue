@@ -20,9 +20,10 @@
 
 <script setup lang="ts">
   useHead({
-    title: "Ardian Ilyas — Backend Developer",
+    title: "Ardian Ilyas",
     meta: [
       { name: "description", content: "Backend-focused web developer specializing in JavaScript, TypeScript, PHP, and Golang. Building scalable server-side applications with ExpressJS, Laravel, and modern frameworks." },
+      { name: "theme-color", content: "#FAFAF8" }
     ]
   })
 </script>
@@ -58,6 +59,13 @@
   bottom: 0;
   width: 1px;
   background-color: var(--color-rule);
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .line {
+    display: block;
+  }
 }
 
 .line-left {

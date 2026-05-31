@@ -5,84 +5,55 @@
 
     <SectionHeader label="SKILLS" title="What I work with" />
 
-    <!-- We remove the max-w from the wrapper so borders can go full width -->
-    <div class="w-full py-10 md:py-14 overflow-visible flex flex-col">
+    <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-16 md:py-24 flex flex-col gap-12 md:gap-16">
 
       <!-- Programming Languages -->
-      <div class="w-full">
-        <div class="max-w-[1100px] mx-auto px-6 md:px-10 skill-row">
-          <div class="skill-row-label">Programming Languages</div>
-          <div class="skill-row-icons">
-            <div 
-              v-for="(s, index) in languages" 
-              :key="s.name" 
-              class="icon-cell group" 
-              :title="s.name"
-              :style="{
-                '--card-rotate': `${(index - (languages.length - 1)/2) * 5}deg`,
-                '--card-y': `${Math.abs(index - (languages.length - 1)/2) * Math.abs(index - (languages.length - 1)/2) * 3}px`,
-                '--card-z': 10 - Math.round(Math.abs(index - (languages.length - 1)/2))
-              }"
-            >
-              <img :src="s.icon" :alt="s.name" class="skill-logo" />
-            </div>
+      <div class="skill-category group">
+        <h3 class="category-title">Programming Languages</h3>
+        <div class="category-pills">
+          <div 
+            v-for="s in languages" 
+            :key="s.name" 
+            class="skill-pill"
+          >
+            <img :src="s.icon" :alt="s.name" class="pill-icon" loading="lazy" />
+            <span class="pill-text">{{ s.name }}</span>
           </div>
         </div>
       </div>
 
       <!-- Divider -->
-      <GridDivider className="my-8" />
+      <div class="h-[1px] w-full bg-[var(--color-rule)] opacity-50 md:hidden"></div>
 
       <!-- Frontend -->
-      <div class="w-full">
-        <div class="max-w-[1100px] mx-auto px-6 md:px-10 skill-row">
-          <div class="skill-row-label">Frontend</div>
-          <div class="skill-row-icons">
-            <div 
-              v-for="(s, index) in frontend" 
-              :key="s.name" 
-              class="icon-cell group" 
-              :title="s.name"
-              :style="{
-                '--card-rotate': `${(index - (frontend.length - 1)/2) * 5}deg`,
-                '--card-y': `${Math.abs(index - (frontend.length - 1)/2) * Math.abs(index - (frontend.length - 1)/2) * 3}px`,
-                '--card-z': 10 - Math.round(Math.abs(index - (frontend.length - 1)/2))
-              }"
-            >
-              <img :src="s.icon" :alt="s.name" class="skill-logo" />
-            </div>
+      <div class="skill-category group">
+        <h3 class="category-title">Frontend & UI</h3>
+        <div class="category-pills">
+          <div 
+            v-for="s in frontend" 
+            :key="s.name" 
+            class="skill-pill"
+          >
+            <img :src="s.icon" :alt="s.name" class="pill-icon" loading="lazy" />
+            <span class="pill-text">{{ s.name }}</span>
           </div>
         </div>
       </div>
 
       <!-- Divider -->
-      <GridDivider className="my-8" />
+      <div class="h-[1px] w-full bg-[var(--color-rule)] opacity-50 md:hidden"></div>
 
       <!-- Backend -->
-      <div class="w-full">
-        <div class="max-w-[1100px] mx-auto px-6 md:px-10 skill-row">
-          <div class="skill-row-label">Backend</div>
-          <div class="skill-row-icons">
-            <div 
-              v-for="(s, index) in backend" 
-              :key="s.name" 
-              class="icon-cell group" 
-              :title="s.name"
-              :style="{
-                '--card-rotate': `${(index - (backend.length - 1)/2) * 5}deg`,
-                '--card-y': `${Math.abs(index - (backend.length - 1)/2) * Math.abs(index - (backend.length - 1)/2) * 3}px`,
-                '--card-z': 10 - Math.round(Math.abs(index - (backend.length - 1)/2))
-              }"
-            >
-              <!-- REST API server inline SVG for visual cohesion -->
-              <svg v-if="s.name === 'REST API'" class="skill-logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="3" width="20" height="8" rx="2" />
-                <rect x="2" y="13" width="20" height="8" rx="2" />
-                <line x1="6" y1="7" x2="6.01" y2="7" stroke-width="3" />
-                <line x1="6" y1="17" x2="6.01" y2="17" stroke-width="3" />
-              </svg>
-              <img v-else :src="s.icon" :alt="s.name" class="skill-logo" />
-            </div>
+      <div class="skill-category group">
+        <h3 class="category-title">Backend & Databases</h3>
+        <div class="category-pills">
+          <div 
+            v-for="s in backend" 
+            :key="s.name" 
+            class="skill-pill"
+          >
+            <img :src="s.icon" :alt="s.name" class="pill-icon" loading="lazy" />
+            <span class="pill-text">{{ s.name }}</span>
           </div>
         </div>
       </div>
@@ -103,107 +74,111 @@ const languages = [
 ]
 
 const frontend = [
-  { name: 'HTML/CSS', icon: 'https://svgl.app/library/html5.svg' },
+  { name: 'HTML', icon: 'https://svgl.app/library/html5.svg' },
+  { name: 'CSS', icon: 'https://svgl.app/library/css.svg' },
   { name: 'Vue.js', icon: 'https://svgl.app/library/vue.svg' },
   { name: 'NuxtJS', icon: 'https://svgl.app/library/nuxt.svg' },
+  { name: 'React', icon: 'https://cdn.simpleicons.org/react/61DAFB' },
+  { name: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+  { name: 'Shadcn UI', icon: 'https://cdn.simpleicons.org/shadcnui/000000' },
   { name: 'TailwindCSS', icon: 'https://svgl.app/library/tailwindcss.svg' },
 ]
 
 const backend = [
   { name: 'ExpressJS', icon: 'https://svgl.app/library/expressjs.svg' },
   { name: 'Laravel', icon: 'https://svgl.app/library/laravel.svg' },
-  { name: 'REST API', icon: null },
   { name: 'Node.js', icon: 'https://svgl.app/library/nodejs.svg' },
+  { name: 'Supabase', icon: 'https://svgl.app/library/supabase.svg' },
+  { name: 'PostgreSQL', icon: 'https://svgl.app/library/postgresql.svg' },
+  { name: 'Redis', icon: 'https://svgl.app/library/redis.svg' },
+  { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg' },
+  { name: 'Prisma', icon: 'https://svgl.app/library/prisma.svg' },
+  { name: 'Drizzle ORM', icon: 'https://cdn.simpleicons.org/drizzle/8DA61C' },
+  { name: 'Zod', icon: 'https://svgl.app/library/zod.svg' },
+  { name: 'JWT', icon: 'https://svgl.app/library/jwt.svg' },
+  { name: 'Better Auth', icon: 'https://cdn.simpleicons.org/betterauth/000000' },
 ]
 </script>
 
 <style scoped>
-.skill-row {
-  display: grid;
-  grid-template-columns: 1fr;
+.skill-category {
+  display: flex;
+  flex-direction: column;
   gap: 16px;
-  overflow: visible;
 }
 
 @media (min-width: 768px) {
-  .skill-row {
-    grid-template-columns: 180px 1fr;
+  .skill-category {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: start;
     gap: 32px;
-    align-items: center;
   }
 }
 
-.skill-row-label {
+.category-title {
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--color-hint);
+  margin-top: 10px; /* Alignment tweak with pills */
 }
 
-.skill-row-icons {
+.category-pills {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 12px 8px;
-  overflow: visible;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-/* Tailwind space-x negative equivalent */
-.skill-row-icons > * + * {
-  margin-left: -14px;
-}
-
-.icon-cell {
-  position: relative;
+.skill-pill {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 12px;
-  border: none;
-  background-color: #FFFFFF;
+  gap: 10px;
+  padding: 10px 18px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-rule);
+  border-radius: 999px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
   cursor: pointer;
-  transform: translateY(var(--card-y)) rotate(var(--card-rotate));
-  z-index: var(--card-z);
-  transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02);
-  flex-shrink: 0;
 }
 
-/* Hover effects */
-.icon-cell:hover {
-  transform: translateY(calc(var(--card-y) - 10px)) rotate(var(--card-rotate)) scale(1.15);
-  z-index: 50 !important;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.03);
+.skill-pill:hover {
+  background-color: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
 }
 
-.skill-logo {
-  width: 30px;
-  height: 30px;
+.pill-icon, .pill-icon-svg {
+  width: 22px;
+  height: 22px;
   object-fit: contain;
   filter: grayscale(1) opacity(0.6);
-  transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.icon-cell:hover .skill-logo {
-  filter: grayscale(0) opacity(1);
-  transform: scale(1.05);
-}
-
-.skill-logo-svg {
-  width: 30px;
-  height: 30px;
+  transition: all 0.3s ease;
   color: var(--color-hint);
-  opacity: 0.6;
-  transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.icon-cell:hover .skill-logo-svg {
+.skill-pill:hover .pill-icon {
+  filter: grayscale(0) opacity(1);
+}
+
+.skill-pill:hover .pill-icon-svg {
   color: var(--color-primary);
   opacity: 1;
-  transform: scale(1.05);
+}
+
+.pill-text {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-hint);
+  transition: color 0.3s ease;
+}
+
+.skill-pill:hover .pill-text {
+  color: var(--color-primary);
 }
 </style>

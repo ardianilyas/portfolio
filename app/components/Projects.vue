@@ -18,8 +18,6 @@
       </div>
     </div>
 
-    <!-- Bottom rule -->
-    <GridDivider />
   </section>
 </template>
 

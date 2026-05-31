@@ -1,7 +1,7 @@
 <template>
-  <nav ref="navRef" class="sticky top-0 left-0" style="background-color: var(--color-bg); z-index: 70;">
+  <nav ref="navRef" class="sticky top-0 left-0 w-full glass-nav z-50">
     <!-- Vertical lines background inside navbar -->
-    <div class="absolute inset-0 pointer-events-none z-0">
+    <div class="absolute inset-0 pointer-events-none z-0 hidden md:block">
       <div class="relative max-w-[1100px] mx-auto h-full px-6 md:px-10">
         <div class="absolute top-0 bottom-0 left-0 w-px" style="background-color: var(--color-rule);"></div>
         <div class="absolute top-0 bottom-0 right-0 w-px" style="background-color: var(--color-rule);"></div>
@@ -13,8 +13,8 @@
       <div class="flex items-center justify-between h-14 md:h-16">
 
         <!-- Logo -->
-        <a href="#" class="font-semibold text-base" style="font-family: var(--font-sans); color: var(--color-primary);">
-          ardianilyas_
+        <a href="#" class="nav-logo group">
+          ardianilyas<span class="text-[var(--color-hint)] group-hover:text-[var(--color-primary)] transition-colors">_</span>
         </a>
 
         <!-- Desktop nav links -->
@@ -48,7 +48,7 @@
       leave-from-class="opacity-100 translate-y-0"
       leave-to-class="opacity-0 -translate-y-2"
     >
-      <div v-if="isOpen" class="md:hidden border-t" style="border-color: var(--color-rule); background-color: var(--color-bg);">
+      <div v-if="isOpen" class="md:hidden border-t glass-nav-mobile" style="border-color: var(--color-rule);">
         <div class="max-w-[1100px] mx-auto">
           <a v-for="link in navLinks" :key="link.id"
              :href="'#' + link.id"
@@ -91,18 +91,56 @@ function scrollTo(id: string) {
 
 <style scoped>
 .nav-link {
-  font-size: 12px;
-  letter-spacing: 0.05em;
+  position: relative;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   color: var(--color-muted);
-  transition: color 0.2s ease;
+  transition: color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 4px 0; /* Minimal vertical padding for click target */
 }
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background-color: var(--color-primary);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .nav-link:hover {
   color: var(--color-primary);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+.nav-logo {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-primary);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.glass-nav {
+  background-color: rgba(250, 250, 248, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.glass-nav-mobile {
+  background-color: rgba(250, 250, 248, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 .hamburger-btn {
   padding: 8px;
   border-radius: 6px;
-  border: 1px solid var(--color-rule);
+  border: none;
+  background: transparent;
   transition: background-color 0.2s;
   cursor: pointer;
 }
