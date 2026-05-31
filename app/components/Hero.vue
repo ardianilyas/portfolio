@@ -42,7 +42,7 @@
     </div>
 
     <!-- Foreground Content -->
-    <div class="max-w-[900px] mx-auto px-6 md:px-10 w-full relative z-10 flex flex-col items-center text-center">
+    <div class="max-w-[900px] mx-auto px-3 md:px-10 w-full relative z-10 flex flex-col items-center text-center">
 
       <!-- Role badge -->
       <span class="section-label fade-up mb-6 md:mb-8 bg-[var(--color-bg)]/80 backdrop-blur-md">

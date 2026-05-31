@@ -23,7 +23,10 @@
     title: "Ardian Ilyas",
     meta: [
       { name: "description", content: "Backend-focused web developer specializing in JavaScript, TypeScript, PHP, and Golang. Building scalable server-side applications with ExpressJS, Laravel, and modern frameworks." },
-      { name: "theme-color", content: "#FAFAF8" }
+      { name: "theme-color", media: "(prefers-color-scheme: light)", content: "#FAFAF8", key: "theme-light" },
+      { name: "theme-color", media: "(prefers-color-scheme: dark)", content: "#FAFAF8", key: "theme-dark" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+      { name: "color-scheme", content: "light" }
     ]
   })
 </script>

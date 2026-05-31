@@ -18,9 +18,24 @@
         </a>
 
         <!-- Desktop nav links -->
-        <div class="hidden md:flex items-center gap-6">
+        <div class="hidden md:flex items-center gap-1 relative" @mouseleave="hoveredLink = null">
+          <!-- Wavy Liquid Pill Background -->
+          <div
+            class="absolute pointer-events-none transition-all duration-[500ms] ease-[cubic-bezier(0.25,1,0.3,1)] pill-wavy-wrapper"
+            :style="{
+              left: `${pillLeft}px`,
+              width: `${pillWidth}px`,
+              height: `${pillHeight}px`,
+              opacity: hoveredLink !== null ? 1 : 0,
+              transform: hoveredLink !== null ? 'scale(1)' : 'scale(0.8)'
+            }"
+          >
+            <div class="pill-swirl"></div>
+          </div>
+
           <a v-for="link in navLinks" :key="link.id" :href="'#' + link.id"
-             class="nav-link" style="font-family: var(--font-sans);">
+             class="nav-link relative z-10 px-4 py-2" style="font-family: var(--font-sans);"
+             @mouseenter="updatePill($event, link.id)">
             {{ link.label }}
           </a>
         </div>
@@ -39,21 +54,26 @@
       </div>
     </div>
 
-    <!-- Mobile dropdown -->
+    <!-- Mobile dropdown menu -->
     <Transition
       enter-active-class="transition-all duration-300 ease-out"
-      enter-from-class="opacity-0 -translate-y-2"
-      enter-to-class="opacity-100 translate-y-0"
-      leave-active-class="transition-all duration-200 ease-in"
-      leave-from-class="opacity-100 translate-y-0"
-      leave-to-class="opacity-0 -translate-y-2"
+      enter-from-class="opacity-0 -translate-x-8"
+      enter-to-class="opacity-100 translate-x-0"
+      leave-active-class="transition-opacity duration-[600ms] closing-menu"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
     >
-      <div v-if="isOpen" class="md:hidden border-t glass-nav-mobile" style="border-color: var(--color-rule);">
-        <div class="max-w-[1100px] mx-auto">
-          <a v-for="link in navLinks" :key="link.id"
+      <div v-if="isOpen" class="md:hidden glass-nav-mobile pb-2 absolute top-full left-0 w-full">
+        <div class="max-w-[1100px] mx-auto flex flex-col">
+          <a v-for="(link, index) in navLinks" :key="link.id"
              :href="'#' + link.id"
              @click.prevent="scrollTo(link.id)"
-             class="mobile-nav-link" style="font-family: var(--font-sans);">
+             class="mobile-nav-link text-left" 
+             :style="{ 
+               fontFamily: 'var(--font-sans)', 
+               '--open-delay': `${index * 80 + 100}ms`,
+               '--close-delay': `${(navLinks.length - 1 - index) * 60}ms`
+             }">
             {{ link.label }}
           </a>
         </div>
@@ -68,6 +88,19 @@
 <script setup lang="ts">
 const isOpen = ref(false)
 const navRef = ref<HTMLElement | null>(null)
+
+const hoveredLink = ref<string | null>(null)
+const pillLeft = ref(0)
+const pillWidth = ref(0)
+const pillHeight = ref(0)
+
+function updatePill(event: MouseEvent, id: string) {
+  const target = event.currentTarget as HTMLElement
+  hoveredLink.value = id
+  pillLeft.value = target.offsetLeft
+  pillWidth.value = target.offsetWidth
+  pillHeight.value = target.offsetHeight
+}
 
 const navLinks = [
   { id: 'hero', label: 'About' },
@@ -97,26 +130,31 @@ function scrollTo(id: string) {
   letter-spacing: 0.02em;
   color: var(--color-muted);
   transition: color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  padding: 4px 0; /* Minimal vertical padding for click target */
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0%;
-  height: 1px;
-  background-color: var(--color-primary);
-  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-link:hover {
   color: var(--color-primary);
 }
 
-.nav-link:hover::after {
+/* Wavy / Swirl Pill Animation */
+.pill-wavy-wrapper {
+  /* wrapper handles position and opacity */
+}
+
+.pill-swirl {
   width: 100%;
+  height: 100%;
+  background-color: var(--color-surface);
+  animation: swirl 4s infinite linear;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03);
+}
+
+@keyframes swirl {
+  0% { border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%; }
+  25% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  50% { border-radius: 30% 70% 70% 30% / 30% 70% 30% 70%; }
+  75% { border-radius: 70% 30% 40% 60% / 30% 70% 40% 60%; }
+  100% { border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%; }
 }
 .nav-logo {
   font-family: var(--font-sans);
@@ -149,14 +187,37 @@ function scrollTo(id: string) {
 }
 .mobile-nav-link {
   display: block;
-  padding: 12px 24px;
-  font-size: 13px;
+  padding: 14px 24px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   color: var(--color-muted);
-  transition: all 0.2s;
-  border-bottom: 1px solid var(--color-rule);
+  transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding-left 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: left;
+  opacity: 0;
+  animation: slideInLink 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--open-delay);
 }
-.mobile-nav-link:hover {
+
+.closing-menu .mobile-nav-link {
+  opacity: 1;
+  animation: slideOutLink 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--close-delay);
+}
+
+@keyframes slideInLink {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideOutLink {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(-12px); }
+}
+
+.mobile-nav-link:hover, .mobile-nav-link:active {
   color: var(--color-primary);
   background-color: var(--color-surface);
+  padding-left: 32px; /* slide effect on hover */
 }
 </style>
