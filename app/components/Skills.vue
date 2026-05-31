@@ -3,57 +3,35 @@
     <!-- Top rule above SectionHeader -->
     <GridDivider />
 
-    <SectionHeader label="SKILLS" title="What I work with" />
+    <SectionHeader label="SKILLS" title="Expertise" />
 
-    <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-16 md:py-24 flex flex-col gap-12 md:gap-16">
-
-      <!-- Programming Languages -->
-      <div class="skill-category group">
-        <h3 class="category-title">Programming Languages</h3>
-        <div class="category-pills">
-          <div 
-            v-for="s in languages" 
-            :key="s.name" 
-            class="skill-pill"
-          >
-            <img :src="s.icon" :alt="s.name" class="pill-icon" :class="{'scale-[0.85]': s.name === 'Shadcn UI'}" loading="lazy" />
-            <span class="pill-text">{{ s.name }}</span>
+    <div class="max-w-[1200px] mx-auto px-8 md:px-16 lg:px-24 py-24">
+      
+      <div 
+        v-for="(cat, index) in categories" 
+        :key="cat.id"
+        class="flex flex-col md:flex-row relative border-t border-gray-100 pt-16 pb-32"
+        :class="{ 'border-t-0 pt-0': index === 0 }"
+      >
+        <!-- Sticky Left Side -->
+        <div class="md:w-5/12 relative mb-12 md:mb-0 pr-8 z-10">
+          <div class="md:sticky md:top-32">
+            <h3 class="text-4xl md:text-[56px] leading-[1.1] font-bold tracking-tight text-gray-900 mb-6">{{ cat.title }}</h3>
+            <p class="text-lg md:text-xl text-gray-500 font-light leading-relaxed max-w-[380px]">{{ cat.desc }}</p>
           </div>
         </div>
-      </div>
-
-      <!-- Divider -->
-      <div class="h-[1px] w-full bg-[var(--color-rule)] opacity-50 md:hidden"></div>
-
-      <!-- Frontend -->
-      <div class="skill-category group">
-        <h3 class="category-title">Frontend & UI</h3>
-        <div class="category-pills">
+        
+        <!-- Scrolling Right Side -->
+        <div class="md:w-7/12 flex flex-wrap gap-4 md:gap-5 content-start">
           <div 
-            v-for="s in frontend" 
-            :key="s.name" 
-            class="skill-pill"
+            v-for="skill in cat.skills" 
+            :key="skill.name"
+            class="apple-pill group"
           >
-            <img :src="s.icon" :alt="s.name" class="pill-icon" :class="{'scale-[0.85]': s.name === 'Shadcn UI'}" loading="lazy" />
-            <span class="pill-text">{{ s.name }}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Divider -->
-      <div class="h-[1px] w-full bg-[var(--color-rule)] opacity-50 md:hidden"></div>
-
-      <!-- Backend -->
-      <div class="skill-category group">
-        <h3 class="category-title">Backend & Databases</h3>
-        <div class="category-pills">
-          <div 
-            v-for="s in backend" 
-            :key="s.name" 
-            class="skill-pill"
-          >
-            <img :src="s.icon" :alt="s.name" class="pill-icon" :class="{'scale-[0.85]': s.name === 'Shadcn UI'}" loading="lazy" />
-            <span class="pill-text">{{ s.name }}</span>
+            <div class="icon-wrapper">
+              <img :src="skill.icon" :alt="skill.name" class="w-6 h-6 object-contain filter grayscale opacity-60 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500" :class="{'scale-[0.85]': skill.name === 'Shadcn UI'}" loading="lazy" />
+            </div>
+            <span class="text-[15px] font-semibold text-gray-500 group-hover:text-gray-900 transition-colors duration-300">{{ skill.name }}</span>
           </div>
         </div>
       </div>
@@ -98,87 +76,62 @@ const backend = [
   { name: 'JWT', icon: 'https://svgl.app/library/jwt.svg' },
   { name: 'Better Auth', icon: 'https://cdn.simpleicons.org/betterauth/000000' },
 ]
+
+const categories = [
+  {
+    id: 'frontend',
+    title: 'Frontend & UI',
+    desc: 'Crafting pixel-perfect, highly responsive user interfaces.',
+    skills: frontend
+  },
+  {
+    id: 'backend',
+    title: 'Backend & Databases',
+    desc: 'Architecting scalable APIs and managing reliable data flow.',
+    skills: backend
+  },
+  {
+    id: 'languages',
+    title: 'Core Languages',
+    desc: 'The foundational tools I use to write elegant, type-safe logic.',
+    skills: languages
+  }
+]
 </script>
 
 <style scoped>
-.skill-category {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-@media (min-width: 768px) {
-  .skill-category {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    align-items: start;
-    gap: 32px;
-  }
-}
-
-.category-title {
-  font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--color-hint);
-  margin-top: 10px; /* Alignment tweak with pills */
-}
-
-.category-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.skill-pill {
+.apple-pill {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 18px;
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-rule);
+  gap: 12px;
+  padding: 8px 20px 8px 8px;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
   border-radius: 999px;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
   cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 24px -6px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.03) inset;
 }
 
-.skill-pill:hover {
-  background-color: #FFFFFF;
-  border-color: rgba(0, 0, 0, 0.1);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+.apple-pill:hover {
+  background-color: rgba(255, 255, 255, 1);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.05) inset;
 }
 
-.pill-icon, .pill-icon-svg {
-  width: 22px;
-  height: 22px;
-  object-fit: contain;
-  filter: grayscale(1) opacity(0.6);
-  transition: all 0.3s ease;
-  color: var(--color-hint);
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background-color: #f4f4f5;
+  border-radius: 50%;
+  transition: all 0.4s ease;
 }
 
-.skill-pill:hover .pill-icon {
-  filter: grayscale(0) opacity(1);
-}
-
-.skill-pill:hover .pill-icon-svg {
-  color: var(--color-primary);
-  opacity: 1;
-}
-
-.pill-text {
-  font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-hint);
-  transition: color 0.3s ease;
-}
-
-.skill-pill:hover .pill-text {
-  color: var(--color-primary);
+.apple-pill:hover .icon-wrapper {
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 </style>

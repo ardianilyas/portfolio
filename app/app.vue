@@ -1,20 +1,29 @@
 <template>
-  <div class="relative w-full min-h-screen" style="background-color: var(--color-bg); color: var(--color-primary);">
-
-    <!-- Vertical container lines -->
-    <div class="container-lines" aria-hidden="true">
-      <div class="container-lines-inner">
-        <div class="line line-left"></div>
-        <div class="line line-right"></div>
+  <div class="relative w-full min-h-screen bg-[var(--color-bg)]">
+    
+    <!-- Main Content Wrapper -->
+    <main class="relative z-10 bg-[var(--color-bg)] mb-[100vh] shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
+      <!-- Vertical container lines -->
+      <div class="container-lines" aria-hidden="true">
+        <div class="container-lines-inner">
+          <div class="line line-left"></div>
+          <div class="line line-right"></div>
+        </div>
       </div>
+
+      <Navbar />
+      <Hero />
+      <Skills />
+      <Tools />
+      <Projects />
+      <GithubIsometricGraph />
+    </main>
+
+    <!-- Footer fixed behind main content -->
+    <div class="fixed bottom-0 left-0 w-full h-[100vh] z-0">
+      <Footer />
     </div>
 
-    <Navbar />
-    <Hero />
-    <Skills />
-    <Tools />
-    <Projects />
-    <Footer />
   </div>
 </template>
 

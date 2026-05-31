@@ -59,14 +59,14 @@
       </div>
 
       <!-- Desktop View (1 row of items) -->
-      <div class="hidden md:flex flex-row justify-center items-center -space-x-8 py-10 px-4 overflow-visible min-h-[220px]">
+      <div class="hidden md:flex flex-row justify-center items-center -space-x-4 py-10 px-4 overflow-visible min-h-[220px]">
         <div 
           v-for="(tool, index) in tools" 
           :key="tool.name" 
           class="tool-card group"
           :style="{
-            '--card-rotate': `${(index - (tools.length - 1)/2) * 4.5}deg`,
-            '--card-y': `${Math.abs(index - (tools.length - 1)/2) * Math.abs(index - (tools.length - 1)/2) * 3.5}px`,
+            '--card-rotate': `${randomRotations[index % randomRotations.length]}deg`,
+            '--card-y': `${randomY[index % randomY.length]}px`,
             '--card-z': 10 - Math.round(Math.abs(index - (tools.length - 1)/2))
           }"
         >
@@ -98,6 +98,9 @@ const tools = [
   { name: 'Vitest', icon: 'https://svgl.app/library/vitest.svg' },
   { name: 'Safari', icon: 'https://svgl.app/library/safari.svg' },
 ]
+
+const randomRotations = [-4, 6, -2, 7, -6, 3, -8, 5]
+const randomY = [12, -8, 14, -12, 8, -16, 10, -6]
 
 const toolsRow1 = computed(() => tools.slice(0, 4))
 const toolsRow2 = computed(() => tools.slice(4, 8))

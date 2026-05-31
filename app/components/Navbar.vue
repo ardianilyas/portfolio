@@ -1,41 +1,18 @@
 <template>
-  <nav ref="navRef" class="sticky top-0 left-0 w-full glass-nav z-50">
-    <!-- Vertical lines background inside navbar -->
-    <div class="absolute inset-0 pointer-events-none z-0 hidden md:block">
-      <div class="relative max-w-[1100px] mx-auto h-full px-6 md:px-10">
-        <div class="absolute top-0 bottom-0 left-0 w-px" style="background-color: var(--color-rule);"></div>
-        <div class="absolute top-0 bottom-0 right-0 w-px" style="background-color: var(--color-rule);"></div>
-      </div>
-    </div>
-
+  <nav ref="navRef" class="sticky top-0 left-0 w-full z-50 bg-[#f4f4f5] border-b-2 border-[#0c2cdb]/10">
     <!-- Main content -->
-    <div class="relative z-10 max-w-[1100px] mx-auto px-6 md:px-10">
-      <div class="flex items-center justify-between h-14 md:h-16">
+    <div class="relative z-10 w-full max-w-[1400px] mx-auto px-4 md:px-8">
+      <div class="flex items-center justify-between h-16 md:h-24">
 
         <!-- Logo -->
         <a href="#" class="nav-logo group">
-          ardianilyas<span class="text-[var(--color-hint)] group-hover:text-[var(--color-primary)] transition-colors">_</span>
+          ardianilyas
         </a>
 
         <!-- Desktop nav links -->
-        <div class="hidden md:flex items-center gap-1 relative" @mouseleave="hoveredLink = null">
-          <!-- Wavy Liquid Pill Background -->
-          <div
-            class="absolute pointer-events-none transition-all duration-[500ms] ease-[cubic-bezier(0.25,1,0.3,1)] pill-wavy-wrapper"
-            :style="{
-              left: `${pillLeft}px`,
-              width: `${pillWidth}px`,
-              height: `${pillHeight}px`,
-              opacity: hoveredLink !== null ? 1 : 0,
-              transform: hoveredLink !== null ? 'scale(1)' : 'scale(0.8)'
-            }"
-          >
-            <div class="pill-swirl"></div>
-          </div>
-
+        <div class="hidden md:flex items-center gap-2">
           <a v-for="link in navLinks" :key="link.id" :href="'#' + link.id"
-             class="nav-link relative z-10 px-4 py-2" style="font-family: var(--font-sans);"
-             @mouseenter="updatePill($event, link.id)">
+             class="brutalist-nav-link">
             {{ link.label }}
           </a>
         </div>
@@ -43,10 +20,10 @@
         <!-- Mobile hamburger -->
         <div class="flex items-center md:hidden">
           <button @click="isOpen = !isOpen" class="hamburger-btn" aria-label="Toggle menu">
-            <svg v-if="!isOpen" class="w-4 h-4" style="color: var(--color-muted);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <svg v-if="!isOpen" class="w-6 h-6 text-[#0c2cdb]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
-            <svg v-else class="w-4 h-4" style="color: var(--color-muted);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <svg v-else class="w-6 h-6 text-[#0c2cdb]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -56,57 +33,38 @@
 
     <!-- Mobile dropdown menu -->
     <Transition
-      enter-active-class="transition-all duration-300 ease-out"
-      enter-from-class="opacity-0 -translate-x-8"
-      enter-to-class="opacity-100 translate-x-0"
-      leave-active-class="transition-opacity duration-[600ms] closing-menu"
-      leave-from-class="opacity-100"
-      leave-to-class="opacity-0"
+      enter-active-class="transition-all duration-200 ease-out"
+      enter-from-class="opacity-0 -translate-y-4"
+      enter-to-class="opacity-100 translate-y-0"
+      leave-active-class="transition-all duration-200 ease-in"
+      leave-from-class="opacity-100 translate-y-0"
+      leave-to-class="opacity-0 -translate-y-4"
     >
-      <div v-if="isOpen" class="md:hidden glass-nav-mobile pb-2 absolute top-full left-0 w-full">
-        <div class="max-w-[1100px] mx-auto flex flex-col">
-          <a v-for="(link, index) in navLinks" :key="link.id"
+      <div v-if="isOpen" class="md:hidden absolute top-full left-0 w-full bg-[#f4f4f5] border-b-4 border-[#0c2cdb] shadow-2xl">
+        <div class="flex flex-col">
+          <a v-for="link in navLinks" :key="link.id"
              :href="'#' + link.id"
              @click.prevent="scrollTo(link.id)"
-             class="mobile-nav-link text-left" 
-             :style="{ 
-               fontFamily: 'var(--font-sans)', 
-               '--open-delay': `${index * 80 + 100}ms`,
-               '--close-delay': `${(navLinks.length - 1 - index) * 60}ms`
-             }">
+             class="mobile-brutalist-link">
             {{ link.label }}
           </a>
         </div>
       </div>
     </Transition>
-
-    <!-- Bottom border -->
-    <GridDivider className="absolute bottom-0 left-0" />
   </nav>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+
 const isOpen = ref(false)
 const navRef = ref<HTMLElement | null>(null)
 
-const hoveredLink = ref<string | null>(null)
-const pillLeft = ref(0)
-const pillWidth = ref(0)
-const pillHeight = ref(0)
-
-function updatePill(event: MouseEvent, id: string) {
-  const target = event.currentTarget as HTMLElement
-  hoveredLink.value = id
-  pillLeft.value = target.offsetLeft
-  pillWidth.value = target.offsetWidth
-  pillHeight.value = target.offsetHeight
-}
-
 const navLinks = [
-  { id: 'hero', label: 'About' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'tools', label: 'Tools' },
-  { id: 'portfolio', label: 'Projects' },
+  { id: 'hero', label: 'ABOUT' },
+  { id: 'skills', label: 'SKILLS' },
+  { id: 'tools', label: 'TOOLS' },
+  { id: 'portfolio', label: 'PROJECTS' },
 ]
 
 function scrollTo(id: string) {
@@ -114,110 +72,82 @@ function scrollTo(id: string) {
   setTimeout(() => {
     const el = document.getElementById(id)
     if (el) {
-      const navHeight = navRef.value?.offsetHeight ?? 64
+      const navHeight = navRef.value?.offsetHeight ?? 96
       const top = el.getBoundingClientRect().top + window.scrollY - navHeight
       window.scrollTo({ top, behavior: 'smooth' })
     }
-  }, 250)
+  }, 100)
 }
 </script>
 
 <style scoped>
-.nav-link {
-  position: relative;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--color-muted);
-  transition: color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.nav-link:hover {
-  color: var(--color-primary);
-}
-
-/* Wavy / Swirl Pill Animation */
-.pill-wavy-wrapper {
-  /* wrapper handles position and opacity */
-}
-
-.pill-swirl {
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-surface);
-  animation: swirl 4s infinite linear;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03);
-}
-
-@keyframes swirl {
-  0% { border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%; }
-  25% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-  50% { border-radius: 30% 70% 70% 30% / 30% 70% 30% 70%; }
-  75% { border-radius: 70% 30% 40% 60% / 30% 70% 40% 60%; }
-  100% { border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%; }
-}
 .nav-logo {
   font-family: var(--font-sans);
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--color-primary);
+  font-size: 24px;
+  font-weight: 900;
+  color: #0c2cdb;
   letter-spacing: -0.02em;
   text-decoration: none;
 }
-.glass-nav {
-  background-color: rgba(250, 250, 248, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+
+@media (min-width: 768px) {
+  .nav-logo {
+    font-size: 32px;
+  }
 }
-.glass-nav-mobile {
-  background-color: rgba(250, 250, 248, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+
+.brutalist-nav-link {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #0c2cdb;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: all 0.1s; /* Brutalist: very fast, structural transition */
+  border: 2px solid transparent;
 }
+
+.brutalist-nav-link:hover {
+  background-color: #CCFF00;
+  color: #0c2cdb;
+  border: 2px solid #0c2cdb;
+  box-shadow: 4px 4px 0px rgba(12, 44, 219, 0.2);
+  transform: translate(-2px, -2px);
+}
+
 .hamburger-btn {
   padding: 8px;
-  border-radius: 6px;
-  border: none;
+  border: 2px solid transparent;
+  border-radius: 8px;
   background: transparent;
-  transition: background-color 0.2s;
   cursor: pointer;
+  transition: all 0.1s;
 }
+
 .hamburger-btn:hover {
-  background-color: var(--color-surface);
+  background-color: #CCFF00;
+  border: 2px solid #0c2cdb;
+  box-shadow: 2px 2px 0px rgba(12, 44, 219, 0.2);
+  transform: translate(-1px, -1px);
 }
-.mobile-nav-link {
+
+.mobile-brutalist-link {
   display: block;
-  padding: 14px 24px;
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--color-muted);
-  transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding-left 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--font-sans);
+  padding: 20px 24px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #0c2cdb;
+  border-top: 1px solid rgba(12, 44, 219, 0.1);
   text-align: left;
-  opacity: 0;
-  animation: slideInLink 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: var(--open-delay);
+  transition: all 0.1s;
 }
 
-.closing-menu .mobile-nav-link {
-  opacity: 1;
-  animation: slideOutLink 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: var(--close-delay);
-}
-
-@keyframes slideInLink {
-  from { opacity: 0; transform: translateX(-12px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes slideOutLink {
-  from { opacity: 1; transform: translateX(0); }
-  to { opacity: 0; transform: translateX(-12px); }
-}
-
-.mobile-nav-link:hover, .mobile-nav-link:active {
-  color: var(--color-primary);
-  background-color: var(--color-surface);
-  padding-left: 32px; /* slide effect on hover */
+.mobile-brutalist-link:hover, .mobile-brutalist-link:active {
+  background-color: #CCFF00;
+  color: #0c2cdb;
+  padding-left: 32px;
 }
 </style>
