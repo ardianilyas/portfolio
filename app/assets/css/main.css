@@ -21,6 +21,7 @@
 
 /* ── Base ──────────────────────────────────────────────── */
 html {
+  color-scheme: light !important;
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
   font-feature-settings: "cv11" 1;
