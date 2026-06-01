@@ -5,12 +5,12 @@
     <div class="relative w-full bg-hero-blue overflow-hidden flex flex-col items-center justify-center text-white">
 
       <!-- Massive Brutalist Typography Block -->
-      <div class="relative z-10 w-full px-4 py-8 md:py-16 flex flex-col items-center justify-center select-none">
+      <div class="relative z-10 w-full px-4 pt-32 pb-16 md:pt-48 md:pb-24 flex flex-col items-center justify-center select-none min-h-[85vh] md:min-h-screen">
         
         <!-- Absolute Decorations Container (Must be z-40 to overlay text) -->
         <div class="absolute inset-0 pointer-events-none z-40">
           <!-- Floating Neon Badge (Top Left) -->
-          <div class="absolute left-[5%] md:left-[5%] lg:left-[5%] top-[10px] md:top-[5%] scale-75 md:scale-100 origin-top-left pointer-events-auto">
+          <div class="absolute left-[5%] md:left-[5%] lg:left-[5%] top-[80px] md:top-[120px] scale-75 md:scale-100 origin-top-left pointer-events-auto">
             <div class="relative w-28 h-28 md:w-32 md:h-32 bg-[#CCFF00] rounded-full flex items-center justify-center hover:scale-105 transition-transform cursor-pointer shadow-lg border-2 border-hero-blue">
               <svg viewBox="0 0 100 100" class="absolute inset-0 w-full h-full text-hero-blue spinning-badge-text">
                 <path id="circlePath" fill="transparent" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" />
@@ -28,7 +28,7 @@
           </div>
 
           <!-- Wavy Neon Arrow (Top Right) -->
-          <svg class="absolute right-[0%] md:right-[-5%] top-[5%] md:top-[0%] w-[150px] h-[150px] md:w-[680px] md:h-[680px] text-[#CCFF00] z-40 fade-in delay-200 pointer-events-none" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="absolute right-[0%] md:right-[-5%] top-[60px] md:top-[80px] w-[150px] h-[150px] md:w-[680px] md:h-[680px] text-[#CCFF00] z-40 fade-in delay-200 pointer-events-none" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M80,10 Q60,40 70,60 T30,80 M40,70 L30,80 L40,90" />
           </svg>
 

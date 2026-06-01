@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed top-4 left-0 right-0 w-[calc(100%-2rem)] max-w-[1400px] mx-auto z-[100] transition-transform duration-500 ease-in-out" :class="{ '-translate-y-[150%]': isHidden }">
+  <div class="fixed top-4 left-0 right-0 w-[calc(100%-2rem)] max-w-[1400px] mx-auto z-[100] transition-transform duration-500 ease-in-out">
     <nav ref="navRef" class="w-full transition-all duration-300 rounded-[24px] md:rounded-[32px] overflow-hidden"
            style="background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 2px solid rgba(255, 255, 255, 0.6); box-shadow: 0 20px 40px rgba(0,0,0,0.1), inset 0 0 30px rgba(255,255,255,0.4);">
       <!-- Main content -->
@@ -58,11 +58,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 
 const isOpen = ref(false)
 const navRef = ref<HTMLElement | null>(null)
-const isHidden = ref(false)
 
 const navLinks = [
   { id: 'hero', label: 'ABOUT' },
@@ -82,28 +81,6 @@ function scrollTo(id: string) {
     }
   }, 100)
 }
-
-function handleScroll() {
-  // Hide navbar when user scrolls to the footer
-  // Since footer is revealed at the bottom, we check if scroll reached the bottom
-  const scrollPosition = window.scrollY + window.innerHeight;
-  const bottomPosition = document.documentElement.scrollHeight - 100;
-
-  if (scrollPosition >= bottomPosition) {
-    isHidden.value = true;
-  } else {
-    isHidden.value = false;
-  }
-}
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll, { passive: true })
-  handleScroll() // Check initial state
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
 </script>
 
 <style scoped>
@@ -160,8 +137,8 @@ onUnmounted(() => {
 }
 
 .brutalist-nav-link:hover {
-  color: #2563EB; /* Slightly brighter blue */
-  background: rgba(12, 44, 219, 0.04);
+  color: #0c2cdb;
+  background-color: #CCFF00;
 }
 
 .brutalist-nav-link:hover::before {

@@ -116,7 +116,7 @@ const cardStyle = computed(() => {
   
   return {
     transform: `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`,
-    transition: 'transform 0.1s ease-out',
+    transition: 'none',
     zIndex: 50
   }
 })
