@@ -17,7 +17,8 @@
             :style="{
               '--card-rotate': `${randomRotations[index % randomRotations.length]}deg`,
               '--card-y': `${randomY[index % randomY.length]}px`,
-              '--card-z': 10 - Math.round(Math.abs(index - 3.5))
+              '--card-z': 10 - Math.round(Math.abs(index - 3.5)),
+              '--anim-delay': `${index * -0.6}s`
             }"
           >
             <!-- Custom Tooltip -->
@@ -38,7 +39,8 @@
             :style="{
               '--card-rotate': `${randomRotations[(index + 4) % randomRotations.length]}deg`,
               '--card-y': `${randomY[(index + 4) % randomY.length]}px`,
-              '--card-z': 10 - Math.round(Math.abs((index + 4) - 3.5))
+              '--card-z': 10 - Math.round(Math.abs((index + 4) - 3.5)),
+              '--anim-delay': `${(index + 4) * -0.6}s`
             }"
           >
             <!-- Custom Tooltip -->
@@ -93,9 +95,20 @@ const toolsRow2 = computed(() => tools.slice(4, 8))
   cursor: pointer;
   z-index: var(--card-z);
   transform: translateY(var(--card-y)) rotate(var(--card-rotate));
-  transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  animation: float-card 4s ease-in-out infinite alternate;
+  animation-delay: var(--anim-delay, 0s);
+  transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02);
   flex-shrink: 0;
+}
+
+@keyframes float-card {
+  0% {
+    transform: translateY(var(--card-y)) rotate(var(--card-rotate));
+  }
+  100% {
+    transform: translateY(calc(var(--card-y) - 12px)) rotate(calc(var(--card-rotate) + 4deg));
+  }
 }
 
 @media (min-width: 480px) {
@@ -133,7 +146,8 @@ const toolsRow2 = computed(() => tools.slice(4, 8))
 
 /* Hover effects */
 .tool-card:hover {
-  transform: translateY(calc(var(--card-y) - 20px)) rotate(var(--card-rotate)) scale(1.15);
+  animation: none;
+  transform: translateY(calc(var(--card-y) - 20px)) rotate(var(--card-rotate)) scale(1.15) !important;
   z-index: 50 !important;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.05);
 }

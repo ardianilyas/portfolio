@@ -1,5 +1,5 @@
 <template>
-  <section id="hero" class="relative w-full bg-[#f4f4f5]">
+  <section id="hero" class="relative w-full bg-[#0c2cdb]">
     
     <!-- The Inner Floating Container -->
     <div class="relative w-full bg-hero-blue overflow-hidden flex flex-col items-center justify-center text-white">

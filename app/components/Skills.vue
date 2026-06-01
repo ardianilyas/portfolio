@@ -1,46 +1,53 @@
 <template>
-  <section id="skills">
-    <!-- Top rule above SectionHeader -->
-    <GridDivider />
-
-    <SectionHeader label="SKILLS" title="Expertise" />
-    
-    <div class="max-w-[1200px] mx-auto px-8 md:px-16 lg:px-24 py-24">
+  <!-- Blue background wrapper to connect with Hero section -->
+  <div class="w-full bg-[#0c2cdb]">
+    <!-- The white section with massive rounded top corners -->
+    <section id="skills" class="bg-[var(--color-bg)] rounded-t-[40px] md:rounded-t-[80px] w-full overflow-hidden relative pt-8">
       
-      <div 
-        v-for="(cat, index) in categories" 
-        :key="cat.id"
-        class="flex flex-col md:flex-row relative border-t border-[#0c2cdb]/10 pt-16 pb-32"
-        :class="{ 'border-t-0 pt-0': index === 0 }"
-      >
-        <!-- Sticky Left Side -->
-        <div class="md:w-5/12 relative mb-12 md:mb-0 pr-8 z-10">
-          <div class="md:sticky md:top-32">
-            <h3 class="text-4xl md:text-[56px] leading-[1.1] font-bold tracking-tight text-[#0c2cdb] mb-6">{{ cat.title }}</h3>
-            <p class="text-lg md:text-xl text-gray-500 font-light leading-relaxed max-w-[380px]">{{ cat.desc }}</p>
-          </div>
-        </div>
-        
-        <!-- Scrolling Right Side -->
-        <div class="md:w-7/12 flex flex-wrap gap-4 md:gap-5 content-start">
-          <div 
-            v-for="skill in cat.skills" 
-            :key="skill.name"
-            class="apple-pill group"
-          >
-            <div class="icon-wrapper">
-              <img :src="skill.icon" :alt="skill.name" class="w-6 h-6 object-contain transition-all duration-500" :class="{'scale-[0.85]': skill.name === 'Shadcn UI'}" loading="lazy" />
-            </div>
-            <span class="text-[15px] font-semibold transition-colors duration-300">{{ skill.name }}</span>
-          </div>
+      <!-- Re-add vertical container lines because the solid background covers the global ones -->
+      <div class="skills-container-lines" aria-hidden="true">
+        <div class="skills-container-lines-inner">
+          <div class="skills-line skills-line-left"></div>
+          <div class="skills-line skills-line-right"></div>
         </div>
       </div>
+      
+      <SectionHeader label="SKILLS" title="Expertise" />
+      
+      <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-16 md:py-24">
+        
+        <div 
+          v-for="(cat, index) in categories" 
+          :key="cat.id"
+          class="flex flex-col md:flex-row relative border-t border-[#0c2cdb]/10 pt-16 pb-32 -mx-6 md:-mx-10 px-6 md:px-10"
+          :class="{ 'border-t-0 pt-0': index === 0 }"
+        >
+          <!-- Sticky Left Side -->
+          <div class="md:w-5/12 relative mb-12 md:mb-0 pr-8 z-10">
+            <div class="md:sticky md:top-32">
+              <h3 class="text-4xl md:text-[56px] leading-[1.1] font-bold tracking-tight text-[#0c2cdb] mb-6">{{ cat.title }}</h3>
+              <p class="text-lg md:text-xl text-gray-500 font-light leading-relaxed max-w-[380px]">{{ cat.desc }}</p>
+            </div>
+          </div>
+          
+          <!-- Scrolling Right Side -->
+          <div class="md:w-7/12 flex flex-wrap gap-4 md:gap-5 content-start">
+            <div 
+              v-for="skill in cat.skills" 
+              :key="skill.name"
+              class="apple-pill group"
+            >
+              <div class="icon-wrapper">
+                <img :src="skill.icon" :alt="skill.name" class="w-6 h-6 object-contain transition-all duration-500" :class="{'scale-[0.85]': skill.name === 'Shadcn UI'}" loading="lazy" />
+              </div>
+              <span class="text-[15px] font-semibold transition-colors duration-300">{{ skill.name }}</span>
+            </div>
+          </div>
+        </div>
 
-    </div>
-
-    <!-- Bottom rule -->
-    <GridDivider />
-  </section>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -140,5 +147,53 @@ const categories = [
 
 .apple-pill:hover .icon-wrapper {
   background-color: #EFF6FF; /* Faint blue circle on hover */
+}
+
+/* Local grid lines to overlay the solid background */
+.skills-container-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.skills-container-lines-inner {
+  position: relative;
+  max-width: 1100px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (min-width: 768px) {
+  .skills-container-lines-inner {
+    padding: 0 40px;
+  }
+}
+
+.skills-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--color-rule);
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .skills-line {
+    display: block;
+  }
+}
+
+.skills-line-left {
+  left: 0;
+}
+
+.skills-line-right {
+  right: 0;
 }
 </style>
