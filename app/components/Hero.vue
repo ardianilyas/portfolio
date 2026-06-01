@@ -1,11 +1,8 @@
 <template>
-  <section id="hero" class="relative w-full pt-4 md:pt-16 pb-12 bg-[#f4f4f5]">
+  <section id="hero" class="relative w-full bg-[#f4f4f5]">
     
     <!-- The Inner Floating Container -->
-    <div class="relative w-[calc(100%-1rem)] md:w-[calc(100%-2rem)] max-w-[1400px] mx-auto bg-hero-blue rounded-[24px] md:rounded-[48px] shadow-[0_20px_60px_rgba(12,44,219,0.2)] overflow-hidden flex flex-col items-center justify-center text-white border-2 border-white/20">
-      
-      <!-- Blueprint Grid Overlay -->
-      <div class="absolute inset-0 blueprint-grid opacity-[0.2] pointer-events-none z-0"></div>
+    <div class="relative w-full bg-hero-blue overflow-hidden flex flex-col items-center justify-center text-white">
 
       <!-- Massive Brutalist Typography Block -->
       <div class="relative z-10 w-full px-4 py-8 md:py-16 flex flex-col items-center justify-center select-none">
@@ -44,7 +41,18 @@
 
         <!-- Typography Flow Container (4 lines) -->
         <div class="relative z-30 flex flex-col items-center justify-center w-full">
-          <h1 class="brutalist-block text-backend fade-in-up delay-100"><span class="text-[#CCFF00]">#</span>BACKEND</h1>
+          <h1 class="brutalist-block text-backend fade-in-up delay-100 flex items-center">
+            <span class="inline-flex items-center text-[#CCFF00] mr-[1vw] md:mr-[1vw]">
+              <svg class="w-[clamp(40px,13.5vw,189px)] h-[clamp(40px,13.5vw,189px)]" viewBox="0 0 100 100" fill="currentColor">
+                <!-- A geometric, neo-brutalist hashtag -->
+                <rect x="30" y="10" width="14" height="80" transform="skewX(-10)" />
+                <rect x="65" y="10" width="14" height="80" transform="skewX(-10)" />
+                <rect x="10" y="32" width="80" height="14" transform="skewY(-5)" />
+                <rect x="10" y="62" width="80" height="14" transform="skewY(-5)" />
+              </svg>
+            </span>
+            BACKEND
+          </h1>
           <h1 class="brutalist-block text-developer fade-in-up delay-200">DEVELOPER</h1>
           <h1 class="brutalist-block text-ardian fade-in-up delay-300">ARDIAN</h1>
           <h1 class="brutalist-block text-ilyas fade-in-up delay-500">ILYAS</h1>
@@ -52,6 +60,12 @@
 
         <!-- Floating Glass Cards Container -->
         <div class="absolute inset-0 pointer-events-none z-30">
+          
+          <!-- New Visual Shape: Spinning 4-Pointed Star -->
+          <svg class="absolute left-[5%] bottom-[20%] w-[100px] h-[100px] md:w-[220px] md:h-[220px] text-[#CCFF00] opacity-90 z-20 spin-slow pointer-events-none" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 0 C50 40, 60 50, 100 50 C60 50, 50 60, 50 100 C50 60, 40 50, 0 50 C40 50, 50 40, 50 0 Z" />
+          </svg>
+
           <!-- Floating Glass Card 1 (TypeScript) -->
           <div class="absolute left-[-2%] md:left-[5%] top-[30%] md:top-[40%] glass-card tilt-left float-anim z-20 flex scale-[0.5] md:scale-[0.8] lg:scale-100 origin-center pointer-events-auto">
             <div class="glass-avatar">
@@ -97,13 +111,6 @@
   color: #0c2cdb;
 }
 
-.blueprint-grid {
-  background-size: 60px 60px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.25) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.25) 1px, transparent 1px);
-}
-
 /* =========================================
    TYPOGRAPHY
    ========================================= */
@@ -113,7 +120,7 @@
   text-transform: uppercase;
   margin: 0;
   padding: 0;
-  color: #ffffff;
+  color: #F1EFE8; /* Beige */
   text-shadow: 0 10px 40px rgba(0,0,0,0.15);
   white-space: nowrap;
   letter-spacing: -0.02em;
@@ -123,14 +130,25 @@
 /* Dynamically tuned to span exactly edge-to-edge up to 1400px width */
 .text-backend { font-size: clamp(40px, 13.5vw, 189px); }
 .text-developer { font-size: clamp(38px, 12.5vw, 175px); }
-.text-ardian { font-size: clamp(56px, 18vw, 252px); }
-.text-ilyas { font-size: clamp(66px, 22.5vw, 315px); }
+.text-ardian { 
+  font-size: clamp(56px, 18vw, 252px); 
+  line-height: 0.8;
+}
+.text-ilyas { 
+  font-size: clamp(66px, 22.5vw, 315px); 
+  line-height: 0.75;
+  margin-top: -2vw;
+}
 
 /* =========================================
    NEO-BRUTALIST ACCENTS
    ========================================= */
 .spinning-badge-text {
   animation: spin 12s linear infinite;
+}
+
+.spin-slow {
+  animation: spin 15s linear infinite;
 }
 
 @keyframes spin {

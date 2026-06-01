@@ -4,19 +4,19 @@
     <GridDivider />
 
     <SectionHeader label="SKILLS" title="Expertise" />
-
+    
     <div class="max-w-[1200px] mx-auto px-8 md:px-16 lg:px-24 py-24">
       
       <div 
         v-for="(cat, index) in categories" 
         :key="cat.id"
-        class="flex flex-col md:flex-row relative border-t border-gray-100 pt-16 pb-32"
+        class="flex flex-col md:flex-row relative border-t border-[#0c2cdb]/10 pt-16 pb-32"
         :class="{ 'border-t-0 pt-0': index === 0 }"
       >
         <!-- Sticky Left Side -->
         <div class="md:w-5/12 relative mb-12 md:mb-0 pr-8 z-10">
           <div class="md:sticky md:top-32">
-            <h3 class="text-4xl md:text-[56px] leading-[1.1] font-bold tracking-tight text-gray-900 mb-6">{{ cat.title }}</h3>
+            <h3 class="text-4xl md:text-[56px] leading-[1.1] font-bold tracking-tight text-[#0c2cdb] mb-6">{{ cat.title }}</h3>
             <p class="text-lg md:text-xl text-gray-500 font-light leading-relaxed max-w-[380px]">{{ cat.desc }}</p>
           </div>
         </div>
@@ -29,9 +29,9 @@
             class="apple-pill group"
           >
             <div class="icon-wrapper">
-              <img :src="skill.icon" :alt="skill.name" class="w-6 h-6 object-contain filter grayscale opacity-60 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500" :class="{'scale-[0.85]': skill.name === 'Shadcn UI'}" loading="lazy" />
+              <img :src="skill.icon" :alt="skill.name" class="w-6 h-6 object-contain transition-all duration-500" :class="{'scale-[0.85]': skill.name === 'Shadcn UI'}" loading="lazy" />
             </div>
-            <span class="text-[15px] font-semibold text-gray-500 group-hover:text-gray-900 transition-colors duration-300">{{ skill.name }}</span>
+            <span class="text-[15px] font-semibold transition-colors duration-300">{{ skill.name }}</span>
           </div>
         </div>
       </div>
@@ -105,18 +105,26 @@ const categories = [
   align-items: center;
   gap: 12px;
   padding: 8px 20px 8px 8px;
-  background-color: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
+  background-color: #ffffff; /* Pure white background */
   border-radius: 999px;
+  border: 1px solid rgba(12, 44, 219, 0.15); /* Faint blue border */
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 24px -6px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.03) inset;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.apple-pill span {
+  color: #333333; /* Standard dark text */
 }
 
 .apple-pill:hover {
-  background-color: rgba(255, 255, 255, 1);
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.05) inset;
+  box-shadow: 0 12px 24px rgba(12, 44, 219, 0.1);
+  border-color: rgba(12, 44, 219, 0.3);
+}
+
+.apple-pill:hover span {
+  color: #0c2cdb; /* Electric blue on hover */
 }
 
 .icon-wrapper {
@@ -125,13 +133,12 @@ const categories = [
   justify-content: center;
   width: 44px;
   height: 44px;
-  background-color: #f4f4f5;
+  background-color: #F8F9FA; /* Very light gray/beige circle */
   border-radius: 50%;
   transition: all 0.4s ease;
 }
 
 .apple-pill:hover .icon-wrapper {
-  background-color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  background-color: #EFF6FF; /* Faint blue circle on hover */
 }
 </style>

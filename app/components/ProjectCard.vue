@@ -4,12 +4,22 @@
     target="_blank"
     rel="noopener noreferrer"
     class="project-card group flex flex-col overflow-hidden"
+    ref="cardRef"
+    @mousemove="handleMouseMove"
+    @mouseleave="handleMouseLeave"
+    :style="cardStyle"
   >
+    <!-- 3D Glare Effect -->
+    <div 
+      class="absolute inset-0 pointer-events-none transition-opacity duration-300 rounded-[24px] z-50"
+      :style="glareStyle"
+    ></div>
+
     <!-- Mac-style Window containing the Image Placeholder -->
-    <div class="relative w-full overflow-hidden bg-[#f4f4f5] border-b border-[var(--color-rule)] flex items-end justify-center pt-6 px-4 sm:px-8">
+    <div class="relative w-full overflow-hidden bg-[#f4f4f5] border-b border-[var(--color-rule)] flex items-end justify-center pt-6 px-4 sm:px-8 pointer-events-none">
       
       <!-- Mac Window Frame -->
-      <div class="relative w-full h-[160px] sm:h-[200px] bg-white rounded-t-xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-gray-200 border-b-0 overflow-hidden transition-transform duration-700 ease-out group-hover:-translate-y-3 translate-y-4 flex flex-col">
+      <div class="relative w-full h-[160px] sm:h-[200px] bg-white rounded-t-xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-gray-200 border-b-0 overflow-hidden transition-transform duration-700 ease-out group-hover:-translate-y-3 translate-y-4 flex flex-col pointer-events-auto">
         
         <!-- Mac Window Header -->
         <div class="h-7 bg-[#F9FAFB] border-b border-gray-200 flex items-center px-3 gap-1.5 shrink-0 z-20 relative">
@@ -34,7 +44,7 @@
     </div>
 
     <!-- Card Content -->
-    <div class="p-6 md:p-8 flex flex-col flex-1 relative bg-white z-20">
+    <div class="p-6 md:p-8 flex flex-col flex-1 relative bg-white z-20 pointer-events-none">
       <!-- Project Name & Arrow -->
       <div class="flex justify-between items-start mb-3">
         <h3 class="project-name">{{ name }}</h3>
@@ -59,12 +69,69 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+import { ref, computed } from 'vue'
+
+const props = defineProps<{
   name: string
   description: string
   tags: string[]
   github: string
 }>()
+
+// 3D Tilt Logic
+const cardRef = ref<HTMLElement | null>(null)
+const mouseX = ref(0)
+const mouseY = ref(0)
+const isHovering = ref(false)
+
+function handleMouseMove(e: MouseEvent) {
+  if (!cardRef.value) return
+  const rect = cardRef.value.getBoundingClientRect()
+  const x = (e.clientX - rect.left) / rect.width - 0.5
+  const y = (e.clientY - rect.top) / rect.height - 0.5
+  
+  mouseX.value = x
+  mouseY.value = y
+  isHovering.value = true
+}
+
+function handleMouseLeave() {
+  mouseX.value = 0
+  mouseY.value = 0
+  isHovering.value = false
+}
+
+const cardStyle = computed(() => {
+  if (!isHovering.value) {
+    return {
+      transform: 'perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
+      transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+      zIndex: 1
+    }
+  }
+  
+  const maxTilt = 8 // Maximum tilt angle in degrees
+  const rotateX = mouseY.value * -maxTilt
+  const rotateY = mouseX.value * maxTilt
+  
+  return {
+    transform: `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`,
+    transition: 'transform 0.1s ease-out',
+    zIndex: 50
+  }
+})
+
+const glareStyle = computed(() => {
+  if (!isHovering.value) return { opacity: 0 }
+  
+  // Calculate angle of glare based on mouse position
+  const angle = Math.atan2(mouseY.value, mouseX.value) * (180 / Math.PI) - 90
+  
+  return {
+    opacity: 0.15,
+    background: `linear-gradient(${angle}deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 80%)`
+  }
+})
 
 // Generate a vibrant mesh gradient based on the project name
 function getGradientClass(name: string) {
@@ -94,7 +161,6 @@ function getGradientClass(name: string) {
 .project-card:hover {
   border-color: rgba(0, 0, 0, 0.12);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06), 0 8px 16px rgba(0, 0, 0, 0.03);
-  transform: translateY(-6px);
 }
 
 .project-name {

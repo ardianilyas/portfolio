@@ -1,7 +1,7 @@
 <template>
   <section id="portfolio">
 
-    <SectionHeader label="PORTFOLIO" title="Selected Projects" />
+    <SectionHeader label="PORTFOLIO" title="Projects" />
 
     <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-10 md:py-14">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">

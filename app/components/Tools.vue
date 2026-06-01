@@ -1,82 +1,55 @@
 <template>
   <section id="tools">
 
-    <SectionHeader label="TOOLS" title="My toolbox" />
+    <SectionHeader label="TOOLBOX" title="Tool" />
 
     <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-16 md:py-24 overflow-visible">
       
-      <!-- Mobile View (Auto-scrolling Marquee) -->
-      <div class="flex md:hidden overflow-hidden pt-24 pb-10 px-0 -mx-6 relative w-screen">
+      <!-- Unified View (Responsive scattered layout) -->
+      <div class="flex flex-col md:flex-row justify-center items-center gap-12 md:gap-0 md:-space-x-4 py-16 md:py-10 px-4 overflow-visible min-h-[220px]">
         
-        <!-- Edge Gradients for smooth fade in/out -->
-        <div class="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[var(--color-bg)] to-transparent z-20 pointer-events-none"></div>
-        <div class="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-[var(--color-bg)] to-transparent z-20 pointer-events-none"></div>
-
-        <div class="marquee-track flex w-max">
-          <!-- Set 1 -->
-          <div class="flex gap-4 pr-4">
-            <div 
-              v-for="tool in tools" 
-              :key="`set1-${tool.name}`" 
-              class="tool-card group shrink-0"
-              :style="{
-                '--card-rotate': '0deg',
-                '--card-y': '0px',
-                '--card-z': 10
-              }"
-            >
-              <!-- Custom Tooltip -->
-              <div class="custom-tooltip">{{ tool.name }}</div>
-
-              <svg v-if="tool.name === 'GitHub'" class="tool-icon-svg" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-              </svg>
-              <img v-else :src="tool.icon" :alt="tool.name" class="tool-icon" loading="lazy" />
-            </div>
-          </div>
-          <!-- Set 2 (Duplicate for seamless loop) -->
-          <div class="flex gap-4 pr-4">
-            <div 
-              v-for="tool in tools" 
-              :key="`set2-${tool.name}`" 
-              class="tool-card group shrink-0"
-              :style="{
-                '--card-rotate': '0deg',
-                '--card-y': '0px',
-                '--card-z': 10
-              }"
-            >
-              <!-- Custom Tooltip -->
-              <div class="custom-tooltip">{{ tool.name }}</div>
-
-              <svg v-if="tool.name === 'GitHub'" class="tool-icon-svg" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-              </svg>
-              <img v-else :src="tool.icon" :alt="tool.name" class="tool-icon" loading="lazy" />
-            </div>
+        <!-- First Half (Row 1 on mobile) -->
+        <div class="flex flex-row justify-center items-center -space-x-4">
+          <div 
+            v-for="(tool, index) in toolsRow1" 
+            :key="tool.name" 
+            class="tool-card group"
+            :style="{
+              '--card-rotate': `${randomRotations[index % randomRotations.length]}deg`,
+              '--card-y': `${randomY[index % randomY.length]}px`,
+              '--card-z': 10 - Math.round(Math.abs(index - 3.5))
+            }"
+          >
+            <!-- Custom Tooltip -->
+            <div class="custom-tooltip">{{ tool.name }}</div>
+            <svg v-if="tool.name === 'GitHub'" class="tool-icon-svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            <img v-else :src="tool.icon" :alt="tool.name" class="tool-icon" loading="lazy" />
           </div>
         </div>
-      </div>
 
-      <!-- Desktop View (1 row of items) -->
-      <div class="hidden md:flex flex-row justify-center items-center -space-x-4 py-10 px-4 overflow-visible min-h-[220px]">
-        <div 
-          v-for="(tool, index) in tools" 
-          :key="tool.name" 
-          class="tool-card group"
-          :style="{
-            '--card-rotate': `${randomRotations[index % randomRotations.length]}deg`,
-            '--card-y': `${randomY[index % randomY.length]}px`,
-            '--card-z': 10 - Math.round(Math.abs(index - (tools.length - 1)/2))
-          }"
-        >
-          <!-- Custom Tooltip -->
-          <div class="custom-tooltip">{{ tool.name }}</div>
-          <svg v-if="tool.name === 'GitHub'" class="tool-icon-svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-          </svg>
-          <img v-else :src="tool.icon" :alt="tool.name" class="tool-icon" loading="lazy" />
+        <!-- Second Half (Row 2 on mobile) -->
+        <div class="flex flex-row justify-center items-center -space-x-4">
+          <div 
+            v-for="(tool, index) in toolsRow2" 
+            :key="tool.name" 
+            class="tool-card group"
+            :style="{
+              '--card-rotate': `${randomRotations[(index + 4) % randomRotations.length]}deg`,
+              '--card-y': `${randomY[(index + 4) % randomY.length]}px`,
+              '--card-z': 10 - Math.round(Math.abs((index + 4) - 3.5))
+            }"
+          >
+            <!-- Custom Tooltip -->
+            <div class="custom-tooltip">{{ tool.name }}</div>
+            <svg v-if="tool.name === 'GitHub'" class="tool-icon-svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            <img v-else :src="tool.icon" :alt="tool.name" class="tool-icon" loading="lazy" />
+          </div>
         </div>
+
       </div>
     </div>
 
@@ -112,9 +85,9 @@ const toolsRow2 = computed(() => tools.slice(4, 8))
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 72px;
-  height: 72px;
-  border-radius: 16px;
+  width: 90px;
+  height: 90px;
+  border-radius: 20px;
   border: 4px solid #FFFFFF;
   background-color: var(--color-surface);
   cursor: pointer;
@@ -127,38 +100,47 @@ const toolsRow2 = computed(() => tools.slice(4, 8))
 
 @media (min-width: 480px) {
   .tool-card {
-    width: 80px;
-    height: 80px;
-    border-radius: 18px;
+    width: 100px;
+    height: 100px;
   }
 }
 
 @media (min-width: 640px) {
   .tool-card {
-    width: 86px;
-    height: 86px;
+    width: 110px;
+    height: 110px;
   }
 }
 
 @media (min-width: 768px) {
   .tool-card {
-    width: 106px;
-    height: 106px;
-    border-radius: 20px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.02);
+    width: 120px;
+    height: 120px;
+    border-radius: 24px;
+    border-width: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 3px 8px rgba(0, 0, 0, 0.03);
+  }
+}
+
+@media (min-width: 1024px) {
+  .tool-card {
+    width: 145px;
+    height: 145px;
+    border-radius: 32px;
+    border-width: 8px;
   }
 }
 
 /* Hover effects */
 .tool-card:hover {
-  transform: translateY(calc(var(--card-y) - 14px)) rotate(var(--card-rotate)) scale(1.15);
+  transform: translateY(calc(var(--card-y) - 20px)) rotate(var(--card-rotate)) scale(1.15);
   z-index: 50 !important;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.09), 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.05);
 }
 
 .tool-icon, .tool-icon-svg {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
   filter: grayscale(1) opacity(0.6);
   transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -167,22 +149,29 @@ const toolsRow2 = computed(() => tools.slice(4, 8))
 
 @media (min-width: 480px) {
   .tool-icon, .tool-icon-svg {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
   }
 }
 
 @media (min-width: 640px) {
   .tool-icon, .tool-icon-svg {
-    width: 44px;
-    height: 44px;
+    width: 56px;
+    height: 56px;
   }
 }
 
 @media (min-width: 768px) {
   .tool-icon, .tool-icon-svg {
-    width: 52px;
-    height: 52px;
+    width: 64px;
+    height: 64px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tool-icon, .tool-icon-svg {
+    width: 76px;
+    height: 76px;
   }
 }
 
@@ -237,19 +226,4 @@ const toolsRow2 = computed(() => tools.slice(4, 8))
   }
 }
 
-/* Auto-scrolling Marquee */
-.marquee-track {
-  animation: scroll-marquee 20s linear infinite;
-}
-
-/* Pause on hover/touch so user can click/read */
-.marquee-track:hover,
-.marquee-track:active {
-  animation-play-state: paused;
-}
-
-@keyframes scroll-marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
 </style>
