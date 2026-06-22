@@ -81,7 +81,6 @@ const year = new Date().getFullYear()
   background-color: var(--color-bg);
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--color-border);
   overflow: hidden;
 }
 
@@ -158,7 +157,7 @@ const year = new Date().getFullYear()
   font-family: var(--font-sans);
   font-size: clamp(16px, 1.8vw, 20px);
   font-weight: 400;
-  color: var(--color-text-2);
+  color: var(--color-accent);
   letter-spacing: -0.01em;
   border-bottom: 1px solid var(--color-border-2);
   padding-bottom: 4px;
@@ -183,7 +182,6 @@ const year = new Date().getFullYear()
 .footer-bar {
   position: relative;
   z-index: 1;
-  border-top: 1px solid var(--color-border);
   flex-shrink: 0;
 }
 

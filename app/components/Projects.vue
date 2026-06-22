@@ -1,14 +1,13 @@
 <template>
-  <section id="portfolio" aria-labelledby="portfolio-heading" class="bg-[var(--color-surface)] py-8 md:py-16">
+  <section id="portfolio" aria-labelledby="portfolio-heading" class="bg-[var(--color-surface)] py-8 md:py-16" ref="projectsSection">
 
     <SectionHeader 
-      label="PORTFOLIO" 
       title="Projects" 
       subtitle="A selection of my recent full-stack work and side projects."
     />
 
-    <div class="projects-wrap">
-      <div class="projects-list max-w-[1100px] mx-auto">
+    <div class="projects-wrap" :class="{ 'is-visible': isVisible }">
+      <div class="projects-list max-w-[1100px] mx-auto fade-up fade-up-1">
 
         <ProjectCard
           v-for="(project, i) in projects"
@@ -28,6 +27,20 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
+
+const projectsSection = ref(null)
+const isVisible = ref(false)
+
+useIntersectionObserver(
+  projectsSection,
+  ([{ isIntersecting }]) => {
+    if (isIntersecting) isVisible.value = true
+  },
+  { threshold: 0.1 }
+)
+
 interface Project {
   name: string
   description: string
@@ -78,5 +91,9 @@ const projects: Project[] = [
   padding-bottom: 72px;
 }
 
-
+/* Visibility triggers for animations */
+.projects-wrap:not(.is-visible) .fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+}
 </style>

@@ -1,13 +1,14 @@
 <template>
-  <section id="tools" aria-labelledby="tools-heading">
+  <section id="tools" aria-labelledby="tools-heading" ref="toolsSection">
 
-    <SectionHeader label="TOOLBOX" title="Workflow" />
+    <!-- Removed eyebrow label to avoid repetition -->
+    <SectionHeader title="Workflow" />
 
-    <div class="tools-wrap">
+    <div class="tools-wrap" :class="{ 'is-visible': isVisible }">
       <div class="tools-inner max-w-[1100px] mx-auto">
 
         <!-- Left: philosophy statement -->
-        <div class="tools-philosophy">
+        <div class="tools-philosophy fade-up fade-up-1">
           <p class="philosophy-text">
             Good tooling fades into the background. I choose tools that remove friction, scale with the project, and get out of the way so the work can speak for itself.
           </p>
@@ -17,15 +18,14 @@
         </div>
 
         <!-- Right: tool strip -->
-        <div class="tools-strip" aria-label="Tools I use">
+        <div class="tools-strip fade-up fade-up-2" aria-label="Tools I use">
           <div
             v-for="tool in tools"
             :key="tool.name"
             class="tool-card"
-            :style="{ '--card-border': tool.borderColor }"
           >
             <!-- Icon block -->
-            <div class="tool-icon-wrapper" :style="{ backgroundColor: tool.bgColor }">
+            <div class="tool-icon-wrapper">
               <svg
                 v-if="tool.name === 'GitHub'"
                 class="tool-icon tool-icon--svg"
@@ -61,15 +61,29 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
+
+const toolsSection = ref(null)
+const isVisible = ref(false)
+
+useIntersectionObserver(
+  toolsSection,
+  ([{ isIntersecting }]) => {
+    if (isIntersecting) isVisible.value = true
+  },
+  { threshold: 0.1 }
+)
+
 const tools = [
-  { name: 'Figma',   category: 'Design',          icon: 'https://svgl.app/library/figma.svg', bgColor: '#fdf2f8', borderColor: '#fbcfe8' }, // light pink
-  { name: 'VS Code', category: 'Code Editor',     icon: 'https://svgl.app/library/vscode.svg', bgColor: '#eff6ff', borderColor: '#bfdbfe' }, // light blue
-  { name: 'Git',     category: 'Version Control', icon: 'https://svgl.app/library/git.svg', bgColor: '#fff7ed', borderColor: '#fed7aa' }, // light orange
-  { name: 'GitHub',  category: 'Repository',      icon: null, bgColor: '#f3f4f6', borderColor: '#e5e7eb' }, // light gray
-  { name: 'Vercel',  category: 'Deployment',      icon: 'https://api.iconify.design/logos:vercel-icon.svg', bgColor: '#f3f4f6', borderColor: '#e5e7eb' },
-  { name: 'Postman', category: 'API Testing',     icon: 'https://svgl.app/library/postman.svg', bgColor: '#fff7ed', borderColor: '#fed7aa' },
-  { name: 'Vitest',  category: 'Testing',         icon: 'https://svgl.app/library/vitest.svg', bgColor: '#ecfccb', borderColor: '#d9f99d' }, // lime green for vitest
-  { name: 'Safari',  category: 'Browser',         icon: 'https://svgl.app/library/safari.svg', bgColor: '#eff6ff', borderColor: '#bfdbfe' },
+  { name: 'Figma',   category: 'Design',          icon: 'https://svgl.app/library/figma.svg' },
+  { name: 'VS Code', category: 'Code Editor',     icon: 'https://svgl.app/library/vscode.svg' },
+  { name: 'Git',     category: 'Version Control', icon: 'https://svgl.app/library/git.svg' },
+  { name: 'GitHub',  category: 'Repository',      icon: null },
+  { name: 'Vercel',  category: 'Deployment',      icon: 'https://api.iconify.design/logos:vercel-icon.svg' },
+  { name: 'Postman', category: 'API Testing',     icon: 'https://svgl.app/library/postman.svg' },
+  { name: 'Vitest',  category: 'Testing',         icon: 'https://svgl.app/library/vitest.svg' },
+  { name: 'Safari',  category: 'Browser',         icon: 'https://svgl.app/library/safari.svg' },
 ]
 </script>
 
@@ -137,17 +151,18 @@ const tools = [
 .tool-card {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px;
-  background: #ffffff;
-  border-radius: 16px;
-  border: 1px solid var(--card-border, var(--color-border));
-  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  gap: 14px;
+  padding: 10px 14px;
+  background: var(--color-surface);
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .tool-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  border-color: var(--color-text-3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 /* ── Icon ─────────────────────────────────────────────── */
@@ -155,21 +170,27 @@ const tools = [
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
   flex-shrink: 0;
 }
 
 .tool-icon {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   object-fit: contain;
   display: block;
 }
 
 .tool-icon--svg {
   color: var(--color-text-2);
+}
+
+.tool-card:hover .tool-icon--svg {
+  color: var(--color-text);
 }
 
 /* ── Info block ───────────────────────────────────────── */
@@ -194,5 +215,11 @@ const tools = [
   font-weight: 400;
   color: var(--color-text-2);
   line-height: 1.2;
+}
+
+/* Visibility triggers for animations */
+.tools-wrap:not(.is-visible) .fade-up {
+  opacity: 0;
+  transform: translateY(20px);
 }
 </style>

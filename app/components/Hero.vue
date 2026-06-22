@@ -3,23 +3,25 @@
     id="hero"
     class="hero"
     aria-label="Introduction"
+    ref="heroSection"
   >
-    <div class="hero-inner">
+    <div class="hero-inner" :class="{ 'is-visible': isVisible }">
       <div class="hero-content">
 
         <!-- Status badge -->
         <div class="hero-status fade-up fade-up-1" aria-label="Availability status">
-          <span class="hero-status-text"><strong>Available:</strong> Full-stack developer roles</span>
+          <span class="status-dot"></span>
+          <span class="hero-status-text">Available for new opportunities</span>
         </div>
 
         <!-- Headline -->
         <h1 class="hero-headline fade-up fade-up-2">
-          Hi, I'm Ardian Ilyas. <br class="hidden md:block"> A Full-Stack Developer.
+          Hi, I'm Ardian Ilyas.<br> A <span style="color: var(--color-accent)">Full-Stack Developer</span>.
         </h1>
 
         <!-- Sub -->
         <p class="hero-sub fade-up fade-up-3">
-          I build reliable systems and polished interfaces. Specializing in TypeScript and Go, I transform complex requirements into seamless, high-performing digital products.
+          I build reliable systems and polished interfaces. Using TypeScript and Go, I transform complex requirements into high-performing digital products.
         </p>
 
         <!-- CTAs -->
@@ -39,6 +41,20 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
+
+const heroSection = ref<HTMLElement | null>(null)
+const isVisible = ref(false)
+
+useIntersectionObserver(
+  heroSection,
+  ([{ isIntersecting }]) => {
+    if (isIntersecting) isVisible.value = true
+  },
+  { threshold: 0.1 }
+)
+
 function scrollTo(id: string) {
   const el = document.getElementById(id)
   if (el) {
@@ -55,24 +71,23 @@ function scrollTo(id: string) {
   width: 100%;
   background-color: var(--color-bg);
   padding-top: 64px; /* navbar height */
-  overflow: hidden;
 }
 
 .hero-inner {
   max-width: 900px;
   margin: 0 auto;
-  padding: 120px 24px 160px;
+  padding: 80px 24px 96px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: calc(100dvh - 64px);
   text-align: center;
+  min-height: calc(100dvh - 64px);
 }
 
 @media (min-width: 768px) {
   .hero-inner {
-    padding: 160px 40px 200px;
+    padding: 96px 40px 120px;
   }
 }
 
@@ -87,39 +102,38 @@ function scrollTo(id: string) {
 .hero-status {
   display: inline-flex;
   align-items: center;
+  gap: 8px;
   margin-bottom: 24px;
-  background: #f0fdfa; /* light teal matching the reference */
+  background: var(--color-surface);
   padding: 6px 16px;
   border-radius: 9999px;
-  border: 1px solid #ccfbf1;
+  border: 1px solid var(--color-border);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--color-accent);
 }
 
 .hero-status-text {
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
-  color: #0f766e;
-}
-.hero-status-text strong {
-  font-weight: 600;
+  color: var(--color-text-2);
 }
 
 /* ── Headline ─────────────────────────────────────────── */
 .hero-headline {
-  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  font-size: clamp(48px, 7vw, 88px);
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-size: clamp(48px, 6vw, 64px);
+  font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.05;
   color: var(--color-text);
   margin: 0 0 24px;
-  max-width: 15ch;
-}
-
-@media (min-width: 768px) {
-  .hero-headline {
-    max-width: 22ch;
-  }
 }
 
 /* ── Sub ──────────────────────────────────────────────── */
@@ -131,7 +145,6 @@ function scrollTo(id: string) {
   color: var(--color-text-2);
   max-width: 600px;
   margin: 0 0 40px;
-  letter-spacing: -0.01em;
 }
 
 /* ── CTAs ─────────────────────────────────────────────── */
@@ -150,12 +163,11 @@ function scrollTo(id: string) {
   font-family: var(--font-sans);
   font-size: 15px;
   font-weight: 500;
-  color: #ffffff;
-  background: #000000;
+  color: var(--color-text-inv);
+  background: var(--color-text);
   padding: 12px 28px;
   border-radius: 9999px;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  white-space: nowrap;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .btn-icon {
@@ -167,10 +179,8 @@ function scrollTo(id: string) {
 }
 
 .btn-primary:hover { 
-  opacity: 0.85; 
-}
-.btn-primary:active { 
-  transform: translateY(1px); 
+  opacity: 0.9; 
+  transform: translateY(-1px);
 }
 
 .btn-ghost {
@@ -178,16 +188,21 @@ function scrollTo(id: string) {
   font-size: 15px;
   font-weight: 500;
   color: var(--color-text);
-  background: #ffffff;
+  background: transparent;
   padding: 12px 28px;
   border-radius: 9999px;
   border: 1px solid var(--color-border);
-  transition: border-color 0.2s, background 0.2s;
-  white-space: nowrap;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .btn-ghost:hover {
   background: var(--color-surface);
+  transform: translateY(-1px);
+}
+
+/* We hide the elements until is-visible class is applied */
+.hero-inner:not(.is-visible) .fade-up {
+  opacity: 0;
+  transform: translateY(20px);
 }
 </style>

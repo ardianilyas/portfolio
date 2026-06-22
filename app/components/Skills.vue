@@ -1,171 +1,140 @@
 <template>
-  <section id="skills" aria-labelledby="skills-heading" class="bg-[var(--color-surface)] py-8 md:py-16">
+  <section id="skills" aria-labelledby="skills-heading" class="bg-[var(--color-surface)] relative" ref="skillsSection">
+    
+    <div class="sticky top-0 h-screen flex flex-col justify-center px-6 md:px-0">
+      
+      <div class="max-w-[1100px] mx-auto w-full">
+        <!-- Increased bottom margin to add top padding to the text -->
+        <h2 class="skills-title mb-16 md:mb-24">
+          From Idea to Launch
+        </h2>
 
-    <SectionHeader label="SKILLS" title="Capabilities" />
-
-    <div class="skills-wrap">
-      <div class="max-w-[1100px] mx-auto">
-
-        <div
-          v-for="(cat, index) in categories"
-          :key="cat.id"
-          class="skill-row"
-          :class="{ 'skill-row--first': index === 0 }"
-        >
-          <!-- Left: capability label -->
-          <div class="skill-left">
-            <h3 class="skill-title" :id="`skill-${cat.id}`">{{ cat.title }}</h3>
-            <p class="skill-desc">{{ cat.desc }}</p>
-          </div>
-
-          <!-- Right: technology list -->
-          <div class="skill-right" :aria-labelledby="`skill-${cat.id}`">
-            <p class="skill-tech-list">
-              <span
-                v-for="(skill, i) in cat.skills"
-                :key="skill.name"
-                class="skill-tech-item"
-              >{{ skill.name }}<span v-if="i < cat.skills.length - 1" class="skill-dot" aria-hidden="true"> · </span></span>
-            </p>
-          </div>
-        </div>
-
+        <p class="scroll-reveal-prose">
+          <span
+            v-for="(word, index) in words"
+            :key="index"
+            class="prose-word"
+            :class="{
+              'is-skill': word.isSkill,
+              'is-active': scrollProgress > (index / words.length)
+            }"
+          >
+            {{ word.text }}
+          </span>
+        </p>
       </div>
+
     </div>
 
   </section>
 </template>
 
 <script setup lang="ts">
-const languages = [
-  { name: 'JavaScript' },
-  { name: 'TypeScript' },
-  { name: 'PHP' },
-  { name: 'Golang' },
-]
+import { ref, onMounted, onUnmounted } from 'vue'
 
-const frontend = [
-  { name: 'HTML' },
-  { name: 'CSS' },
-  { name: 'Vue.js' },
-  { name: 'NuxtJS' },
-  { name: 'React' },
-  { name: 'Next.js' },
-  { name: 'Shadcn UI' },
-  { name: 'TailwindCSS' },
-]
+const skillsSection = ref<HTMLElement | null>(null)
+const scrollProgress = ref(0)
 
-const backend = [
-  { name: 'ExpressJS' },
-  { name: 'Laravel' },
-  { name: 'Node.js' },
-  { name: 'Supabase' },
-  { name: 'PostgreSQL' },
-  { name: 'Redis' },
-  { name: 'MySQL' },
-  { name: 'Prisma' },
-  { name: 'Drizzle ORM' },
-  { name: 'Zod' },
-  { name: 'JWT' },
-  { name: 'Better Auth' },
-]
+const handleScroll = () => {
+  if (!skillsSection.value) return
+  
+  const rect = skillsSection.value.getBoundingClientRect()
+  const windowHeight = window.innerHeight
+  
+  if (rect.top > 0) {
+    scrollProgress.value = 0
+  } else {
+    const scrolledDistance = -rect.top
+    const totalScrollableDistance = rect.height - windowHeight
+    const progress = scrolledDistance / totalScrollableDistance
+    scrollProgress.value = Math.max(0, Math.min(1, progress))
+  }
+}
 
-const categories = [
-  {
-    id: 'frontend',
-    title: 'Frontend & UI',
-    desc: 'Crafting precise, responsive interfaces that balance visual quality with performance.',
-    skills: frontend,
-  },
-  {
-    id: 'backend',
-    title: 'Backend & Data',
-    desc: 'Architecting scalable APIs, reliable data layers, and real-time infrastructure.',
-    skills: backend,
-  },
-  {
-    id: 'languages',
-    title: 'Core Languages',
-    desc: 'The foundational tools I use to write type-safe, maintainable logic.',
-    skills: languages,
-  },
-]
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  handleScroll() 
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
+
+// Shortened, punchy 50-word copy
+const proseRaw = "I engineer scalable systems and polished interfaces. My foundation relies on strict typing with TypeScript and the raw performance of Go. I architect robust backends using Laravel, Node.js, and PostgreSQL, while ensuring data integrity with Prisma and Drizzle. On the frontend, I craft fluid experiences using Vue.js, NuxtJS, and TailwindCSS."
+
+const skillKeywords = new Set([
+  'TypeScript', 'Go', 'Laravel', 'Nodejs', 'PostgreSQL', 
+  'Prisma', 'Drizzle', 'Vuejs', 'NuxtJS', 'TailwindCSS'
+])
+
+const words = proseRaw.split(' ').map(w => {
+  const cleanWord = w.replace(/[.,]/g, '')
+  return {
+    text: w,
+    isSkill: skillKeywords.has(cleanWord)
+  }
+})
 </script>
 
 <style scoped>
-.skills-wrap {
-  padding: 0 24px;
+#skills {
+  /* Reduced from 250vh to 150vh so the animation plays much faster with less scrolling */
+  height: 150vh; 
 }
 
-@media (min-width: 768px) {
-  .skills-wrap {
-    padding: 0 40px;
-  }
-}
-
-/* ── Row ─────────────────────────────────────────────── */
-.skill-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-  padding: 48px 0;
-  border-top: 1px solid var(--color-border);
-}
-
-.skill-row--first {
-  border-top: none;
-}
-
-@media (min-width: 768px) {
-  .skill-row {
-    grid-template-columns: 2fr 3fr;
-    gap: 48px;
-    align-items: start;
-    padding: 56px 0;
-  }
-}
-
-/* ── Left ─────────────────────────────────────────────── */
-.skill-title {
+.skills-title {
   font-family: var(--font-sans);
-  font-size: clamp(22px, 2.5vw, 30px);
+  font-size: clamp(28px, 3.5vw, 42px);
   font-weight: 600;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.03em;
   color: var(--color-text);
-  margin: 0 0 12px;
-  line-height: 1.2;
+  margin: 0 0 40px 0;
+  line-height: 1.1;
 }
 
-.skill-desc {
-  font-size: 14px;
+@media (min-width: 768px) {
+  .skills-title {
+    margin-bottom: 80px;
+  }
+}
+
+/* ── Scroll Reveal Prose ───────────────────────────────────────── */
+.scroll-reveal-prose {
+  font-family: var(--font-sans);
+  font-size: clamp(16px, 2vw, 24px);
+  /* Lighter weight requested */
   font-weight: 400;
-  color: var(--color-text-3);
   line-height: 1.6;
-  margin: 0;
-  max-width: 38ch;
+  letter-spacing: -0.01em;
+  cursor: default;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15em 0.3em;
+  max-width: 900px;
 }
 
-/* ── Right ─────────────────────────────────────────────── */
-.skill-right {
-  padding-top: 2px;
+/* ── Individual Words ───────────────────────────────────────── */
+.prose-word {
+  color: var(--color-text-3); /* Muted gray by default */
+  transition: color 0.1s ease, text-shadow 0.1s ease;
+  will-change: color;
 }
 
-.skill-tech-list {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--color-text-2);
-  line-height: 1.9;
-  margin: 0;
-  letter-spacing: 0;
+.prose-word.is-active {
+  color: var(--color-text); /* Solid dark when scrolled over */
 }
 
-.skill-tech-item {
-  display: inline;
+/* ── Skill Words ───────────────────────────────────────── */
+.prose-word.is-skill {
+  /* No bold */
+  font-weight: 400; 
+  color: var(--color-text-3); /* Stay gray initially so it's a surprise */
 }
 
-.skill-dot {
-  color: var(--color-text-3);
-  user-select: none;
+.prose-word.is-skill.is-active {
+  /* Use the green accent color from the "Get in touch" link */
+  color: var(--color-accent); 
+  text-shadow: none; /* Keep it perfectly clean, no bold or glow */
 }
 </style>

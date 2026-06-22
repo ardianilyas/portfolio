@@ -1,7 +1,7 @@
 <template>
   <header
     class="navbar"
-    :class="{ 'navbar--scrolled': scrolled }"
+    :class="{ 'navbar--scrolled': scrolled || isOpen }"
     role="banner"
   >
     <div class="navbar-inner">
@@ -143,7 +143,6 @@ onMounted(() => {
     })
     
     // Pick the last section in our list that is currently visible
-    // This handles cases where multiple sections might be visible
     const sectionsArr = ['hero', ...navLinks.map(l => l.id)]
     for (let i = sectionsArr.length - 1; i >= 0; i--) {
       if (visibleSections.has(sectionsArr[i])) {
@@ -176,6 +175,7 @@ onUnmounted(() => {
   right: 0;
   z-index: 100;
   height: 64px;
+  background: var(--color-bg);
   transition: background 0.3s ease, border-color 0.3s ease;
   border-bottom: 1px solid transparent;
 }
@@ -236,8 +236,10 @@ onUnmounted(() => {
   align-items: center;
   gap: 4px;
   background: var(--color-surface);
+  border: 1px solid transparent;
   padding: 4px;
   border-radius: 9999px;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 @media (min-width: 768px) {
@@ -252,7 +254,7 @@ onUnmounted(() => {
   color: var(--color-text-2);
   padding: 8px 16px;
   border-radius: 9999px;
-  transition: color 0.2s, background 0.2s;
+  transition: color 0.3s ease, background 0.3s ease;
 }
 
 .navbar-link:hover {
