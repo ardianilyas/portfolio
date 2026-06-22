@@ -1,188 +1,372 @@
 <template>
-  <div class="fixed top-4 left-0 right-0 w-[calc(100%-2rem)] max-w-[1400px] mx-auto z-[100] transition-transform duration-500 ease-in-out">
-    <nav ref="navRef" class="w-full transition-all duration-300 rounded-[24px] md:rounded-[32px] overflow-hidden"
-           style="background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 2px solid rgba(255, 255, 255, 0.6); box-shadow: 0 20px 40px rgba(0,0,0,0.1), inset 0 0 30px rgba(255,255,255,0.4);">
-      <!-- Main content -->
-      <div class="relative z-10 w-full px-4 md:px-8">
-        <div class="flex items-center justify-between h-14 md:h-20">
+  <header
+    class="navbar"
+    :class="{ 'navbar--scrolled': scrolled }"
+    role="banner"
+  >
+    <div class="navbar-inner">
 
-          <!-- Logo -->
-          <a href="#" class="nav-logo group">
-            ardianilyas
-          </a>
-
-          <!-- Desktop nav links -->
-          <div class="hidden md:flex items-center gap-2 relative">
-            <a v-for="link in navLinks" :key="link.id" :href="'#' + link.id"
-               class="brutalist-nav-link relative z-10">
-              <span class="link-text">{{ link.label }}</span>
-            </a>
-          </div>
-
-          <!-- Mobile hamburger -->
-          <div class="flex items-center md:hidden">
-            <button @click="isOpen = !isOpen" class="hamburger-btn" aria-label="Toggle menu">
-              <svg v-if="!isOpen" class="w-6 h-6 text-[#0c2cdb]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-              <svg v-else class="w-6 h-6 text-[#0c2cdb]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        </div>
+      <!-- Left: Logo -->
+      <div class="navbar-left">
+        <a href="#" class="navbar-logo" aria-label="Ardian Ilyas — Home">
+          ardianilyas
+        </a>
       </div>
-    </nav>
 
-    <!-- Mobile dropdown menu -->
-    <Transition
-      enter-active-class="transition-all duration-200 ease-out"
-      enter-from-class="opacity-0 -translate-y-4"
-      enter-to-class="opacity-100 translate-y-0"
-      leave-active-class="transition-all duration-200 ease-in"
-      leave-from-class="opacity-100 translate-y-0"
-      leave-to-class="opacity-0 -translate-y-4"
-    >
-      <div v-if="isOpen" class="md:hidden absolute top-[calc(100%+8px)] left-0 w-full bg-[rgba(255,255,255,0.85)] backdrop-blur-2xl border border-white rounded-[20px] shadow-2xl overflow-hidden z-40">
-        <div class="flex flex-col">
-          <a v-for="link in navLinks" :key="link.id"
-             :href="'#' + link.id"
-             @click.prevent="scrollTo(link.id)"
-             class="mobile-brutalist-link">
+      <!-- Center: Desktop nav links -->
+      <div class="navbar-center">
+        <nav class="navbar-links" aria-label="Primary navigation">
+          <a
+            v-for="link in navLinks"
+            :key="link.id"
+            :href="'#' + link.id"
+            class="navbar-link"
+            :class="{ 'navbar-link--active': activeSection === link.id }"
+            @click.prevent="scrollTo(link.id)"
+          >
             {{ link.label }}
           </a>
-        </div>
+        </nav>
+      </div>
+
+      <!-- Right: CTA & Mobile Hamburger -->
+      <div class="navbar-right">
+        <a
+          href="mailto:ardianilyas@gmail.com"
+          class="navbar-cta hidden md:inline-flex"
+          aria-label="Get in touch via email"
+        >
+          Get in touch
+        </a>
+        
+        <button
+          class="hamburger md:hidden"
+          @click="isOpen = !isOpen"
+          :aria-expanded="isOpen"
+          aria-controls="mobile-menu"
+          aria-label="Toggle navigation menu"
+        >
+          <span class="hamburger-line" :class="{ 'open-top': isOpen }"></span>
+          <span class="hamburger-line" :class="{ 'open-mid': isOpen }"></span>
+          <span class="hamburger-line" :class="{ 'open-bot': isOpen }"></span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile menu -->
+    <Transition name="slide-down">
+      <div
+        v-if="isOpen"
+        id="mobile-menu"
+        class="mobile-menu"
+        role="navigation"
+        aria-label="Mobile navigation"
+      >
+        <a
+          v-for="link in navLinks"
+          :key="link.id"
+          :href="'#' + link.id"
+          class="mobile-link"
+          :class="{ 'mobile-link--active': activeSection === link.id }"
+          @click.prevent="scrollTo(link.id)"
+        >
+          {{ link.label }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+          </svg>
+        </a>
+        <a
+          href="mailto:ardianilyas@gmail.com"
+          class="mobile-link mobile-link--accent"
+          @click="isOpen = false"
+        >
+          Get in touch
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+          </svg>
+        </a>
       </div>
     </Transition>
-  </div>
+  </header>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const isOpen = ref(false)
-const navRef = ref<HTMLElement | null>(null)
+const scrolled = ref(false)
+const activeSection = ref('')
 
 const navLinks = [
-  { id: 'hero', label: 'ABOUT' },
-  { id: 'skills', label: 'SKILLS' },
-  { id: 'tools', label: 'TOOLS' },
-  { id: 'portfolio', label: 'PROJECTS' },
+  { id: 'skills',    label: 'Skills' },
+  { id: 'tools',     label: 'Tools' },
+  { id: 'portfolio', label: 'Projects' },
 ]
+
+let observer: IntersectionObserver | null = null
 
 function scrollTo(id: string) {
   isOpen.value = false
   setTimeout(() => {
     const el = document.getElementById(id)
     if (el) {
-      const navHeight = navRef.value?.offsetHeight ?? 96
-      const top = el.getBoundingClientRect().top + window.scrollY - navHeight
+      const top = el.getBoundingClientRect().top + window.scrollY - 72
       window.scrollTo({ top, behavior: 'smooth' })
     }
   }, 100)
 }
+
+function onScroll() {
+  scrolled.value = window.scrollY > 12
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', onScroll, { passive: true })
+  
+  // Setup scroll spy
+  const options = {
+    root: null,
+    rootMargin: '-30% 0px -40% 0px',
+    threshold: 0
+  }
+  
+  const visibleSections = new Set()
+
+  observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        visibleSections.add(entry.target.id)
+      } else {
+        visibleSections.delete(entry.target.id)
+      }
+    })
+    
+    // Pick the last section in our list that is currently visible
+    // This handles cases where multiple sections might be visible
+    const sectionsArr = ['hero', ...navLinks.map(l => l.id)]
+    for (let i = sectionsArr.length - 1; i >= 0; i--) {
+      if (visibleSections.has(sectionsArr[i])) {
+        activeSection.value = sectionsArr[i]
+        break
+      }
+    }
+  }, options)
+
+  // Observe all sections including hero
+  const sections = ['hero', ...navLinks.map(l => l.id)]
+  sections.forEach(id => {
+    const el = document.getElementById(id)
+    if (el) observer?.observe(el)
+  })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll)
+  if (observer) observer.disconnect()
+})
 </script>
 
 <style scoped>
-.nav-logo {
-  font-family: var(--font-sans);
-  font-size: 24px;
-  font-weight: 900;
-  color: #0c2cdb;
-  letter-spacing: -0.02em;
-  text-decoration: none;
+/* ── Shell ───────────────────────────────────────────── */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: 64px;
+  transition: background 0.3s ease, border-color 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.navbar--scrolled {
+  background: rgba(250, 250, 248, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: var(--color-border);
+}
+
+/* ── Inner layout ─────────────────────────────────────── */
+.navbar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
 }
 
 @media (min-width: 768px) {
-  .nav-logo {
-    font-size: 32px;
-  }
+  .navbar-inner { padding: 0 40px; }
 }
 
-.brutalist-nav-link {
-  position: relative;
-  font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  color: #0c2cdb;
-  padding: 10px 18px;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+.navbar-left {
   display: flex;
-  align-items: center;
+  justify-content: flex-start;
+}
+
+.navbar-center {
+  display: flex;
   justify-content: center;
 }
 
-.brutalist-nav-link::before,
-.brutalist-nav-link::after {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #0c2cdb;
-  font-size: 16px;
-  font-weight: 900;
-  opacity: 0;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+.navbar-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-.brutalist-nav-link::before {
-  content: '[';
-  left: 0px;
-}
-
-.brutalist-nav-link::after {
-  content: ']';
-  right: 0px;
-}
-
-.brutalist-nav-link:hover {
-  color: #0c2cdb;
-  background-color: #CCFF00;
-}
-
-.brutalist-nav-link:hover::before {
-  opacity: 1;
-  left: 6px;
-}
-
-.brutalist-nav-link:hover::after {
-  opacity: 1;
-  right: 6px;
-}
-
-.hamburger-btn {
-  padding: 8px;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.1s;
-}
-
-.hamburger-btn:hover {
-  background-color: #CCFF00;
-  border: 2px solid #0c2cdb;
-  box-shadow: 2px 2px 0px rgba(12, 44, 219, 0.2);
-  transform: translate(-1px, -1px);
-}
-
-.mobile-brutalist-link {
-  display: block;
+/* ── Logo ─────────────────────────────────────────────── */
+.navbar-logo {
   font-family: var(--font-sans);
-  padding: 20px 24px;
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: #0c2cdb;
-  border-top: 1px solid rgba(12, 44, 219, 0.1);
-  text-align: left;
-  transition: all 0.1s;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+  transition: opacity 0.2s;
 }
 
-.mobile-brutalist-link:hover, .mobile-brutalist-link:active {
-  background-color: #CCFF00;
-  color: #0c2cdb;
-  padding-left: 32px;
+.navbar-logo:hover { opacity: 0.6; }
+
+/* ── Desktop links ─────────────────────────────────────── */
+.navbar-links {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-surface);
+  padding: 4px;
+  border-radius: 9999px;
+}
+
+@media (min-width: 768px) {
+  .navbar-links { display: flex; }
+}
+
+.navbar-link {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--color-text-2);
+  padding: 8px 16px;
+  border-radius: 9999px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.navbar-link:hover {
+  color: var(--color-text);
+}
+
+.navbar-link--active {
+  background: #ffffff;
+  color: var(--color-text);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ── CTA ─────────────────────────────────────────────── */
+.navbar-cta {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-inv);
+  background: var(--color-text);
+  padding: 10px 20px;
+  border-radius: 9999px;
+  transition: opacity 0.2s, transform 0.2s ease;
+}
+
+.navbar-cta:hover { 
+  opacity: 0.85; 
+  transform: translateY(-1px);
+}
+.navbar-cta:active {
+  transform: translateY(1px);
+}
+
+/* ── Hamburger ─────────────────────────────────────────── */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+@media (min-width: 768px) {
+  .hamburger { display: none; }
+}
+
+.hamburger-line {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--color-text);
+  border-radius: 1px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  transform-origin: center;
+}
+
+.hamburger-line.open-top  { transform: translateY(6.5px) rotate(45deg); }
+.hamburger-line.open-mid  { opacity: 0; }
+.hamburger-line.open-bot  { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* ── Mobile menu ───────────────────────────────────────── */
+.mobile-menu {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  right: 0;
+  background: rgba(250, 250, 248, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-border);
+  padding: 8px 0 16px;
+}
+
+.mobile-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--color-text-2);
+  padding: 14px 24px;
+  border-top: 1px solid var(--color-border);
+  transition: color 0.2s, background 0.2s;
+}
+
+.mobile-link:hover {
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.mobile-link--active {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.mobile-link--accent {
+  color: var(--color-accent);
+}
+
+/* ── Transitions ───────────────────────────────────────── */
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
 }
 </style>

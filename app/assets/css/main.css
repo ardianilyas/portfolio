@@ -1,93 +1,108 @@
 @import "tailwindcss";
 
-/* ── Google Fonts / Font CDNs ─────────────────────────── */
-@import url('https://rsms.me/inter/inter.css');
+/* ── Google Fonts ─────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@300;400;500;600&display=swap');
 
-/* ── Design Tokens ────────────────────────────────────── */
+/* ── Design Tokens — Light ────────────────────────────── */
 :root {
   color-scheme: light;
-  --color-primary: #111110;
-  --color-bg: #FAFAF8;
-  --color-surface: #F1EFE8;
-  --color-rule: #D3D1C7;
-  --color-muted: #73726C;
-  --color-hint: #9C9A92;
-  --color-accent: #10B981;
-  --color-accent-soft: rgba(16, 185, 129, 0.12);
 
-  --font-sans: 'Inter var', 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'Inter var', 'Inter', system-ui, -apple-system, sans-serif;
+  /* Backgrounds */
+  --color-bg:        #FAFAF8;
+  --color-surface:   #F4F4F2;
+  --color-surface-2: #EEEDE9;
+  --color-surface-3: #E8E8E4;
+
+  /* Borders */
+  --color-border:    #E4E4E0;
+  --color-border-2:  #D0CFCB;
+  --color-rule:      #E4E4E0;
+
+  /* Text */
+  --color-text:      #0A0A0A;
+  --color-text-2:    #525252;   /* zinc-600  */
+  --color-text-3:    #A1A1AA;   /* zinc-400  */
+  --color-text-inv:  #FAFAF8;
+
+  /* Accent — single, locked */
+  --color-accent:    #16A34A;   /* emerald-600, readable on light */
+  --color-accent-dim: rgba(22, 163, 74, 0.08);
+
+  /* Typography */
+  --font-sans: 'Geist', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Geist Mono', 'Geist', ui-monospace, monospace;
 }
 
-/* ── Base ──────────────────────────────────────────────── */
+/* ── Base Reset ──────────────────────────────────────── */
 html {
   color-scheme: light !important;
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
-  font-feature-settings: "cv11" 1;
-  -webkit-font-feature-settings: "cv11" 1;
-  -moz-font-feature-settings: "cv11" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   font-family: var(--font-sans);
   background-color: var(--color-bg);
-  color: var(--color-primary);
-  font-size: 14px;
-  line-height: 1.7;
+  color: var(--color-text);
+  font-size: 16px;
+  line-height: 1.6;
   letter-spacing: -0.01em;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  font-feature-settings: "cv11" 1 !important;
-  font-variant-alternates: character-variant(cv11) !important;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-/* ── Section Label (monospace caps eyebrow) ────────────── */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ── Heading Tracking ─────────────────────────────────── */
+h1, h2, h3, h4 {
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+/* ── Section Label ────────────────────────────────────── */
 .section-label {
-  font-family: var(--font-sans);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 400;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-hint);
+  color: var(--color-text-3);
 }
 
-/* ── Heading Tracking ─────────────────────────────────── */
-h1, h2, h3 {
-  letter-spacing: -0.02em;
+/* ── Accent Dot ──────────────────────────────────────── */
+.accent-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  flex-shrink: 0;
 }
 
-/* ── Fade-Up Animation (page load stagger) ────────────── */
+/* ── Fade-Up Animation ───────────────────────────────── */
 @media (prefers-reduced-motion: no-preference) {
   @keyframes fadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(16px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0);    }
   }
 
-  .fade-up {
-    animation: fadeUp 600ms cubic-bezier(0.4, 0, 0.2, 1) both;
-  }
-
-  .fade-up-delay-1 { animation-delay: 80ms; }
-  .fade-up-delay-2 { animation-delay: 160ms; }
-  .fade-up-delay-3 { animation-delay: 240ms; }
-  .fade-up-delay-4 { animation-delay: 320ms; }
-  .fade-up-delay-5 { animation-delay: 400ms; }
+  .fade-up   { animation: fadeUp 700ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .fade-up-1 { animation-delay: 60ms; }
+  .fade-up-2 { animation-delay: 140ms; }
+  .fade-up-3 { animation-delay: 220ms; }
+  .fade-up-4 { animation-delay: 320ms; }
+  .fade-up-5 { animation-delay: 440ms; }
 }
 
-/* ── Float animation for hero icons ───────────────────── */
-@media (prefers-reduced-motion: no-preference) {
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
+@media (prefers-reduced-motion: reduce) {
+  .fade-up { animation: none; opacity: 1; }
 }

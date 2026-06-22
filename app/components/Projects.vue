@@ -1,18 +1,24 @@
 <template>
-  <section id="portfolio">
+  <section id="portfolio" aria-labelledby="portfolio-heading" class="bg-[var(--color-surface)] py-8 md:py-16">
 
-    <SectionHeader label="PORTFOLIO" title="Projects" />
+    <SectionHeader 
+      label="PORTFOLIO" 
+      title="Projects" 
+      subtitle="A selection of my recent full-stack work and side projects."
+    />
 
-    <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-10 md:py-14">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+    <div class="projects-wrap">
+      <div class="projects-list max-w-[1100px] mx-auto">
 
         <ProjectCard
-          v-for="project in projects"
+          v-for="(project, i) in projects"
           :key="project.name"
           :name="project.name"
           :description="project.description"
           :tags="project.tags"
           :github="project.github"
+          :index="String(i + 1).padStart(2, '0')"
+          :is-first="i === 0"
         />
 
       </div>
@@ -32,7 +38,7 @@ interface Project {
 const projects: Project[] = [
   {
     name: 'Personal Portfolio',
-    description: 'Personal portfolio website built with modern web technologies to showcase skills and projects.',
+    description: 'Portfolio website built with modern web technologies to showcase skills and projects.',
     tags: ['NuxtJS', 'Vue', 'TailwindCSS'],
     github: 'https://github.com/ardianilyas/portfolio',
   },
@@ -56,3 +62,21 @@ const projects: Project[] = [
   },
 ]
 </script>
+
+<style scoped>
+.projects-wrap {
+  padding: 0 24px;
+}
+
+@media (min-width: 768px) {
+  .projects-wrap {
+    padding: 0 40px;
+  }
+}
+
+.projects-list {
+  padding-bottom: 72px;
+}
+
+
+</style>
