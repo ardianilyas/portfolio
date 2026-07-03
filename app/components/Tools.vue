@@ -1,29 +1,40 @@
 <template>
   <section id="tools" aria-labelledby="tools-heading" ref="toolsSection">
-
-    <!-- Removed eyebrow label to avoid repetition -->
     <SectionHeader title="Workflow" />
 
     <div class="tools-wrap" :class="{ 'is-visible': isVisible }">
-      <div class="tools-inner max-w-[1100px] mx-auto">
-
-        <!-- Left: philosophy statement -->
-        <div class="tools-philosophy fade-up fade-up-1">
-          <p class="philosophy-text">
-            Good tooling fades into the background. I choose tools that remove friction, scale with the project, and get out of the way so the work can speak for itself.
-          </p>
-          <p class="philosophy-sub">
-            The stack adapts to the problem — not the other way around.
-          </p>
+      <!-- Animated Aurora Background -->
+      <div class="tools-aurora" aria-hidden="true"></div>
+      <!-- Bento Grid with mouse tracking for spotlight -->
+      <div 
+        class="bento-grid max-w-[1100px] mx-auto fade-up fade-up-1" 
+        ref="bentoGrid"
+        @mousemove="onMouseMove"
+      >
+        
+        <!-- Large Philosophy Card (Spans 2x2 on desktop) -->
+        <div class="bento-card philosophy-card">
+          <div class="bento-card-inner"></div>
+          <div class="bento-content">
+            <div class="philosophy-content-wrap">
+              <p class="philosophy-text">
+                Good tooling fades into the background. I choose tools that remove friction, scale with the project, and get out of the way so the work can speak for itself.
+              </p>
+              <p class="philosophy-sub">
+                The stack adapts to the problem — not the other way around.
+              </p>
+            </div>
+          </div>
         </div>
 
-        <!-- Right: tool strip -->
-        <div class="tools-strip fade-up fade-up-2" aria-label="Tools I use">
-          <div
-            v-for="tool in tools"
-            :key="tool.name"
-            class="tool-card"
-          >
+        <!-- Tool Cards -->
+        <div
+          v-for="tool in tools"
+          :key="tool.name"
+          class="bento-card tool-card"
+        >
+          <div class="bento-card-inner"></div>
+          <div class="bento-content">
             <!-- Icon block -->
             <div class="tool-icon-wrapper">
               <svg
@@ -52,6 +63,11 @@
               <div class="tool-name">{{ tool.name }}</div>
               <div class="tool-category">{{ tool.category }}</div>
             </div>
+            
+            <!-- Tooltip -->
+            <div class="tool-tooltip">
+              {{ tool.description }}
+            </div>
           </div>
         </div>
 
@@ -64,7 +80,8 @@
 import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 
-const toolsSection = ref(null)
+const toolsSection = ref<HTMLElement | null>(null)
+const bentoGrid = ref<HTMLElement | null>(null)
 const isVisible = ref(false)
 
 useIntersectionObserver(
@@ -75,94 +92,240 @@ useIntersectionObserver(
   { threshold: 0.1 }
 )
 
+const onMouseMove = (e: MouseEvent) => {
+  if (!bentoGrid.value) return
+  
+  const cards = bentoGrid.value.getElementsByClassName('bento-card') as HTMLCollectionOf<HTMLElement>
+  
+  for (const card of cards) {
+    const rect = card.getBoundingClientRect()
+    // Calculate cursor position relative to the card
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    
+    // Update CSS variables for the spotlight gradients
+    card.style.setProperty('--mouse-x', `${x}px`)
+    card.style.setProperty('--mouse-y', `${y}px`)
+  }
+}
+
 const tools = [
-  { name: 'Figma',   category: 'Design',          icon: 'https://svgl.app/library/figma.svg' },
-  { name: 'VS Code', category: 'Code Editor',     icon: 'https://svgl.app/library/vscode.svg' },
-  { name: 'Git',     category: 'Version Control', icon: 'https://svgl.app/library/git.svg' },
-  { name: 'GitHub',  category: 'Repository',      icon: null },
-  { name: 'Vercel',  category: 'Deployment',      icon: 'https://api.iconify.design/logos:vercel-icon.svg' },
-  { name: 'Postman', category: 'API Testing',     icon: 'https://svgl.app/library/postman.svg' },
-  { name: 'Vitest',  category: 'Testing',         icon: 'https://svgl.app/library/vitest.svg' },
-  { name: 'Safari',  category: 'Browser',         icon: 'https://svgl.app/library/safari.svg' },
+  { name: 'Figma',   category: 'Design',          description: 'Where all wireframes and UI designs start.', icon: 'https://svgl.app/library/figma.svg' },
+  { name: 'VS Code', category: 'Code Editor',     description: 'My primary editor for all development.', icon: 'https://svgl.app/library/vscode.svg' },
+  { name: 'Git',     category: 'Version Control', description: 'Essential for tracking code changes locally.', icon: 'https://svgl.app/library/git.svg' },
+  { name: 'GitHub',  category: 'Repository',      description: 'Where I store, review, and collaborate on code.', icon: null },
+  { name: 'Vercel',  category: 'Deployment',      description: 'Frictionless deployments in seconds.', icon: 'https://api.iconify.design/logos:vercel-icon.svg' },
+  { name: 'Postman', category: 'API Testing',     description: 'For testing and documenting REST APIs.', icon: 'https://svgl.app/library/postman.svg' },
+  { name: 'Vitest',  category: 'Testing',         description: 'Blazing fast unit testing framework.', icon: 'https://svgl.app/library/vitest.svg' },
+  { name: 'Safari',  category: 'Browser',         description: 'Used for web development and cross-browser testing.', icon: 'https://svgl.app/library/safari.svg' },
 ]
 </script>
 
 <style scoped>
 /* ── Wrap ────────────────────────────────────────────── */
 .tools-wrap {
-  padding: 0 24px;
+  position: relative;
+  padding: 0 24px 80px;
+  background-color: var(--color-bg);
 }
 
 @media (min-width: 768px) {
   .tools-wrap {
-    padding: 0 40px;
+    padding: 0 40px 100px;
   }
 }
 
-/* ── Inner grid ───────────────────────────────────────── */
-.tools-inner {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 48px;
-  padding: 56px 0 72px;
+/* ── Aurora Background ─────────────────────────────────── */
+.tools-aurora {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--color-accent) 0%, transparent 60%);
+  opacity: 0.08;
+  filter: blur(80px);
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  animation: aurora-pulse 8s ease-in-out infinite alternate;
 }
 
 @media (min-width: 768px) {
-  .tools-inner {
-    grid-template-columns: 2fr 3fr;
-    gap: 64px;
-    align-items: center;
+  .tools-aurora {
+    width: 1000px;
+    height: 800px;
+    filter: blur(120px);
   }
 }
 
-/* ── Philosophy ───────────────────────────────────────── */
+@keyframes aurora-pulse {
+  0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 0.08; }
+  100% { transform: translate(-50%, -50%) scale(1.2) rotate(10deg); opacity: 0.12; }
+}
+
+/* ── Bento Grid ───────────────────────────────────────── */
+.bento-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  padding: 40px 0;
+}
+
+@media (min-width: 640px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(140px, auto);
+  }
+}
+
+.bento-card {
+  position: relative;
+  border-radius: 16px;
+  background: var(--color-border); /* Outer border color */
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  /* Ensure proper stacking */
+  z-index: 1;
+}
+
+.bento-card:hover {
+  transform: translateY(-4px) scale(1.01) rotate(1.5deg); /* Slight tilt (miring) */
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05);
+  z-index: 5;
+}
+
+/* ── Spotlight Gradients ──────────────────────────────── */
+/* Outer Border Spotlight */
+.bento-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    800px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+    rgba(0, 0, 0, 0.15), 
+    transparent 40%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Inner Surface Spotlight */
+.bento-card::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 15px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+    rgba(255, 255, 255, 0.7), 
+    transparent 40%
+  );
+  z-index: 3;
+  pointer-events: none;
+}
+
+.bento-grid:hover .bento-card::before,
+.bento-grid:hover .bento-card::after {
+  opacity: 1;
+}
+
+/* ── Inner Wrapper ────────────────────────────────────── */
+.bento-card-inner {
+  position: absolute;
+  inset: 1px;
+  background-color: var(--color-surface);
+  border-radius: 15px;
+  z-index: 2;
+  transition: background-color 0.3s ease;
+  overflow: hidden;
+}
+
+.bento-card:hover .bento-card-inner {
+  background-color: var(--color-bg);
+}
+
+.bento-content {
+  position: relative;
+  z-index: 4;
+  padding: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+.bento-content * {
+  pointer-events: auto;
+}
+
+/* ── Philosophy Card ──────────────────────────────────── */
+.philosophy-card {
+  grid-column: span 1;
+  min-height: 260px;
+}
+
+.philosophy-card .bento-content {
+  justify-content: center;
+}
+
+.philosophy-content-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (min-width: 640px) {
+  .philosophy-card {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .philosophy-card {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+}
+
 .philosophy-text {
-  font-size: clamp(16px, 1.8vw, 20px);
-  font-weight: 400;
-  line-height: 1.65;
-  letter-spacing: -0.015em;
-  color: var(--color-text-2);
-  margin: 0 0 20px;
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  margin: 0;
 }
 
 .philosophy-sub {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   letter-spacing: 0.03em;
   color: var(--color-text-3);
   margin: 0;
 }
 
-/* ── Tool strip ───────────────────────────────────────── */
-.tools-strip {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-}
-
-@media (min-width: 480px) {
-  .tools-strip {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* ── Individual tool card ─────────────────────────────── */
+/* ── Tool Cards ───────────────────────────────────────── */
 .tool-card {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 10px 14px;
-  background: var(--color-surface);
-  border-radius: 12px;
-  border: 1px solid var(--color-border);
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  min-height: 140px;
 }
 
-.tool-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--color-text-3);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+.tool-card .bento-content {
+  justify-content: space-between;
 }
 
 /* ── Icon ─────────────────────────────────────────────── */
@@ -172,10 +335,16 @@ const tools = [
   justify-content: center;
   width: 44px;
   height: 44px;
-  border-radius: 8px;
-  background-color: #ffffff;
+  border-radius: 10px;
+  background-color: var(--color-bg);
   border: 1px solid var(--color-border);
-  flex-shrink: 0;
+  margin-bottom: 16px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.bento-card:hover .tool-icon-wrapper {
+  transform: scale(1.08) translateY(-2px);
 }
 
 .tool-icon {
@@ -187,9 +356,10 @@ const tools = [
 
 .tool-icon--svg {
   color: var(--color-text-2);
+  transition: color 0.3s ease;
 }
 
-.tool-card:hover .tool-icon--svg {
+.bento-card:hover .tool-icon--svg {
   color: var(--color-text);
 }
 
@@ -198,6 +368,11 @@ const tools = [
   display: flex;
   flex-direction: column;
   gap: 4px;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bento-card:hover .tool-info {
+  transform: translateX(6px); /* Slide text to the right on hover */
 }
 
 .tool-name {
@@ -211,15 +386,69 @@ const tools = [
 
 .tool-category {
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
-  color: var(--color-text-2);
+  color: var(--color-text-3);
   line-height: 1.2;
+}
+
+/* ── Tooltip ──────────────────────────────────────────── */
+.tool-tooltip {
+  position: absolute;
+  bottom: calc(100% + 12px); /* Just above the card */
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: rgba(255, 255, 255, 0.7); /* Light glass */
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 20;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0,0,0,0.02);
+}
+
+/* For dark mode support if needed, you could use var(--color-surface) but semi-transparent */
+@media (prefers-color-scheme: dark) {
+  .tool-tooltip {
+    background: rgba(30, 30, 30, 0.7);
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+}
+
+.tool-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: var(--color-border) transparent transparent transparent;
+  /* Masking out the inner part to match the glass effect is complex with borders, 
+     so we just use a matching solid color or border color for the tiny arrow */
+}
+
+.bento-card:hover .tool-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* Visibility triggers for animations */
 .tools-wrap:not(.is-visible) .fade-up {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(30px);
 }
 </style>

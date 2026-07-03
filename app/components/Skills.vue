@@ -4,11 +4,7 @@
     <div class="sticky top-0 h-screen flex flex-col justify-center px-6 md:px-0">
       
       <div class="max-w-[1100px] mx-auto w-full">
-        <!-- Increased bottom margin to add top padding to the text -->
-        <h2 class="skills-title mb-16 md:mb-24">
-          From Idea to Launch
-        </h2>
-
+        <!-- Scroll reveal text block -->
         <p class="scroll-reveal-prose">
           <span
             v-for="(word, index) in words"
@@ -60,12 +56,10 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
 })
 
-// Shortened, punchy 50-word copy
-const proseRaw = "I engineer scalable systems and polished interfaces. My foundation relies on strict typing with TypeScript and the raw performance of Go. I architect robust backends using Laravel, Node.js, and PostgreSQL, while ensuring data integrity with Prisma and Drizzle. On the frontend, I craft fluid experiences using Vue.js, NuxtJS, and TailwindCSS."
+const proseRaw = "I build scalable backends with TypeScript, Go, Laravel, Express, and Drizzle ORM. I craft fluid interfaces using React, Next.js, Vue.js, and TailwindCSS."
 
 const skillKeywords = new Set([
-  'TypeScript', 'Go', 'Laravel', 'Nodejs', 'PostgreSQL', 
-  'Prisma', 'Drizzle', 'Vuejs', 'NuxtJS', 'TailwindCSS'
+  'TypeScript', 'Go', 'Laravel', 'Express', 'Drizzle', 'ORM', 'React', 'Nextjs', 'Vuejs', 'TailwindCSS'
 ])
 
 const words = proseRaw.split(' ').map(w => {
@@ -79,44 +73,30 @@ const words = proseRaw.split(' ').map(w => {
 
 <style scoped>
 #skills {
-  /* Reduced from 250vh to 150vh so the animation plays much faster with less scrolling */
-  height: 150vh; 
-}
-
-.skills-title {
-  font-family: var(--font-sans);
-  font-size: clamp(28px, 3.5vw, 42px);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  color: var(--color-text);
-  margin: 0 0 40px 0;
-  line-height: 1.1;
-}
-
-@media (min-width: 768px) {
-  .skills-title {
-    margin-bottom: 80px;
-  }
+  /* Increased to 400vh to make the scroll and text reveal much slower */
+  height: 400vh; 
 }
 
 /* ── Scroll Reveal Prose ───────────────────────────────────────── */
 .scroll-reveal-prose {
   font-family: var(--font-sans);
-  font-size: clamp(16px, 2vw, 24px);
-  /* Lighter weight requested */
-  font-weight: 400;
-  line-height: 1.6;
-  letter-spacing: -0.01em;
+  font-size: clamp(36px, 6vw, 76px); /* Much larger, like the reference */
+  font-weight: 600;
+  line-height: 1.1; /* Tighter line-height */
+  letter-spacing: -0.04em; /* Tighter tracking */
   cursor: default;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.15em 0.3em;
-  max-width: 900px;
+  justify-content: center;
+  text-align: center;
+  margin: 0 auto;
+  gap: 0 0.25em; /* Reduced vertical gap for tighter layout */
+  max-width: 1100px;
 }
 
 /* ── Individual Words ───────────────────────────────────────── */
 .prose-word {
-  color: var(--color-text-3); /* Muted gray by default */
+  color: #D4D4D8; /* Lighter gray by default (zinc-300) */
   transition: color 0.1s ease, text-shadow 0.1s ease;
   will-change: color;
 }
@@ -127,9 +107,8 @@ const words = proseRaw.split(' ').map(w => {
 
 /* ── Skill Words ───────────────────────────────────────── */
 .prose-word.is-skill {
-  /* No bold */
-  font-weight: 400; 
-  color: var(--color-text-3); /* Stay gray initially so it's a surprise */
+  font-weight: 600; 
+  color: #D4D4D8; /* Stay lighter gray initially so it's a surprise */
 }
 
 .prose-word.is-skill.is-active {
