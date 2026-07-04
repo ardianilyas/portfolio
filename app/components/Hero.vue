@@ -9,30 +9,21 @@
   >
     <div class="hero-inner" :class="{ 'is-visible': isVisible }">
 
-      <!-- Kinetic Headline with circular cursor reveal -->
-      <div class="hero-headline-wrap fade-up fade-up-1" ref="headlineWrap">
-        <!-- Gray base layer -->
-        <h1 class="hero-headline headline-base">
-          <span
-            v-for="(word, i) in headlineWords"
-            :key="'base-' + i"
-            class="hero-word"
-            :class="{ 'hero-word--accent': word.accent, 'hero-word--active': wordActive[i] }"
-            :style="wordStyles[i]"
-          >{{ word.text }}</span>
-        </h1>
-        <!-- Black reveal layer (masked by circular cursor) -->
-        <h1
-          class="hero-headline headline-reveal"
-          :style="revealMaskStyle"
-          aria-hidden="true"
+      <!-- 3D Chromatic Split Headline -->
+      <div class="hero-headline-wrap fade-up fade-up-1">
+        <h1 
+          class="hero-headline"
+          :style="{ 
+            '--x': mouseNorm.x, 
+            '--y': mouseNorm.y,
+            '--active': isHovering ? 1 : 0
+          }"
         >
           <span
             v-for="(word, i) in headlineWords"
-            :key="'reveal-' + i"
+            :key="i"
             class="hero-word"
-            :class="{ 'hero-word--active': wordActive[i] }"
-            :style="wordStyles[i]"
+            :class="{ 'hero-word--accent': word.accent }"
           >{{ word.text }}</span>
         </h1>
       </div>
@@ -65,11 +56,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, onUnmounted, computed } from 'vue'
+import { ref, reactive } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 
 const heroSection = ref<HTMLElement | null>(null)
-const headlineWrap = ref<HTMLElement | null>(null)
 const isVisible = ref(false)
 
 useIntersectionObserver(
@@ -98,112 +88,29 @@ const headlineWords = [
   { text: 'feels.', accent: true },
 ]
 
-// ── Mouse state ─────────────────────────────────────────
-const mouse = reactive({ x: 0, y: 0 })
+// ── Mouse tracking for Chromatic Split ──────────────────
+const mouseNorm = reactive({ x: 0, y: 0 })
 const isHovering = ref(false)
 
-// Relative position inside headline-wrap for the CSS mask
-const relMouse = reactive({ x: -9999, y: -9999 })
-
-// ── Magnetic push offsets ───────────────────────────────
-const wordTargets = reactive<{ x: number; y: number }[]>(
-  headlineWords.map(() => ({ x: 0, y: 0 }))
-)
-const wordSmooth = reactive<{ x: number; y: number }[]>(
-  headlineWords.map(() => ({ x: 0, y: 0 }))
-)
-
-// Track which words are within the cursor circle
-const wordActive = reactive<boolean[]>(
-  headlineWords.map(() => false)
-)
-
-let animFrame = 0
-
 function onMouseMove(e: MouseEvent) {
-  mouse.x = e.clientX
-  mouse.y = e.clientY
   isHovering.value = true
-
-  // Calculate position relative to headline-wrap for the mask
-  if (headlineWrap.value) {
-    const rect = headlineWrap.value.getBoundingClientRect()
-    relMouse.x = e.clientX - rect.left
-    relMouse.y = e.clientY - rect.top
-  }
+  // Normalize mouse position from -1 to 1 based on viewport
+  const cx = window.innerWidth / 2
+  const cy = window.innerHeight / 2
+  
+  // Ease the mouse values slightly for a smoother feel
+  const targetX = (e.clientX - cx) / cx
+  const targetY = (e.clientY - cy) / cy
+  
+  mouseNorm.x = targetX
+  mouseNorm.y = targetY
 }
 
 function onMouseLeave() {
   isHovering.value = false
-  relMouse.x = -9999
-  relMouse.y = -9999
-  for (let i = 0; i < wordTargets.length; i++) {
-    wordTargets[i].x = 0
-    wordTargets[i].y = 0
-  }
+  mouseNorm.x = 0
+  mouseNorm.y = 0
 }
-
-function calcPush() {
-  if (!headlineWrap.value || !isHovering.value) return
-
-  const words = headlineWrap.value.querySelectorAll('.headline-base .hero-word')
-  words.forEach((el, i) => {
-    const rect = (el as HTMLElement).getBoundingClientRect()
-    const cx = rect.left + rect.width / 2
-    const cy = rect.top + rect.height / 2
-    const dx = mouse.x - cx
-    const dy = mouse.y - cy
-    const dist = Math.sqrt(dx * dx + dy * dy)
-
-    const pushRadius = 300
-    const maxPush = 8
-    const activeRadius = 180 // words within this radius get the "active" class
-
-    wordActive[i] = dist < activeRadius
-
-    if (dist < pushRadius) {
-      const force = (1 - dist / pushRadius) * maxPush
-      const angle = Math.atan2(dy, dx)
-      wordTargets[i].x = -Math.cos(angle) * force
-      wordTargets[i].y = -Math.sin(angle) * force
-    } else {
-      wordTargets[i].x = 0
-      wordTargets[i].y = 0
-    }
-  })
-}
-
-function loop() {
-  calcPush()
-
-  const lerp = 0.1
-  for (let i = 0; i < wordSmooth.length; i++) {
-    wordSmooth[i].x += (wordTargets[i].x - wordSmooth[i].x) * lerp
-    wordSmooth[i].y += (wordTargets[i].y - wordSmooth[i].y) * lerp
-  }
-
-  animFrame = requestAnimationFrame(loop)
-}
-
-// ── Computed styles ─────────────────────────────────────
-const wordStyles = computed(() =>
-  wordSmooth.map((o) => ({
-    transform: `translate(${o.x.toFixed(2)}px, ${o.y.toFixed(2)}px)`,
-  }))
-)
-
-const revealMaskStyle = computed(() => ({
-  maskImage: `radial-gradient(circle 180px at ${relMouse.x}px ${relMouse.y}px, black 50%, transparent 100%)`,
-  WebkitMaskImage: `radial-gradient(circle 180px at ${relMouse.x}px ${relMouse.y}px, black 50%, transparent 100%)`,
-}))
-
-onMounted(() => {
-  animFrame = requestAnimationFrame(loop)
-})
-
-onUnmounted(() => {
-  cancelAnimationFrame(animFrame)
-})
 </script>
 
 <style scoped>
@@ -235,16 +142,16 @@ onUnmounted(() => {
   }
 }
 
-/* ── Headline container ───────────────────────────────── */
+/* ── Headline ─────────────────────────────────────────── */
 .hero-headline-wrap {
   position: relative;
   width: 100%;
   display: flex;
   justify-content: center;
   margin-bottom: 28px;
+  perspective: 1000px;
 }
 
-/* ── Shared headline styles ───────────────────────────── */
 .hero-headline {
   font-family: var(--font-sans);
   font-size: clamp(36px, 10vw, 110px);
@@ -258,74 +165,31 @@ onUnmounted(() => {
   gap: 0 0.25em;
   max-width: 900px;
   user-select: none;
+  
+  /* Chromatic split shadow logic */
+  --split-dist: calc(15px * var(--active));
+  --cyan-x: calc(var(--x) * var(--split-dist) * -1);
+  --cyan-y: calc(var(--y) * var(--split-dist) * -1);
+  
+  --magenta-x: calc(var(--x) * var(--split-dist));
+  --magenta-y: calc(var(--y) * var(--split-dist));
+  
+  /* Apply the shadows: cyan moves opposite to mouse, magenta moves with mouse */
+  text-shadow: 
+    calc(var(--cyan-x)) calc(var(--cyan-y)) 0 rgba(0, 255, 255, calc(0.5 * var(--active))),
+    calc(var(--magenta-x)) calc(var(--magenta-y)) 0 rgba(255, 0, 255, calc(0.5 * var(--active)));
+    
+  transition: text-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Gray base layer — lighter gray for stronger contrast with the reveal */
-.headline-base {
-  color: #D4D4D8; /* zinc-300, soft and light */
-}
-
-/* Black reveal layer — pure black, masked by circular cursor */
-.headline-reveal {
-  position: absolute;
-  inset: 0;
-  color: #0A0A0A; /* pure black, no gray bleed */
-  pointer-events: none;
-  mask-size: 100% 100%;
-  -webkit-mask-size: 100% 100%;
-}
-
-/* ── Individual words ─────────────────────────────────── */
 .hero-word {
   display: inline-block;
-  will-change: transform;
+  color: var(--color-text); /* Solid black */
   cursor: default;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Accent-colored words (like "your team" in the reference) */
 .hero-word--accent {
   color: var(--color-accent);
-}
-
-/* Reveal layer accent words keep their accent color */
-.headline-reveal .hero-word--accent {
-  color: var(--color-accent);
-}
-
-/* Words inside the cursor circle get a subtle lift + scale */
-.hero-word--active {
-  transform: translateY(-3px) scale(1.04) !important;
-}
-
-/* Mobile: gentle idle sway since no cursor */
-@media (hover: none) {
-  .headline-reveal {
-    /* On mobile, just show the text as black */
-    mask-image: none !important;
-    -webkit-mask-image: none !important;
-    color: var(--color-text);
-  }
-  .headline-base {
-    color: var(--color-border-2);
-  }
-  .hero-word {
-    animation: idle-sway 4s ease-in-out infinite;
-  }
-  .hero-word:nth-child(odd) {
-    animation-delay: -1s;
-    animation-duration: 4.5s;
-  }
-  .hero-word:nth-child(3n) {
-    animation-delay: -2.2s;
-    animation-duration: 5s;
-  }
-}
-
-@keyframes idle-sway {
-  0%, 100% { transform: translateY(0); }
-  25% { transform: translateY(-2px); }
-  75% { transform: translateY(2px); }
 }
 
 /* ── Sub ──────────────────────────────────────────────── */

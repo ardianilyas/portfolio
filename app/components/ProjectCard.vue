@@ -46,10 +46,10 @@ defineProps<{
   display: grid;
   grid-template-columns: 48px 1fr;
   gap: 24px;
-  padding: 36px 24px;
-  margin: 0 -24px;
+  padding: 36px 16px;
+  margin: 0 -16px;
   border-top: 1px solid var(--color-border);
-  border-radius: 0;
+  border-radius: 16px;
   text-decoration: none;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
   cursor: pointer;
@@ -64,8 +64,8 @@ defineProps<{
   .project-row {
     grid-template-columns: 64px 1fr;
     gap: 32px;
-    padding: 44px 32px;
-    margin: 0 -32px;
+    padding: 44px 24px;
+    margin: 0 -24px;
   }
 }
 
