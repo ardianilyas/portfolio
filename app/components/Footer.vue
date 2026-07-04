@@ -77,21 +77,24 @@ const year = new Date().getFullYear()
 .footer {
   position: relative;
   width: 100%;
+  max-width: 100%;
   height: 100%;
   background-color: var(--color-bg);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* ── Background text ─────────────────────────────────── */
 .footer-bg-text {
   position: absolute;
-  bottom: -4vw;
+  bottom: -2vw;
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-sans);
-  font-size: 18vw;
+  /* Mobile: smaller so it doesn't overflow */
+  font-size: clamp(40px, 12vw, 18vw);
   font-weight: 800;
   letter-spacing: -0.05em;
   color: var(--color-surface);
@@ -99,6 +102,9 @@ const year = new Date().getFullYear()
   pointer-events: none;
   z-index: 0;
   user-select: none;
+  /* Prevent bg text from contributing to scroll width */
+  max-width: 100%;
+  overflow: hidden;
 }
 
 /* ── Main CTA ─────────────────────────────────────────── */
@@ -115,6 +121,7 @@ const year = new Date().getFullYear()
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 24px;
+  box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
@@ -187,6 +194,7 @@ const year = new Date().getFullYear()
 }
 
 .footer-bar-inner {
+  width: 100%;
   max-width: 1100px;
   margin: 0 auto;
   padding: 20px 24px;
@@ -195,6 +203,7 @@ const year = new Date().getFullYear()
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 16px;
+  box-sizing: border-box;
 }
 
 @media (min-width: 768px) {

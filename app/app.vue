@@ -13,7 +13,7 @@
     </main>
 
     <!-- Footer fixed behind main content -->
-    <div class="fixed bottom-0 left-0 w-full h-[60vh] md:h-[65vh] z-0">
+    <div class="fixed bottom-0 left-0 w-full h-[60vh] md:h-[65vh] z-0 overflow-hidden" style="max-width:100vw;">
       <Footer />
     </div>
 

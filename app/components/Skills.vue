@@ -1,10 +1,9 @@
 <template>
   <section id="skills" aria-labelledby="skills-heading" class="bg-[var(--color-surface)] relative" ref="skillsSection">
     
-    <div class="sticky top-0 h-screen flex flex-col justify-center px-6 md:px-0">
-      
+    <!-- Desktop: sticky scroll reveal -->
+    <div v-if="!isMobile" class="sticky top-0 h-screen flex flex-col justify-center px-6 md:px-0">
       <div class="max-w-[1100px] mx-auto w-full">
-        <!-- Scroll reveal text block -->
         <p class="scroll-reveal-prose">
           <span
             v-for="(word, index) in words"
@@ -19,7 +18,22 @@
           </span>
         </p>
       </div>
+    </div>
 
+    <!-- Mobile: static, fully visible text -->
+    <div v-else class="flex flex-col justify-center items-center min-h-screen px-6">
+      <div class="max-w-[1100px] mx-auto w-full">
+        <p class="scroll-reveal-prose">
+          <span
+            v-for="(word, index) in words"
+            :key="index"
+            class="prose-word is-active"
+            :class="{ 'is-skill': word.isSkill }"
+          >
+            {{ word.text }}
+          </span>
+        </p>
+      </div>
     </div>
 
   </section>
@@ -30,9 +44,14 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 const skillsSection = ref<HTMLElement | null>(null)
 const scrollProgress = ref(0)
+const isMobile = ref(false)
+
+const checkMobile = () => {
+  isMobile.value = window.innerWidth < 768
+}
 
 const handleScroll = () => {
-  if (!skillsSection.value) return
+  if (!skillsSection.value || isMobile.value) return
   
   const rect = skillsSection.value.getBoundingClientRect()
   const windowHeight = window.innerHeight
@@ -48,11 +67,14 @@ const handleScroll = () => {
 }
 
 onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile, { passive: true })
   window.addEventListener('scroll', handleScroll, { passive: true })
   handleScroll() 
 })
 
 onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
   window.removeEventListener('scroll', handleScroll)
 })
 
@@ -72,9 +94,9 @@ const words = proseRaw.split(' ').map(w => {
 </script>
 
 <style scoped>
+/* Desktop: tall enough to scroll through */
 #skills {
-  /* Reduced on mobile, full on desktop */
-  height: 250vh; 
+  height: 100vh; /* mobile: just viewport height */
 }
 
 @media (min-width: 768px) {
@@ -86,40 +108,39 @@ const words = proseRaw.split(' ').map(w => {
 /* ── Scroll Reveal Prose ───────────────────────────────────────── */
 .scroll-reveal-prose {
   font-family: var(--font-sans);
-  font-size: clamp(28px, 6vw, 76px); /* Smaller minimum for mobile */
+  font-size: clamp(28px, 6vw, 76px);
   font-weight: 600;
-  line-height: 1.1; /* Tighter line-height */
-  letter-spacing: -0.04em; /* Tighter tracking */
+  line-height: 1.1;
+  letter-spacing: -0.04em;
   cursor: default;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   text-align: center;
   margin: 0 auto;
-  gap: 0 0.25em; /* Reduced vertical gap for tighter layout */
+  gap: 0 0.25em;
   max-width: 1100px;
 }
 
 /* ── Individual Words ───────────────────────────────────────── */
 .prose-word {
-  color: #D4D4D8; /* Lighter gray by default (zinc-300) */
+  color: #D4D4D8;
   transition: color 0.1s ease, text-shadow 0.1s ease;
   will-change: color;
 }
 
 .prose-word.is-active {
-  color: var(--color-text); /* Solid dark when scrolled over */
+  color: var(--color-text);
 }
 
 /* ── Skill Words ───────────────────────────────────────── */
 .prose-word.is-skill {
   font-weight: 600; 
-  color: #D4D4D8; /* Stay lighter gray initially so it's a surprise */
+  color: #D4D4D8;
 }
 
 .prose-word.is-skill.is-active {
-  /* Use the green accent color from the "Get in touch" link */
   color: var(--color-accent); 
-  text-shadow: none; /* Keep it perfectly clean, no bold or glow */
+  text-shadow: none;
 }
 </style>
