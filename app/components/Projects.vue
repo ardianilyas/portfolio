@@ -89,6 +89,7 @@ const projects: Project[] = [
 
 .projects-list {
   padding-bottom: 72px;
+  overflow: hidden;
 }
 
 /* Visibility triggers for animations */
