@@ -3,8 +3,6 @@
     <SectionHeader title="Workflow" />
 
     <div class="tools-wrap" :class="{ 'is-visible': isVisible }">
-      <!-- Animated Aurora Background -->
-      <div class="tools-aurora" aria-hidden="true"></div>
       <!-- Bento Grid with mouse tracking for spotlight -->
       <div 
         class="bento-grid max-w-[1100px] mx-auto fade-up fade-up-1" 
@@ -135,35 +133,7 @@ const tools = [
   }
 }
 
-/* ── Aurora Background ─────────────────────────────────── */
-.tools-aurora {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, var(--color-accent) 0%, transparent 60%);
-  opacity: 0.08;
-  filter: blur(80px);
-  z-index: 0;
-  pointer-events: none;
-  border-radius: 50%;
-  animation: aurora-pulse 8s ease-in-out infinite alternate;
-}
 
-@media (min-width: 768px) {
-  .tools-aurora {
-    width: 1000px;
-    height: 800px;
-    filter: blur(120px);
-  }
-}
-
-@keyframes aurora-pulse {
-  0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 0.08; }
-  100% { transform: translate(-50%, -50%) scale(1.2) rotate(10deg); opacity: 0.12; }
-}
 
 /* ── Bento Grid ───────────────────────────────────────── */
 .bento-grid {

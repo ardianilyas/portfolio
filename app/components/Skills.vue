@@ -20,15 +20,19 @@
       </div>
     </div>
 
-    <!-- Mobile: static, fully visible text -->
+    <!-- Mobile: cascade reveal on scroll -->
     <div v-else class="flex flex-col justify-center items-center min-h-screen px-6">
       <div class="max-w-[1100px] mx-auto w-full">
         <p class="scroll-reveal-prose">
           <span
             v-for="(word, index) in words"
             :key="index"
-            class="prose-word is-active"
-            :class="{ 'is-skill': word.isSkill }"
+            class="prose-word mobile-word"
+            :class="{ 
+              'is-skill': word.isSkill,
+              'is-active': isVisible 
+            }"
+            :style="{ transitionDelay: `${index * 0.04}s` }"
           >
             {{ word.text }}
           </span>
@@ -41,10 +45,21 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
 
 const skillsSection = ref<HTMLElement | null>(null)
 const scrollProgress = ref(0)
 const isMobile = ref(false)
+const isVisible = ref(false)
+
+// Use intersection observer to trigger mobile animation
+useIntersectionObserver(
+  skillsSection,
+  ([{ isIntersecting }]) => {
+    if (isIntersecting) isVisible.value = true
+  },
+  { threshold: 0.15 } // Trigger when 15% is visible
+)
 
 const checkMobile = () => {
   isMobile.value = window.innerWidth < 768
@@ -108,9 +123,10 @@ const words = proseRaw.split(' ').map(w => {
 /* ── Scroll Reveal Prose ───────────────────────────────────────── */
 .scroll-reveal-prose {
   font-family: var(--font-sans);
-  font-size: clamp(28px, 6vw, 76px);
+  /* Increased lower bound so it fills the screen more on mobile */
+  font-size: clamp(34px, 9vw, 76px);
   font-weight: 600;
-  line-height: 1.1;
+  line-height: 1.15;
   letter-spacing: -0.04em;
   cursor: default;
   display: flex;
@@ -124,19 +140,34 @@ const words = proseRaw.split(' ').map(w => {
 
 /* ── Individual Words ───────────────────────────────────────── */
 .prose-word {
-  color: #D4D4D8;
+  color: var(--color-border-2); /* Lighter gray by default */
   transition: color 0.1s ease, text-shadow 0.1s ease;
-  will-change: color;
+  will-change: color, transform, opacity;
 }
 
 .prose-word.is-active {
-  color: var(--color-text);
+  color: var(--color-text); /* Solid dark when scrolled/revealed */
+}
+
+/* ── Mobile Transition Animation ───────────────────────────── */
+.mobile-word {
+  opacity: 0;
+  transform: translateY(15px);
+  /* The transition delay is applied inline per-word */
+  transition-property: opacity, transform, color;
+  transition-duration: 0.8s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-word.is-active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ── Skill Words ───────────────────────────────────────── */
 .prose-word.is-skill {
   font-weight: 600; 
-  color: #D4D4D8;
+  color: var(--color-border-2);
 }
 
 .prose-word.is-skill.is-active {
