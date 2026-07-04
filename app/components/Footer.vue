@@ -161,6 +161,7 @@ const year = new Date().getFullYear()
   letter-spacing: -0.01em;
   border-bottom: 1px solid var(--color-border-2);
   padding-bottom: 4px;
+  word-break: break-all;
   transition: color 0.2s, border-color 0.2s;
 }
 
@@ -192,6 +193,8 @@ const year = new Date().getFullYear()
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 @media (min-width: 768px) {

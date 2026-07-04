@@ -29,7 +29,7 @@ defineProps<{
 
 @media (min-width: 768px) {
   .section-header-inner {
-    padding: 0 40px 32px 0;
+    padding: 0 40px 32px 40px;
   }
 }
 

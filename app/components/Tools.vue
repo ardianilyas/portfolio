@@ -275,7 +275,13 @@ const tools = [
 /* ── Philosophy Card ──────────────────────────────────── */
 .philosophy-card {
   grid-column: span 1;
-  min-height: 260px;
+  min-height: 200px;
+}
+
+@media (min-width: 640px) {
+  .philosophy-card {
+    min-height: 260px;
+  }
 }
 
 .philosophy-card .bento-content {
@@ -444,6 +450,16 @@ const tools = [
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0);
+}
+
+/* Hide tooltips on mobile — touch devices can't hover */
+@media (hover: none) {
+  .tool-tooltip {
+    display: none;
+  }
+  .bento-card:hover {
+    transform: none;
+  }
 }
 
 /* Visibility triggers for animations */

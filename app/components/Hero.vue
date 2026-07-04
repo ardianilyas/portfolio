@@ -219,7 +219,7 @@ onUnmounted(() => {
 .hero-inner {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 80px 24px 80px;
+  padding: 60px 20px 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -247,7 +247,7 @@ onUnmounted(() => {
 /* ── Shared headline styles ───────────────────────────── */
 .hero-headline {
   font-family: var(--font-sans);
-  font-size: clamp(48px, 10vw, 110px);
+  font-size: clamp(36px, 10vw, 110px);
   font-weight: 500;
   letter-spacing: -0.04em;
   line-height: 1.0;

@@ -56,10 +56,10 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
 })
 
-const proseRaw = "I build scalable backends with TypeScript, Go, Laravel, Express, and Drizzle ORM. I craft fluid interfaces using React, Next.js, Vue.js, and TailwindCSS."
+const proseRaw = "I build scalable backends with TypeScript, Laravel, Express, and Drizzle ORM. I craft fluid interfaces using React, Next.js, Vue.js, and TailwindCSS."
 
 const skillKeywords = new Set([
-  'TypeScript', 'Go', 'Laravel', 'Express', 'Drizzle', 'ORM', 'React', 'Nextjs', 'Vuejs', 'TailwindCSS'
+  'TypeScript', 'Laravel', 'Express', 'Drizzle', 'ORM', 'React', 'Nextjs', 'Vuejs', 'TailwindCSS'
 ])
 
 const words = proseRaw.split(' ').map(w => {
@@ -73,14 +73,20 @@ const words = proseRaw.split(' ').map(w => {
 
 <style scoped>
 #skills {
-  /* Increased to 400vh to make the scroll and text reveal much slower */
-  height: 400vh; 
+  /* Reduced on mobile, full on desktop */
+  height: 250vh; 
+}
+
+@media (min-width: 768px) {
+  #skills {
+    height: 400vh;
+  }
 }
 
 /* ── Scroll Reveal Prose ───────────────────────────────────────── */
 .scroll-reveal-prose {
   font-family: var(--font-sans);
-  font-size: clamp(36px, 6vw, 76px); /* Much larger, like the reference */
+  font-size: clamp(28px, 6vw, 76px); /* Smaller minimum for mobile */
   font-weight: 600;
   line-height: 1.1; /* Tighter line-height */
   letter-spacing: -0.04em; /* Tighter tracking */
