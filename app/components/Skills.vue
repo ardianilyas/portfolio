@@ -174,9 +174,6 @@ const words = proseRaw.split(' ').map(w => {
 
 .prose-word.is-skill.is-active {
   color: #f2e8cf;
-  background-color: #0F3F2F;
-  padding: 0 12px;
-  border-radius: 12px;
-  text-shadow: none;
+  text-shadow: 0 4px 12px rgba(15, 63, 47, 0.15); /* Subtle dark green glow when revealed */
 }
 </style>
