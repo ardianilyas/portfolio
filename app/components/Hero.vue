@@ -4,21 +4,12 @@
     class="hero"
     aria-label="Introduction"
     ref="heroSection"
-    @mousemove="onMouseMove"
-    @mouseleave="onMouseLeave"
   >
     <div class="hero-inner" :class="{ 'is-visible': isVisible }">
 
       <!-- 3D Chromatic Split Headline -->
       <div class="hero-headline-wrap fade-up fade-up-1">
-        <h1 
-          class="hero-headline"
-          :style="{ 
-            '--x': mouseNorm.x, 
-            '--y': mouseNorm.y,
-            '--active': isHovering ? 1 : 0
-          }"
-        >
+        <h1 class="hero-headline">
           <span
             v-for="(word, i) in headlineWords"
             :key="i"
@@ -86,29 +77,7 @@ const headlineWords = [
   { text: 'Ilyas.', accent: true },
 ]
 
-// ── Mouse tracking for Chromatic Split ──────────────────
-const mouseNorm = reactive({ x: 0, y: 0 })
-const isHovering = ref(false)
 
-function onMouseMove(e: MouseEvent) {
-  isHovering.value = true
-  // Normalize mouse position from -1 to 1 based on viewport
-  const cx = window.innerWidth / 2
-  const cy = window.innerHeight / 2
-  
-  // Ease the mouse values slightly for a smoother feel
-  const targetX = (e.clientX - cx) / cx
-  const targetY = (e.clientY - cy) / cy
-  
-  mouseNorm.x = targetX
-  mouseNorm.y = targetY
-}
-
-function onMouseLeave() {
-  isHovering.value = false
-  mouseNorm.x = 0
-  mouseNorm.y = 0
-}
 </script>
 
 <style scoped>
@@ -164,20 +133,7 @@ function onMouseLeave() {
   max-width: 900px;
   user-select: none;
   
-  /* Chromatic split shadow logic */
-  --split-dist: calc(15px * var(--active));
-  --cyan-x: calc(var(--x) * var(--split-dist) * -1);
-  --cyan-y: calc(var(--y) * var(--split-dist) * -1);
-  
-  --magenta-x: calc(var(--x) * var(--split-dist));
-  --magenta-y: calc(var(--y) * var(--split-dist));
-  
-  /* Apply the shadows: cyan moves opposite to mouse, magenta moves with mouse */
-  text-shadow: 
-    calc(var(--cyan-x)) calc(var(--cyan-y)) 0 rgba(0, 255, 255, calc(0.5 * var(--active))),
-    calc(var(--magenta-x)) calc(var(--magenta-y)) 0 rgba(255, 0, 255, calc(0.5 * var(--active)));
-    
-  transition: text-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hero-headline:hover .hero-word {
