@@ -1,30 +1,27 @@
 <template>
   <div class="project-detail-page bg-[var(--color-bg)] min-h-screen relative" v-if="project">
     
-    <!-- Top Nav -->
-    <nav class="absolute top-0 left-0 w-full p-6 md:p-10 z-50 flex justify-between items-center mix-blend-difference text-white">
-      <NuxtLink to="/" class="back-link group">
-        <svg class="transition-transform group-hover:-translate-x-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-        </svg>
-        <span class="font-sans font-medium text-sm tracking-wide">Back to Home</span>
-      </NuxtLink>
-    </nav>
+    <!-- Floating Back Button -->
+    <NuxtLink to="/" class="fixed top-6 left-6 md:top-10 md:left-10 z-[100] flex items-center justify-center w-12 h-12 rounded-full border border-white/30 mix-blend-difference text-white transition-all hover:scale-110 hover:bg-white hover:text-black group cursor-pointer">
+      <svg class="transition-transform group-hover:-translate-x-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+    </NuxtLink>
 
     <!-- Main Visual Hero -->
     <header class="hero-visual relative w-full h-[60vh] md:h-[80vh] overflow-hidden flex items-end">
       <!-- Background Visual (Placeholder for Project Image) -->
-      <div class="absolute inset-0 z-0">
+      <div class="absolute inset-0 z-0" :style="parallaxStyle">
         <div class="w-full h-full object-cover" :class="project.heroClass"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-[var(--color-bg)] via-[var(--color-bg)]/20 to-transparent"></div>
       </div>
 
       <!-- Hero Content -->
-      <div class="relative z-10 w-full max-w-[1100px] mx-auto px-6 md:px-10 pb-12 fade-up">
-        <h1 class="font-sans text-[clamp(48px,8vw,120px)] font-bold tracking-tighter leading-[0.9] mb-6 text-[var(--color-text)]">
+      <div class="relative z-10 w-full max-w-[1100px] mx-auto px-6 md:px-10 pb-12">
+        <h1 class="font-sans text-[clamp(48px,8vw,120px)] font-bold tracking-tighter leading-[0.9] mb-6 text-[var(--color-text)] fade-up fade-up-1">
           {{ project.name }}
         </h1>
-        <p class="font-sans text-[clamp(20px,2vw,28px)] font-medium text-[var(--color-text-2)] max-w-3xl leading-snug">
+        <p class="font-sans text-[clamp(20px,2vw,28px)] font-medium text-[var(--color-text-2)] max-w-3xl leading-snug fade-up fade-up-2">
           {{ project.description }}
         </p>
       </div>
@@ -32,10 +29,10 @@
 
     <!-- Project Details Grid -->
     <section class="max-w-[1100px] mx-auto px-6 md:px-10 py-16 md:py-24">
-      <div class="flex flex-col gap-12 md:gap-20 fade-up" style="transition-delay: 0.1s">
+      <div class="flex flex-col gap-12 md:gap-20">
         
         <!-- Metadata -->
-        <div class="flex flex-col md:flex-row gap-10 md:gap-20 border-t border-[var(--color-border)] pt-12 items-start justify-between">
+        <div class="flex flex-col md:flex-row gap-10 md:gap-20 border-t border-[var(--color-border)] pt-12 items-start justify-between fade-up fade-up-3">
           <div class="flex flex-col md:flex-row gap-10 md:gap-24 flex-1">
             <div class="shrink-0">
               <h4 class="meta-label">Timeline</h4>
@@ -61,7 +58,7 @@
         </div>
 
         <!-- Visual Gallery -->
-        <div class="flex flex-col gap-6 w-full">
+        <div class="flex flex-col gap-6 w-full fade-up fade-up-4">
           <div class="gallery-img-wrap rounded-[20px] md:rounded-[32px] overflow-hidden aspect-[4/3] md:aspect-[21/9] bg-[var(--color-surface)] border border-[var(--color-border)]">
             <div class="w-full h-full" :class="project.galleryClasses[0]"></div>
           </div>
@@ -76,7 +73,7 @@
         </div>
 
         <!-- Project Pagination -->
-        <div class="flex flex-row justify-between items-center gap-4 mt-8 pt-8 border-t border-[var(--color-border)] w-full">
+        <div class="flex flex-row justify-between items-center gap-4 mt-8 pt-8 border-t border-[var(--color-border)] w-full fade-up fade-up-5">
           <!-- Previous Button -->
           <NuxtLink 
             v-if="prevProject" 
@@ -117,6 +114,12 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
+import { useWindowScroll } from '@vueuse/core'
+
+const { y } = useWindowScroll()
+const parallaxStyle = computed(() => ({
+  transform: `translateY(${y.value * 0.4}px)`
+}))
 
 const route = useRoute()
 const slug = route.params.slug as string
