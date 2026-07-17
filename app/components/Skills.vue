@@ -141,7 +141,9 @@ const words = proseRaw.split(' ').map(w => {
 /* ── Individual Words ───────────────────────────────────────── */
 .prose-word {
   color: var(--color-border-2); /* Lighter gray by default */
-  transition: color 0.1s ease, text-shadow 0.1s ease;
+  transition: color 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+              text-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: color, transform, opacity;
 }
 
@@ -172,6 +174,6 @@ const words = proseRaw.split(' ').map(w => {
 
 .prose-word.is-skill.is-active {
   color: var(--color-accent); 
-  text-shadow: none;
+  text-shadow: 0 4px 12px rgba(22, 163, 74, 0.15); /* Subtle emerald glow when revealed */
 }
 </style>
