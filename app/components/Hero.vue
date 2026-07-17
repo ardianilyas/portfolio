@@ -15,8 +15,10 @@
 
     <div class="hero-inner" :class="{ 'is-visible': isVisible }">
       <!-- Status badge (moved to top) -->
-      <div class="hero-status fade-up fade-up-1 mb-10" aria-label="Availability status">
-        <span class="status-dot"></span>
+      <div class="hero-status fade-up fade-up-1 mb-8" aria-label="Availability status">
+        <svg class="status-spark" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor" />
+        </svg>
         <span class="hero-status-text">Available for new opportunities</span>
       </div>
 
@@ -312,30 +314,26 @@ const headlineWords = [
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--color-surface);
-  padding: 8px 20px;
-  border-radius: 9999px;
-  border: 1px solid var(--color-border);
+  padding: 0;
+  background: transparent;
+  border: none;
 }
 
-.status-dot {
-  width: 8px;
-  height: 8px;
-  background-color: var(--color-accent);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--color-accent);
-  animation: dot-pulse 2s ease-in-out infinite;
+.status-spark {
+  color: var(--color-accent);
+  animation: spark-spin 8s linear infinite;
 }
 
-@keyframes dot-pulse {
-  0%, 100% { box-shadow: 0 0 8px var(--color-accent); }
-  50% { box-shadow: 0 0 16px var(--color-accent), 0 0 24px rgba(22, 163, 74, 0.3); }
+@keyframes spark-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .hero-status-text {
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
+  letter-spacing: 0.02em;
   color: var(--color-text-2);
 }
 
