@@ -4,12 +4,7 @@
     <!-- Main Content Wrapper -->
     <main class="relative z-10 bg-[var(--color-bg)] mb-[60vh] md:mb-[65vh]">
 
-      <Navbar />
-      <Hero />
-      <Skills />
-      <Tools />
-      <Projects />
-
+      <NuxtPage />
     </main>
 
     <!-- Footer fixed behind main content -->

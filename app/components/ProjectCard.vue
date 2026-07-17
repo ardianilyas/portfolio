@@ -1,8 +1,6 @@
 <template>
-  <a
-    :href="github"
-    target="_blank"
-    rel="noopener noreferrer"
+  <NuxtLink
+    :to="'/projects/' + slug"
     class="project-row"
     :class="{ 'project-row--first': isFirst }"
     :aria-label="`${name} — view source on GitHub`"
@@ -26,7 +24,7 @@
       </div>
     </div>
 
-  </a>
+  </NuxtLink>
 </template>
 
 <script setup lang="ts">
@@ -35,6 +33,7 @@ defineProps<{
   description: string
   tags: string[]
   github: string
+  slug: string
   index: string
   isFirst?: boolean
 }>()
