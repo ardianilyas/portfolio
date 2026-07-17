@@ -272,15 +272,16 @@ onUnmounted(() => {
   font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-text-inv);
-  background: var(--color-text);
+  color: #f2e8cf;
+  background: #0F3F2F;
   padding: 10px 20px;
-  transition: opacity 0.2s, transform 0.2s ease;
+  transition: opacity 0.2s, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .navbar-cta:hover { 
-  opacity: 0.85; 
+  opacity: 0.95; 
   transform: translateY(-1px);
+  box-shadow: 0 10px 20px -10px rgba(15, 63, 47, 0.4);
 }
 .navbar-cta:active {
   transform: translateY(1px);
