@@ -22,9 +22,9 @@
   --color-rule:      #E4E4E0;
 
   /* Text */
-  --color-text:      #0A0A0A;
-  --color-text-2:    #525252;   /* zinc-600  */
-  --color-text-3:    #A1A1AA;   /* zinc-400  */
+  --color-text:      #16211E;   /* Deep warm charcoal/forest */
+  --color-text-2:    #4A5551;   /* Soft dark green-gray */
+  --color-text-3:    #9CA3A0;   /* Lighter green-gray */
   --color-text-inv:  #FAFAF8;
 
   /* Accent — single, locked */

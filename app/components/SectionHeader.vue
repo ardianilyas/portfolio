@@ -34,6 +34,9 @@ defineProps<{
 }
 
 .section-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   font-family: var(--font-sans);
   font-size: clamp(28px, 3.5vw, 42px);
   font-weight: 600;
@@ -41,6 +44,15 @@ defineProps<{
   color: var(--color-text);
   margin: 0;
   line-height: 1.1;
+}
+
+.section-title::before {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-accent);
+  border-radius: 50%;
 }
 
 .section-subtitle {
