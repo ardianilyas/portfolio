@@ -75,41 +75,37 @@
           </div>
         </div>
 
-      </div>
-    </section>
+        <!-- Project Pagination -->
+        <div class="flex flex-row justify-between items-center gap-4 mt-8 pt-8 border-t border-[var(--color-border)] w-full">
+          <!-- Previous Button -->
+          <NuxtLink 
+            v-if="prevProject" 
+            :to="'/projects/' + prevProject.slug" 
+            class="pagination-btn group text-left"
+          >
+            <span class="pagination-label">
+              <svg class="transition-transform group-hover:-translate-x-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+              Prev
+            </span>
+            <span class="pagination-title">{{ prevProject.name }}</span>
+          </NuxtLink>
+          <div v-else></div>
 
-    <!-- Project Pagination -->
-    <section class="max-w-[1100px] mx-auto px-6 md:px-10 py-16 md:py-24 border-t border-[var(--color-border)] mt-12 md:mt-24">
-      <div class="flex flex-col sm:flex-row justify-between items-stretch gap-6">
-        
-        <!-- Previous Button -->
-        <NuxtLink 
-          v-if="prevProject" 
-          :to="'/projects/' + prevProject.slug" 
-          class="pagination-btn group mr-auto text-left"
-        >
-          <span class="pagination-label">
-            <svg class="transition-transform group-hover:-translate-x-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
-            Previous
-          </span>
-          <span class="pagination-title">{{ prevProject.name }}</span>
-        </NuxtLink>
-        <div v-else class="mr-auto"></div>
+          <!-- Next Button -->
+          <NuxtLink 
+            v-if="nextProject" 
+            :to="'/projects/' + nextProject.slug" 
+            class="pagination-btn group text-right"
+          >
+            <span class="pagination-label">
+              Next
+              <svg class="transition-transform group-hover:translate-x-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+            </span>
+            <span class="pagination-title">{{ nextProject.name }}</span>
+          </NuxtLink>
+          <div v-else></div>
+        </div>
 
-        <!-- Next Button -->
-        <NuxtLink 
-          v-if="nextProject" 
-          :to="'/projects/' + nextProject.slug" 
-          class="pagination-btn group ml-auto text-right"
-        >
-          <span class="pagination-label">
-            Next
-            <svg class="transition-transform group-hover:translate-x-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
-          </span>
-          <span class="pagination-title">{{ nextProject.name }}</span>
-        </NuxtLink>
-        <div v-else class="ml-auto"></div>
-        
       </div>
     </section>
 
@@ -319,37 +315,23 @@ onMounted(() => {
 .pagination-btn {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px 24px;
-  border-radius: 16px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  gap: 4px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: transparent;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  min-width: 160px;
-  flex: 1;
-  max-width: 100%;
-}
-
-@media (min-width: 640px) {
-  .pagination-btn {
-    flex: 0 1 auto;
-    min-width: 200px;
-    padding: 24px 32px;
-  }
+  transition: all 0.2s ease;
+  min-width: 120px;
 }
 
 .pagination-btn:hover {
-  background: #ffffff;
-  border-color: var(--color-border-2);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px -8px rgba(0,0,0,0.06);
+  background: var(--color-surface);
 }
 
 .pagination-label {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
@@ -373,7 +355,7 @@ onMounted(() => {
 
 .pagination-title {
   font-family: var(--font-sans);
-  font-size: clamp(16px, 2vw, 20px);
+  font-size: clamp(14px, 1.5vw, 16px);
   font-weight: 600;
   color: var(--color-text);
   line-height: 1.2;
