@@ -5,10 +5,23 @@
     aria-label="Introduction"
     ref="heroSection"
   >
-    <div class="hero-inner" :class="{ 'is-visible': isVisible }">
+    <!-- Turbulence Background SVGs -->
+    <div class="hero-bg-turbulence" aria-hidden="true">
+      <div class="tb-item tb-1"><img src="https://svgl.app/library/typescript.svg" alt="" /></div>
+      <div class="tb-item tb-2"><img src="https://svgl.app/library/laravel.svg" alt="" /></div>
+      <div class="tb-item tb-3"><img src="https://svgl.app/library/drizzle-orm_dark.svg" alt="" /></div>
+      <div class="tb-item tb-4"><img src="https://svgl.app/library/expressjs.svg" alt="" /></div>
+    </div>
 
-      <!-- 3D Chromatic Split Headline -->
-      <div class="hero-headline-wrap fade-up fade-up-1">
+    <div class="hero-inner" :class="{ 'is-visible': isVisible }">
+      <!-- Status badge (moved to top) -->
+      <div class="hero-status fade-up fade-up-1 mb-10" aria-label="Availability status">
+        <span class="status-dot"></span>
+        <span class="hero-status-text">Available for new opportunities</span>
+      </div>
+
+      <!-- Headline -->
+      <div class="hero-headline-wrap fade-up fade-up-2">
         <h1 class="hero-headline">
           <span
             v-for="(word, i) in headlineWords"
@@ -20,13 +33,13 @@
       </div>
 
       <!-- Sub -->
-      <p class="hero-sub fade-up fade-up-2">
+      <p class="hero-sub fade-up fade-up-3">
         A Full-Stack Developer transforming complex requirements
         into high-performing digital products with TypeScript, Go, and modern web frameworks.
       </p>
 
       <!-- CTAs -->
-      <div class="hero-actions fade-up fade-up-3">
+      <div class="hero-actions fade-up fade-up-4">
         <a href="#portfolio" class="btn-primary" @click.prevent="scrollTo('portfolio')">
           View my work
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
@@ -34,12 +47,6 @@
         <a href="mailto:ardianilyas@gmail.com" class="btn-ghost">
           Get in touch
         </a>
-      </div>
-
-      <!-- Status badge -->
-      <div class="hero-status fade-up fade-up-4" aria-label="Availability status">
-        <span class="status-dot"></span>
-        <span class="hero-status-text">Available for new opportunities</span>
       </div>
 
     </div>
@@ -81,6 +88,42 @@ const headlineWords = [
 </script>
 
 <style scoped>
+/* ── Turbulence Background ──────────────────────────── */
+.hero-bg-turbulence {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.15;
+}
+
+.tb-item {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  filter: grayscale(100%) opacity(40%);
+  animation: turbulence 12s ease-in-out infinite alternate;
+}
+
+.tb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tb-1 { top: 15%; left: 10%; animation-delay: 0s; animation-duration: 15s; }
+.tb-2 { top: 60%; left: 15%; animation-delay: -3s; animation-duration: 12s; }
+.tb-3 { top: 20%; right: 12%; animation-delay: -7s; animation-duration: 18s; }
+.tb-4 { top: 65%; right: 10%; animation-delay: -10s; animation-duration: 14s; }
+
+@keyframes turbulence {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  33% { transform: translate(15px, -20px) rotate(5deg) scale(1.05); }
+  66% { transform: translate(-10px, 15px) rotate(-3deg) scale(0.95); }
+  100% { transform: translate(20px, 20px) rotate(8deg) scale(1); }
+}
+
 /* ── Shell ───────────────────────────────────────────── */
 .hero {
   position: relative;
@@ -91,6 +134,8 @@ const headlineWords = [
 }
 
 .hero-inner {
+  position: relative;
+  z-index: 10;
   max-width: 1000px;
   margin: 0 auto;
   padding: 60px 20px 60px;
