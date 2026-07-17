@@ -262,13 +262,13 @@ onUnmounted(() => {
 }
 
 .navbar-link:hover {
-  color: var(--color-text);
+  color: #0F3F2F;
 }
 
 .navbar-link--active {
-  background: rgba(255, 255, 255, 0.7);
-  color: var(--color-text);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 1);
+  background: #0F3F2F;
+  color: #f2e8cf;
+  box-shadow: 0 4px 12px rgba(15, 63, 47, 0.15);
 }
 
 /* ── CTA ─────────────────────────────────────────────── */
@@ -355,13 +355,13 @@ onUnmounted(() => {
 }
 
 .mobile-link:hover {
-  color: var(--color-text);
-  background: var(--color-surface);
+  color: #0F3F2F;
+  background: rgba(242, 232, 207, 0.35);
 }
 
 .mobile-link--active {
-  color: var(--color-text);
-  font-weight: 500;
+  color: #0F3F2F;
+  font-weight: 600;
 }
 
 .mobile-link--accent {
