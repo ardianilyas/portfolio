@@ -48,7 +48,6 @@ defineProps<{
   padding: 36px 16px;
   margin: 0 -16px;
   border-top: 1px solid var(--color-border);
-  border-radius: 16px;
   text-decoration: none;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
   cursor: pointer;
