@@ -102,7 +102,7 @@ const headlineWords = [
   position: absolute;
   width: 64px;
   height: 64px;
-  filter: grayscale(100%) opacity(40%);
+  opacity: 0.8;
   animation: turbulence 12s ease-in-out infinite alternate;
 }
 
