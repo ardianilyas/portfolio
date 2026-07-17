@@ -122,6 +122,17 @@ const headlineWords = [
   100% { transform: translate(20px, 20px) rotate(8deg) scale(1); }
 }
 
+@media (max-width: 767px) {
+  .tb-item {
+    width: 40px;
+    height: 40px;
+  }
+  .tb-1 { top: 8%; left: 5%; }
+  .tb-2 { top: 82%; left: 8%; }
+  .tb-3 { top: 12%; right: 5%; }
+  .tb-4 { top: 78%; right: 8%; }
+}
+
 /* ── Shell ───────────────────────────────────────────── */
 .hero {
   position: relative;
@@ -208,6 +219,17 @@ const headlineWords = [
   color: var(--color-accent);
 }
 
+@media (max-width: 767px) {
+  .hero-headline:hover .hero-word {
+    opacity: 0.25;
+    filter: blur(4px);
+    transform: scale(0.98);
+  }
+  .hero-headline .hero-word:hover {
+    transform: scale(1.05) translateY(-4px) rotate(-1deg);
+  }
+}
+
 /* ── Sub ──────────────────────────────────────────────── */
 .hero-sub {
   font-family: var(--font-sans);
@@ -228,6 +250,18 @@ const headlineWords = [
   gap: 16px;
   flex-wrap: wrap;
   margin-bottom: 48px;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .hero-actions {
+    flex-direction: column;
+    padding: 0 20px;
+  }
+  .hero-actions > * {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .btn-primary {
