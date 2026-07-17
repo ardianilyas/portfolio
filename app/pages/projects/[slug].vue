@@ -4,7 +4,7 @@
     <!-- Floating Back Button -->
     <NuxtLink 
       to="/" 
-      class="fixed top-6 left-6 md:top-10 md:left-10 z-[100] flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-300 hover:scale-110 group cursor-pointer backdrop-blur-md"
+      class="fixed top-6 left-6 md:top-10 md:left-10 z-[100] flex items-center justify-center w-12 h-12 border transition-all duration-300 hover:scale-110 group cursor-pointer backdrop-blur-md"
       :class="isScrolledPastHero ? 'border-black/10 bg-black/5 text-black hover:bg-black/10' : 'border-white/30 bg-white/10 text-white hover:bg-white/20'"
     >
       <svg class="transition-transform group-hover:-translate-x-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -230,7 +230,6 @@ onMounted(() => {
   justify-content: center;
   gap: 8px;
   padding: 12px 24px;
-  border-radius: 9999px;
   font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 600;
@@ -279,7 +278,6 @@ onMounted(() => {
   flex-direction: column;
   gap: 4px;
   padding: 12px 16px;
-  border-radius: 12px;
   background: transparent;
   text-decoration: none;
   transition: all 0.2s ease;

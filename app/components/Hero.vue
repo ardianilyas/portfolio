@@ -224,7 +224,6 @@ function onMouseLeave() {
   color: var(--color-text-inv);
   background: var(--color-text);
   padding: 12px 28px;
-  border-radius: 9999px;
   transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -249,7 +248,6 @@ function onMouseLeave() {
   color: var(--color-text);
   background: transparent;
   padding: 12px 28px;
-  border-radius: 9999px;
   border: 1px solid var(--color-border);
   transition: background 0.2s ease, transform 0.2s ease;
 }

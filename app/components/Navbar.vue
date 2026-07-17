@@ -238,7 +238,6 @@ onUnmounted(() => {
   background: var(--color-surface);
   border: 1px solid transparent;
   padding: 4px;
-  border-radius: 9999px;
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 
@@ -253,7 +252,6 @@ onUnmounted(() => {
   letter-spacing: -0.01em;
   color: var(--color-text-2);
   padding: 8px 16px;
-  border-radius: 9999px;
   transition: color 0.3s ease, background 0.3s ease;
 }
 
@@ -275,7 +273,6 @@ onUnmounted(() => {
   color: var(--color-text-inv);
   background: var(--color-text);
   padding: 10px 20px;
-  border-radius: 9999px;
   transition: opacity 0.2s, transform 0.2s ease;
 }
 
