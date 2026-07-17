@@ -46,9 +46,9 @@ defineProps<{
   grid-template-columns: 48px 1fr;
   gap: 24px;
   padding: 36px 24px;
-  margin-bottom: 16px;
+  margin: 0;
+  margin-top: -1px; /* Prevent double borders */
   border: 1px solid #0F3F2F;
-  border-radius: 16px;
   text-decoration: none;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
   cursor: pointer;
@@ -60,7 +60,8 @@ defineProps<{
     grid-template-columns: 64px 1fr;
     gap: 32px;
     padding: 44px 32px;
-    margin-bottom: 16px;
+    margin: 0;
+    margin-top: -1px;
   }
 }
 
