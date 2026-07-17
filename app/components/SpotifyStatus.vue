@@ -178,10 +178,10 @@ onUnmounted(() => {
 .spotify-card {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 12px;
+  gap: 20px;
+  padding: 16px;
   width: 100%;
-  max-width: 320px;
+  max-width: 380px;
   text-decoration: none;
   transform-style: preserve-3d;
   will-change: transform;
@@ -217,8 +217,8 @@ onUnmounted(() => {
 
 .spotify-art-wrap {
   position: relative;
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
   flex-shrink: 0;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1); 
@@ -268,8 +268,8 @@ onUnmounted(() => {
 }
 
 .spotify-icon-wrap {
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -304,7 +304,7 @@ onUnmounted(() => {
 
 .spotify-label {
   font-family: var(--font-sans);
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-text-2);
@@ -314,7 +314,7 @@ onUnmounted(() => {
 
 .spotify-track {
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--color-text);
   margin: 0 0 2px;
@@ -325,7 +325,7 @@ onUnmounted(() => {
 
 .spotify-artist {
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--color-text-2);
   margin: 0 0 6px;
   white-space: nowrap;
@@ -357,7 +357,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 10px;
   color: var(--color-text-2);
   letter-spacing: 0.02em;
 }
