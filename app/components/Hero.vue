@@ -30,7 +30,7 @@
 
       <!-- Sub -->
       <p class="hero-sub fade-up fade-up-2">
-        I'm Ardian Ilyas — a Full-Stack Developer transforming complex requirements
+        A Full-Stack Developer transforming complex requirements
         into high-performing digital products with TypeScript, Go, and modern web frameworks.
       </p>
 
@@ -80,12 +80,10 @@ function scrollTo(id: string) {
 
 // ── Headline words ──────────────────────────────────────
 const headlineWords = [
-  { text: 'Code', accent: false },
-  { text: 'that', accent: false },
-  { text: 'scales.', accent: false },
-  { text: 'Design', accent: false },
-  { text: 'that', accent: true },
-  { text: 'feels.', accent: true },
+  { text: "Hi,", accent: false },
+  { text: "I'm", accent: false },
+  { text: 'Ardian', accent: true },
+  { text: 'Ilyas.', accent: true },
 ]
 
 // ── Mouse tracking for Chromatic Split ──────────────────
@@ -182,13 +180,32 @@ function onMouseLeave() {
   transition: text-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.hero-headline:hover .hero-word {
+  opacity: 0.15;
+  filter: blur(8px);
+  transform: scale(0.95);
+}
+
 .hero-word {
   display: inline-block;
   color: var(--color-text); /* Solid black */
   cursor: default;
+  position: relative;
+  transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
+}
+
+.hero-headline .hero-word:hover {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1.1) translateY(-8px) rotate(-2deg);
+  z-index: 10;
 }
 
 .hero-word--accent {
+  color: var(--color-accent);
+}
+
+.hero-headline .hero-word--accent:hover {
   color: var(--color-accent);
 }
 
