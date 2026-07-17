@@ -96,8 +96,8 @@ h1, h2, h3, h4 {
 @media (prefers-reduced-motion: no-preference) {
   .fade-up {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(30px);
+    transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .is-visible .fade-up, .fade-up.is-visible {
@@ -105,11 +105,11 @@ h1, h2, h3, h4 {
     transform: translateY(0);
   }
 
-  .fade-up-1 { transition-delay: 60ms; }
-  .fade-up-2 { transition-delay: 140ms; }
-  .fade-up-3 { transition-delay: 220ms; }
-  .fade-up-4 { transition-delay: 320ms; }
-  .fade-up-5 { transition-delay: 440ms; }
+  .fade-up-1 { transition-delay: 100ms; }
+  .fade-up-2 { transition-delay: 200ms; }
+  .fade-up-3 { transition-delay: 300ms; }
+  .fade-up-4 { transition-delay: 450ms; }
+  .fade-up-5 { transition-delay: 600ms; }
 }
 
 @media (prefers-reduced-motion: reduce) {

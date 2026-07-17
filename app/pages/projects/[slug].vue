@@ -2,7 +2,11 @@
   <div class="project-detail-page bg-[var(--color-bg)] min-h-screen relative" v-if="project">
     
     <!-- Floating Back Button -->
-    <NuxtLink to="/" class="fixed top-6 left-6 md:top-10 md:left-10 z-[100] flex items-center justify-center w-12 h-12 rounded-full border border-white/30 mix-blend-difference text-white transition-all hover:scale-110 hover:bg-white hover:text-black group cursor-pointer">
+    <NuxtLink 
+      to="/" 
+      class="fixed top-6 left-6 md:top-10 md:left-10 z-[100] flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-300 hover:scale-110 group cursor-pointer backdrop-blur-md"
+      :class="isScrolledPastHero ? 'border-black/10 bg-black/5 text-black hover:bg-black/10' : 'border-white/30 bg-white/10 text-white hover:bg-white/20'"
+    >
       <svg class="transition-transform group-hover:-translate-x-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
       </svg>
@@ -114,12 +118,19 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
-import { useWindowScroll } from '@vueuse/core'
+import { useWindowScroll, useWindowSize } from '@vueuse/core'
 
 const { y } = useWindowScroll()
+const { height } = useWindowSize()
+
 const parallaxStyle = computed(() => ({
   transform: `translateY(${y.value * 0.4}px)`
 }))
+
+const isScrolledPastHero = computed(() => {
+  // Mobile hero is ~60vh, Desktop is ~80vh. Trigger change at 50vh.
+  return y.value > height.value * 0.5
+})
 
 const route = useRoute()
 const slug = route.params.slug as string
@@ -289,18 +300,6 @@ onMounted(() => {
   border-color: var(--color-text);
   background: var(--color-surface);
   transform: translateY(-2px);
-}
-
-/* ── Animations ────────────────────────────────────────────── */
-.fade-up {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.fade-up.is-visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* ── Gallery ───────────────────────────────────────────────── */
