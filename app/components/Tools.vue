@@ -202,7 +202,7 @@ const tools = [
   transition: opacity 0.3s ease;
   background: radial-gradient(
     600px circle at var(--mouse-x, 0) var(--mouse-y, 0),
-    rgba(255, 255, 255, 0.7), 
+    rgba(242, 232, 207, 0.45), /* Warm spotlight */
     transparent 40%
   );
   z-index: 3;
@@ -226,7 +226,7 @@ const tools = [
 }
 
 .bento-card:hover .bento-card-inner {
-  background-color: var(--color-bg);
+  background-color: #ffffff; /* Brighter background */
 }
 
 .bento-content {
@@ -321,6 +321,8 @@ const tools = [
 
 .bento-card:hover .tool-icon-wrapper {
   transform: scale(1.08) translateY(-2px);
+  background-color: rgba(242, 232, 207, 0.4);
+  border-color: rgba(242, 232, 207, 0.8);
 }
 
 .tool-icon {
@@ -336,7 +338,7 @@ const tools = [
 }
 
 .bento-card:hover .tool-icon--svg {
-  color: var(--color-text);
+  color: #0F3F2F;
 }
 
 /* ── Info block ───────────────────────────────────────── */
@@ -358,6 +360,11 @@ const tools = [
   color: var(--color-text);
   line-height: 1.2;
   letter-spacing: -0.01em;
+  transition: color 0.3s ease;
+}
+
+.bento-card:hover .tool-name {
+  color: #0F3F2F;
 }
 
 .tool-category {

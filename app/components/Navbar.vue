@@ -261,7 +261,7 @@ onUnmounted(() => {
   transition: color 0.3s ease, background 0.3s ease;
 }
 
-.navbar-link:hover {
+.navbar-link:not(.navbar-link--active):hover {
   color: #0F3F2F;
 }
 
