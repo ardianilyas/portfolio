@@ -274,7 +274,7 @@ const headlineWords = [
   font-size: 15px;
   font-weight: 500;
   color: #ffffff;
-  background: #1DB954;
+  background: #0F3F2F;
   padding: 12px 28px;
   transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
 }
@@ -290,7 +290,7 @@ const headlineWords = [
 .btn-primary:hover {
   opacity: 0.95;
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px -10px rgba(29, 185, 84, 0.4);
+  box-shadow: 0 10px 20px -10px rgba(15, 63, 47, 0.4);
 }
 
 .btn-ghost {
