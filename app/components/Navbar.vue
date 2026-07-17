@@ -170,21 +170,25 @@ onUnmounted(() => {
 /* ── Shell ───────────────────────────────────────────── */
 .navbar {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 900px;
   z-index: 100;
-  height: 64px;
-  background: var(--color-bg);
-  transition: background 0.3s ease, border-color 0.3s ease;
-  border-bottom: 1px solid transparent;
+  height: 60px;
+  background: transparent;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid transparent;
+  border-radius: 9999px;
 }
 
 .navbar--scrolled {
-  background: rgba(250, 250, 248, 0.92);
+  background: rgba(250, 250, 248, 0.75);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom-color: var(--color-border);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 8px 32px rgba(0, 0, 0, 0.05);
 }
 
 /* ── Inner layout ─────────────────────────────────────── */
@@ -235,7 +239,7 @@ onUnmounted(() => {
   display: none;
   align-items: center;
   gap: 4px;
-  background: var(--color-surface);
+  background: transparent;
   border: 1px solid transparent;
   padding: 4px;
   border-radius: 9999px;
@@ -262,9 +266,9 @@ onUnmounted(() => {
 }
 
 .navbar-link--active {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.7);
   color: var(--color-text);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 /* ── CTA ─────────────────────────────────────────────── */
@@ -323,14 +327,17 @@ onUnmounted(() => {
 /* ── Mobile menu ───────────────────────────────────────── */
 .mobile-menu {
   position: absolute;
-  top: 64px;
+  top: calc(100% + 8px);
   left: 0;
   right: 0;
-  background: rgba(250, 250, 248, 0.97);
+  background: rgba(250, 250, 248, 0.9);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--color-border);
-  padding: 8px 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 8px 32px rgba(0, 0, 0, 0.05);
+  border-radius: 24px;
+  padding: 8px 0;
+  overflow: hidden;
 }
 
 .mobile-link {
@@ -342,7 +349,7 @@ onUnmounted(() => {
   font-weight: 400;
   color: var(--color-text-2);
   padding: 14px 24px;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
   transition: color 0.2s, background 0.2s;
 }
 
