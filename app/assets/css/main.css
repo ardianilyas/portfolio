@@ -49,7 +49,6 @@
 /* ── Base Reset ──────────────────────────────────────── */
 html {
   color-scheme: light !important;
-  scroll-behavior: smooth;
   scroll-padding-top: 5rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

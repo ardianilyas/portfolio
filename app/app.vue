@@ -2,7 +2,7 @@
   <div class="relative w-full min-h-screen bg-[var(--color-bg)]">
 
     <!-- Main Content Wrapper -->
-    <main class="relative z-10 bg-[var(--color-bg)] mb-[60vh] md:mb-[65vh]">
+    <main class="relative z-10 bg-[var(--color-bg)] mb-[60vh] md:mb-[65vh]" style="transform: translateZ(0); isolation: isolate;">
 
       <NuxtPage />
     </main>
