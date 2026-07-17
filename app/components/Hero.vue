@@ -95,14 +95,12 @@ const headlineWords = [
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  opacity: 0.15;
 }
 
 .tb-item {
   position: absolute;
   width: 64px;
   height: 64px;
-  opacity: 0.8;
   animation: turbulence 12s ease-in-out infinite alternate;
 }
 
