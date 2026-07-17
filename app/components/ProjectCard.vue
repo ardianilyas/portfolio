@@ -45,38 +45,31 @@ defineProps<{
   display: grid;
   grid-template-columns: 48px 1fr;
   gap: 24px;
-  padding: 36px 16px;
-  margin: 0 -16px;
-  border-top: 1px solid var(--color-border);
+  padding: 36px 24px;
+  margin-bottom: 16px;
+  border: 1px solid #0F3F2F;
+  border-radius: 16px;
   text-decoration: none;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
   cursor: pointer;
   position: relative;
-}
-
-.project-row--first {
-  border-top-color: transparent;
 }
 
 @media (min-width: 768px) {
   .project-row {
     grid-template-columns: 64px 1fr;
     gap: 32px;
-    padding: 44px 24px;
-    margin: 0 -24px;
+    padding: 44px 32px;
+    margin-bottom: 16px;
   }
 }
 
 .project-row:hover {
   background: rgba(242, 232, 207, 0.35); /* Subtle light brown */
   box-shadow: 0 16px 40px rgba(15, 63, 47, 0.04);
-  border-top-color: transparent;
+  border-color: #0F3F2F;
   transform: translateY(-2px);
   z-index: 10;
-}
-
-.project-row:hover + .project-row {
-  border-top-color: transparent;
 }
 
 .project-row:hover .project-name {
