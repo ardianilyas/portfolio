@@ -79,7 +79,7 @@ const year = new Date().getFullYear()
   width: 100%;
   max-width: 100%;
   height: 100%;
-  background-color: var(--color-bg);
+  background-color: #0F3F2F;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -97,7 +97,7 @@ const year = new Date().getFullYear()
   font-size: clamp(40px, 12vw, 18vw);
   font-weight: 800;
   letter-spacing: -0.05em;
-  color: var(--color-surface);
+  color: rgba(242, 232, 207, 0.05);
   white-space: nowrap;
   pointer-events: none;
   z-index: 0;
@@ -141,7 +141,7 @@ const year = new Date().getFullYear()
   font-weight: 400;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-text-3);
+  color: rgba(242, 232, 207, 0.7);
   margin: 0 0 20px;
 }
 
@@ -152,7 +152,7 @@ const year = new Date().getFullYear()
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.05;
-  color: var(--color-text);
+  color: #f2e8cf;
   margin: 0 0 40px;
 }
 
@@ -164,17 +164,17 @@ const year = new Date().getFullYear()
   font-family: var(--font-sans);
   font-size: clamp(16px, 1.8vw, 20px);
   font-weight: 400;
-  color: var(--color-accent);
+  color: #f2e8cf;
   letter-spacing: -0.01em;
-  border-bottom: 1px solid var(--color-border-2);
+  border-bottom: 1px solid rgba(242, 232, 207, 0.3);
   padding-bottom: 4px;
   word-break: break-all;
   transition: color 0.2s, border-color 0.2s;
 }
 
 .footer-email-link:hover {
-  color: var(--color-text);
-  border-bottom-color: var(--color-text-3);
+  color: #ffffff;
+  border-bottom-color: #f2e8cf;
 }
 
 .footer-email-arrow {
@@ -226,16 +226,16 @@ const year = new Date().getFullYear()
   font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 400;
-  color: var(--color-text-2);
-  border-bottom: 1px solid var(--color-border-2);
+  color: rgba(242, 232, 207, 0.7);
+  border-bottom: 1px solid rgba(242, 232, 207, 0.2);
   padding-bottom: 2px;
   transition: color 0.2s, border-color 0.2s;
   text-decoration: none;
 }
 
 .footer-bar-link:hover {
-  color: var(--color-text);
-  border-bottom-color: var(--color-text-3);
+  color: #f2e8cf;
+  border-bottom-color: rgba(242, 232, 207, 0.6);
 }
 
 .footer-bar-arrow {
@@ -253,7 +253,7 @@ const year = new Date().getFullYear()
   font-size: 12px;
   font-weight: 400;
   letter-spacing: 0.04em;
-  color: var(--color-text-3);
+  color: rgba(242, 232, 207, 0.5);
   margin: 0;
 }
 </style>

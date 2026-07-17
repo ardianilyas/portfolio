@@ -320,7 +320,7 @@ const headlineWords = [
 }
 
 .status-spark {
-  color: var(--color-accent);
+  color: #0F3F2F;
   animation: spark-spin 8s linear infinite;
 }
 
@@ -334,7 +334,7 @@ const headlineWords = [
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.02em;
-  color: var(--color-text-2);
+  color: #0F3F2F;
 }
 
 /* ── Entrance animation ───────────────────────────────── */

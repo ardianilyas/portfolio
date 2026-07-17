@@ -68,8 +68,8 @@ defineProps<{
 }
 
 .project-row:hover {
-  background: #ffffff;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.04);
+  background: rgba(242, 232, 207, 0.35); /* Subtle light brown */
+  box-shadow: 0 16px 40px rgba(15, 63, 47, 0.04);
   border-top-color: transparent;
   transform: translateY(-2px);
   z-index: 10;
@@ -80,11 +80,11 @@ defineProps<{
 }
 
 .project-row:hover .project-name {
-  color: var(--color-text);
+  color: #0F3F2F;
 }
 
 .project-row:hover .project-arrow {
-  color: var(--color-text);
+  color: #0F3F2F;
   transform: translate(3px, -3px);
 }
 

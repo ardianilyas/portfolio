@@ -28,12 +28,22 @@
   --color-text-inv:  #FAFAF8;
 
   /* Accent — single, locked */
-  --color-accent:    #16A34A;   /* emerald-600, readable on light */
-  --color-accent-dim: rgba(22, 163, 74, 0.08);
+  --color-accent:    #0F3F2F;   /* Premium Dark Green */
+  --color-accent-dim: rgba(15, 63, 47, 0.08);
 
   /* Typography */
   --font-sans: 'Albert Sans', 'Geist', system-ui, -apple-system, sans-serif;
   --font-mono: 'Geist Mono', 'Geist', ui-monospace, monospace;
+}
+
+/* ── Selection Highlight ─────────────────────────────── */
+::selection {
+  background: #0F3F2F;
+  color: #f2e8cf;
+}
+::-moz-selection {
+  background: #0F3F2F;
+  color: #f2e8cf;
 }
 
 /* ── Base Reset ──────────────────────────────────────── */
