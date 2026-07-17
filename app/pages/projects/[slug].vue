@@ -36,7 +36,7 @@
       <div class="flex flex-col gap-12 md:gap-20">
         
         <!-- Metadata -->
-        <div class="flex flex-col md:flex-row gap-10 md:gap-20 border-t border-[var(--color-border)] pt-12 items-start justify-between fade-up fade-up-3">
+        <div class="flex flex-col md:flex-row gap-10 md:gap-20 border-t border-[var(--color-border)] pt-12 items-start justify-between fade-up">
           <div class="flex flex-col md:flex-row gap-10 md:gap-24 flex-1">
             <div class="shrink-0">
               <h4 class="meta-label">Timeline</h4>
@@ -62,7 +62,7 @@
         </div>
 
         <!-- Visual Gallery -->
-        <div class="flex flex-col gap-6 w-full fade-up fade-up-4">
+        <div class="flex flex-col gap-6 w-full fade-up">
           <div class="gallery-img-wrap rounded-[20px] md:rounded-[32px] overflow-hidden aspect-[4/3] md:aspect-[21/9] bg-[var(--color-surface)] border border-[var(--color-border)]">
             <div class="w-full h-full" :class="project.galleryClasses[0]"></div>
           </div>
@@ -77,7 +77,7 @@
         </div>
 
         <!-- Project Pagination -->
-        <div class="flex flex-row justify-between items-center gap-4 mt-8 pt-8 border-t border-[var(--color-border)] w-full fade-up fade-up-5">
+        <div class="flex flex-row justify-between items-center gap-4 mt-8 pt-8 border-t border-[var(--color-border)] w-full fade-up">
           <!-- Previous Button -->
           <NuxtLink 
             v-if="prevProject" 
@@ -132,60 +132,10 @@ const isScrolledPastHero = computed(() => {
   return y.value > height.value * 0.5
 })
 
+import { projects as db } from '~/data/projects'
+
 const route = useRoute()
 const slug = route.params.slug as string
-
-// Since there is no database, we hardcode the visual project data here
-const db = [
-  {
-    slug: 'portfolio',
-    name: 'Personal Portfolio',
-    role: 'Design & Engineering',
-    year: '2026',
-    tech: ['NuxtJS', 'Vue', 'TailwindCSS'],
-    github: 'https://github.com/ardianilyas/portfolio',
-    live: null,
-    description: 'A heavily interactive, motion-rich personal portfolio built to showcase engineering skill and design taste through micro-animations.',
-    heroClass: 'bg-gradient-to-br from-zinc-800 to-black',
-    galleryClasses: ['bg-gradient-to-tr from-zinc-100 to-zinc-300', 'bg-gradient-to-bl from-zinc-200 to-zinc-400', 'bg-gradient-to-br from-zinc-100 to-zinc-200']
-  },
-  {
-    slug: 'zavo',
-    name: 'Zavo',
-    role: 'Full-Stack Engineer',
-    year: '2025',
-    tech: ['NextJS', 'tRPC', 'Drizzle', 'PostgreSQL', 'Xendit'],
-    github: 'https://github.com/ardianilyas/zavo',
-    live: null,
-    description: 'Full-stack donation platform tailored for creators, featuring real-time stream overlays, payment integration, and a type-safe API layer.',
-    heroClass: 'bg-gradient-to-br from-indigo-900 to-purple-900',
-    galleryClasses: ['bg-gradient-to-tr from-indigo-50 to-purple-100', 'bg-gradient-to-bl from-indigo-100 to-purple-200', 'bg-gradient-to-br from-purple-50 to-indigo-100']
-  },
-  {
-    slug: 'patungan',
-    name: 'Patungan',
-    role: 'Backend Engineer',
-    year: '2024',
-    tech: ['Laravel', 'Xendit', 'Reverb', 'Octane', 'Redis'],
-    github: 'https://github.com/ardianilyas/patungan',
-    live: null,
-    description: 'Content monetization platform with real-time broadcasting, queue-based background processing, and a robust payment gateway architecture.',
-    heroClass: 'bg-gradient-to-br from-emerald-900 to-teal-900',
-    galleryClasses: ['bg-gradient-to-tr from-emerald-50 to-teal-100', 'bg-gradient-to-bl from-emerald-100 to-teal-200', 'bg-gradient-to-br from-teal-50 to-emerald-100']
-  },
-  {
-    slug: 'bux',
-    name: 'Bux',
-    role: 'Frontend Engineer',
-    year: '2025',
-    tech: ['NextJS', 'tRPC', 'Drizzle', 'PostgreSQL'],
-    github: 'https://github.com/ardianilyas/bux',
-    live: null,
-    description: 'Expense tracking application focused on performance, featuring a fully type-safe API, optimistic UI updates, and clean data visualization.',
-    heroClass: 'bg-gradient-to-br from-blue-900 to-cyan-900',
-    galleryClasses: ['bg-gradient-to-tr from-blue-50 to-cyan-100', 'bg-gradient-to-bl from-blue-100 to-cyan-200', 'bg-gradient-to-br from-cyan-50 to-blue-100']
-  }
-]
 
 const currentIndex = db.findIndex(p => p.slug === slug)
 const project = computed(() => currentIndex !== -1 ? db[currentIndex] : null)
@@ -207,11 +157,21 @@ useHead({
 onMounted(() => {
   window.scrollTo(0, 0)
   
-  // Trigger entry animations
-  setTimeout(() => {
-    const fadeEls = document.querySelectorAll('.fade-up')
-    fadeEls.forEach(el => el.classList.add('is-visible'))
-  }, 100)
+  // Intersection Observer for scroll-based reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible')
+        observer.unobserve(entry.target) // Animate only once
+      }
+    })
+  }, { 
+    threshold: 0.1, 
+    rootMargin: '0px 0px -50px 0px' 
+  })
+
+  const fadeEls = document.querySelectorAll('.fade-up')
+  fadeEls.forEach(el => observer.observe(el))
 })
 </script>
 
