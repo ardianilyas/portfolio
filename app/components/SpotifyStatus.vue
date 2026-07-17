@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const { data, refresh } = useFetch('/api/spotify')
+const { data, refresh } = useFetch<any>('/api/spotify')
 
 let interval: ReturnType<typeof setInterval> | null = null
 

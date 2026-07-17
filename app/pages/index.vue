@@ -5,7 +5,9 @@
     <Skills />
     <Tools />
     <Projects />
-    <Spotify />
+    <ClientOnly>
+      <SpotifyStatus />
+    </ClientOnly>
   </div>
 </template>
 
