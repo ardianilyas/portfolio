@@ -276,7 +276,6 @@ const headlineWords = [
   color: #f2e8cf;
   background: #0F3F2F;
   padding: 12px 28px;
-  border-radius: 9999px;
   transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
 }
 
