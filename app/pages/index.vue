@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Navbar />
     <Hero />
     <Skills />
     <Tools />

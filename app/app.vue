@@ -1,8 +1,13 @@
 <template>
   <div class="relative w-full min-h-screen bg-[var(--color-bg)]">
 
-    <!-- Main Content Wrapper -->
-    <main class="relative z-10 bg-[var(--color-bg)] mb-[60vh] md:mb-[65vh]">
+    <!-- Navbar lives here, outside <main>, so it is never trapped by any stacking context -->
+    <Navbar />
+
+    <!-- Main Content Wrapper —— transform: translateZ(0) promotes this to its own GPU
+         compositing layer which prevents the fixed footer behind it from flashing
+         through during smooth-scroll repaints. Navbar is above this so it is unaffected. -->
+    <main class="relative z-10 bg-[var(--color-bg)] mb-[60vh] md:mb-[65vh]" style="transform: translateZ(0);">
 
       <NuxtPage />
     </main>
@@ -31,12 +36,9 @@
 </script>
 
 <style scoped>
-/* Force the main content onto its own GPU compositing layer.
-   This prevents the fixed footer behind it from "bleeding through"
-   during smooth scroll repaints. We use will-change here intentionally
-   and avoid isolation/transform so fixed children (Navbar) still work. */
 main {
-  will-change: transform;
+  /* Counterpart to transform: translateZ(0) on the element itself.
+     Keeps this layer opaque during scroll repaints. */
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
