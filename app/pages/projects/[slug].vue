@@ -32,46 +32,44 @@
 
     <!-- Project Details Grid -->
     <section class="max-w-[1100px] mx-auto px-6 md:px-10 py-16 md:py-24">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 border-t border-[var(--color-border)] pt-12 fade-up" style="transition-delay: 0.1s">
+      <div class="flex flex-col gap-12 md:gap-20 fade-up" style="transition-delay: 0.1s">
         
         <!-- Metadata -->
-        <div class="md:col-span-1 flex flex-col gap-8">
-          <div>
-            <h4 class="meta-label">Role</h4>
-            <p class="meta-value">{{ project.role }}</p>
-          </div>
-          <div>
-            <h4 class="meta-label">Timeline</h4>
-            <p class="meta-value">{{ project.year }}</p>
-          </div>
-          <div>
-            <h4 class="meta-label">Stack</h4>
-            <div class="flex flex-wrap gap-2 mt-2">
-              <span v-for="t in project.tech" :key="t" class="tech-tag">{{ t }}</span>
+        <div class="flex flex-col md:flex-row gap-10 md:gap-20 border-t border-[var(--color-border)] pt-12 items-start justify-between">
+          <div class="flex flex-col md:flex-row gap-10 md:gap-24 flex-1">
+            <div class="shrink-0">
+              <h4 class="meta-label">Timeline</h4>
+              <p class="meta-value">{{ project.year }}</p>
+            </div>
+            <div>
+              <h4 class="meta-label">Stack</h4>
+              <div class="flex flex-wrap gap-2 mt-2">
+                <span v-for="t in project.tech" :key="t" class="tech-tag">{{ t }}</span>
+              </div>
             </div>
           </div>
-          <div class="flex flex-col gap-3 mt-4">
+          <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto shrink-0 mt-4 md:mt-0">
             <a v-if="project.live" :href="project.live" target="_blank" class="action-btn action-btn--primary">
               View Live Site
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" /></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" /></svg>
             </a>
             <a v-if="project.github" :href="project.github" target="_blank" class="action-btn action-btn--secondary">
-              View Source code
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" /></svg>
+              Source Code
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
             </a>
           </div>
         </div>
 
         <!-- Visual Gallery -->
-        <div class="md:col-span-3 flex flex-col gap-6">
-          <div class="gallery-img-wrap rounded-2xl overflow-hidden aspect-[4/3] md:aspect-[16/9] bg-[var(--color-surface)] border border-[var(--color-border)]">
+        <div class="flex flex-col gap-6 w-full">
+          <div class="gallery-img-wrap rounded-[20px] md:rounded-[32px] overflow-hidden aspect-[4/3] md:aspect-[21/9] bg-[var(--color-surface)] border border-[var(--color-border)]">
             <div class="w-full h-full" :class="project.galleryClasses[0]"></div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="gallery-img-wrap rounded-2xl overflow-hidden aspect-square md:aspect-[4/3] bg-[var(--color-surface)] border border-[var(--color-border)]">
+            <div class="gallery-img-wrap rounded-[20px] md:rounded-[32px] overflow-hidden aspect-square md:aspect-[16/9] bg-[var(--color-surface)] border border-[var(--color-border)]">
               <div class="w-full h-full" :class="project.galleryClasses[1]"></div>
             </div>
-            <div class="gallery-img-wrap rounded-2xl overflow-hidden aspect-square md:aspect-[4/3] bg-[var(--color-surface)] border border-[var(--color-border)]">
+            <div class="gallery-img-wrap rounded-[20px] md:rounded-[32px] overflow-hidden aspect-square md:aspect-[16/9] bg-[var(--color-surface)] border border-[var(--color-border)]">
               <div class="w-full h-full" :class="project.galleryClasses[2]"></div>
             </div>
           </div>
@@ -209,39 +207,50 @@ onMounted(() => {
 }
 
 .tech-tag {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
   color: var(--color-text-2);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  padding: 4px 10px;
-  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.tech-tag:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--color-text);
+  transform: translateY(-1px);
 }
 
 /* ── Buttons ───────────────────────────────────────────────── */
 .action-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  border-radius: 8px;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 9999px;
   font-family: var(--font-sans);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .action-btn--primary {
   background: var(--color-text);
   color: var(--color-bg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .action-btn--primary:hover {
-  background: var(--color-text-2);
-  transform: translateY(-1px);
+  background: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
 }
 
 .action-btn--secondary {
@@ -253,6 +262,7 @@ onMounted(() => {
 .action-btn--secondary:hover {
   border-color: var(--color-text);
   background: var(--color-surface);
+  transform: translateY(-2px);
 }
 
 /* ── Animations ────────────────────────────────────────────── */
