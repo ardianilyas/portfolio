@@ -273,7 +273,7 @@ const headlineWords = [
   font-family: var(--font-sans);
   font-size: 15px;
   font-weight: 500;
-  color: #E6D5B8;
+  color: #f2e8cf;
   background: #0F3F2F;
   padding: 12px 28px;
   transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
