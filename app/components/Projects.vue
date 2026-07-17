@@ -58,7 +58,6 @@ import { projects } from '~/data/projects'
 
 .projects-list {
   padding-bottom: 72px;
-  overflow: hidden;
 }
 
 /* Visibility triggers for animations */
