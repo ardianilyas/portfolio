@@ -78,16 +78,39 @@
       </div>
     </section>
 
-    <!-- Next Project -->
-    <section class="border-t border-[var(--color-border)] mt-12 md:mt-24">
-      <NuxtLink :to="'/projects/' + nextProject.slug" class="next-project-link group">
-        <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-24 md:py-32 flex flex-col items-center text-center">
-          <span class="font-mono text-sm uppercase tracking-widest text-[var(--color-text-3)] mb-4 block">Next Project</span>
-          <h2 class="font-sans text-[clamp(36px,5vw,72px)] font-bold tracking-tighter text-[var(--color-text)] transition-colors group-hover:text-[var(--color-accent)]">
-            {{ nextProject.name }}
-          </h2>
-        </div>
-      </NuxtLink>
+    <!-- Project Pagination -->
+    <section class="max-w-[1100px] mx-auto px-6 md:px-10 py-16 md:py-24 border-t border-[var(--color-border)] mt-12 md:mt-24">
+      <div class="flex flex-col sm:flex-row justify-between items-stretch gap-6">
+        
+        <!-- Previous Button -->
+        <NuxtLink 
+          v-if="prevProject" 
+          :to="'/projects/' + prevProject.slug" 
+          class="pagination-btn group mr-auto text-left"
+        >
+          <span class="pagination-label">
+            <svg class="transition-transform group-hover:-translate-x-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+            Previous
+          </span>
+          <span class="pagination-title">{{ prevProject.name }}</span>
+        </NuxtLink>
+        <div v-else class="mr-auto"></div>
+
+        <!-- Next Button -->
+        <NuxtLink 
+          v-if="nextProject" 
+          :to="'/projects/' + nextProject.slug" 
+          class="pagination-btn group ml-auto text-right"
+        >
+          <span class="pagination-label">
+            Next
+            <svg class="transition-transform group-hover:translate-x-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+          </span>
+          <span class="pagination-title">{{ nextProject.name }}</span>
+        </NuxtLink>
+        <div v-else class="ml-auto"></div>
+        
+      </div>
     </section>
 
   </div>
@@ -157,10 +180,14 @@ const db = [
 const currentIndex = db.findIndex(p => p.slug === slug)
 const project = computed(() => currentIndex !== -1 ? db[currentIndex] : null)
 
+const prevProject = computed(() => {
+  if (currentIndex <= 0) return null
+  return db[currentIndex - 1]
+})
+
 const nextProject = computed(() => {
-  if (currentIndex === -1) return db[0]
-  const nextIdx = (currentIndex + 1) % db.length
-  return db[nextIdx]
+  if (currentIndex === -1 || currentIndex >= db.length - 1) return null
+  return db[currentIndex + 1]
 })
 
 useHead({
@@ -289,14 +316,66 @@ onMounted(() => {
   box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
 }
 
-.next-project-link {
-  display: block;
-  text-decoration: none;
+.pagination-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 24px;
+  border-radius: 16px;
   background: var(--color-surface);
-  transition: background 0.3s;
+  border: 1px solid var(--color-border);
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 160px;
+  flex: 1;
+  max-width: 100%;
 }
 
-.next-project-link:hover {
-  background: var(--color-border);
+@media (min-width: 640px) {
+  .pagination-btn {
+    flex: 0 1 auto;
+    min-width: 200px;
+    padding: 24px 32px;
+  }
+}
+
+.pagination-btn:hover {
+  background: #ffffff;
+  border-color: var(--color-border-2);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -8px rgba(0,0,0,0.06);
+}
+
+.pagination-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-3);
+  transition: color 0.2s;
+}
+
+.pagination-btn:hover .pagination-label {
+  color: var(--color-text-2);
+}
+
+.pagination-btn.text-left .pagination-label {
+  justify-content: flex-start;
+}
+
+.pagination-btn.text-right .pagination-label {
+  justify-content: flex-end;
+}
+
+.pagination-title {
+  font-family: var(--font-sans);
+  font-size: clamp(16px, 2vw, 20px);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.2;
 }
 </style>
