@@ -127,9 +127,9 @@ const headlineWords = [
     width: 40px;
     height: 40px;
   }
-  .tb-1 { top: 8%; left: 5%; }
+  .tb-1 { top: 18%; left: 5%; }
   .tb-2 { top: 82%; left: 8%; }
-  .tb-3 { top: 12%; right: 5%; }
+  .tb-3 { top: 22%; right: 5%; }
   .tb-4 { top: 78%; right: 8%; }
 }
 
@@ -147,7 +147,7 @@ const headlineWords = [
   z-index: 10;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 60px 20px 60px;
+  padding: 30px 20px 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
