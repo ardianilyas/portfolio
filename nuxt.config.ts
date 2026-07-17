@@ -5,6 +5,11 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@vueuse/nuxt'],
   css: ["~/assets/css/main.css"],
+  runtimeConfig: {
+    spotifyClientId: process.env.SPOTIFY_CLIENT_ID || '',
+    spotifyClientSecret: process.env.SPOTIFY_CLIENT_SECRET || '',
+    spotifyRefreshToken: process.env.SPOTIFY_REFRESH_TOKEN || '',
+  },
   app: {
     head: {
       title: "Ardian Ilyas — Full Stack Engineer",
