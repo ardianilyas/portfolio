@@ -100,8 +100,6 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { useHead } from '@vueuse/head'
 
 const route = useRoute()
 const slug = route.params.slug as string
