@@ -279,6 +279,7 @@ onUnmounted(() => {
   color: #f2e8cf;
   background: #0F3F2F;
   padding: 10px 20px;
+  border-radius: 9999px;
   transition: opacity 0.2s, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
