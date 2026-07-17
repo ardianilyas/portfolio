@@ -22,27 +22,37 @@
   --color-rule:      #E4E4E0;
 
   /* Text */
-  --color-text:      #0A0A0A;
-  --color-text-2:    #525252;   /* zinc-600  */
-  --color-text-3:    #A1A1AA;   /* zinc-400  */
+  --color-text:      #16211E;   /* Deep warm charcoal/forest */
+  --color-text-2:    #4A5551;   /* Soft dark green-gray */
+  --color-text-3:    #9CA3A0;   /* Lighter green-gray */
   --color-text-inv:  #FAFAF8;
 
   /* Accent — single, locked */
-  --color-accent:    #16A34A;   /* emerald-600, readable on light */
-  --color-accent-dim: rgba(22, 163, 74, 0.08);
+  --color-accent:    #0F3F2F;   /* Premium Dark Green */
+  --color-accent-dim: rgba(15, 63, 47, 0.08);
 
   /* Typography */
   --font-sans: 'Albert Sans', 'Geist', system-ui, -apple-system, sans-serif;
   --font-mono: 'Geist Mono', 'Geist', ui-monospace, monospace;
 }
 
+/* ── Selection Highlight ─────────────────────────────── */
+::selection {
+  background: #0F3F2F;
+  color: #f2e8cf;
+}
+::-moz-selection {
+  background: #0F3F2F;
+  color: #f2e8cf;
+}
+
 /* ── Base Reset ──────────────────────────────────────── */
 html {
   color-scheme: light !important;
-  scroll-behavior: smooth;
   scroll-padding-top: 5rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
   overflow-x: hidden;
 }
 

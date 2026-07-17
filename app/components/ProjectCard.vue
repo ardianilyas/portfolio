@@ -45,47 +45,40 @@ defineProps<{
   display: grid;
   grid-template-columns: 48px 1fr;
   gap: 24px;
-  padding: 36px 16px;
-  margin: 0 -16px;
-  border-top: 1px solid var(--color-border);
-  border-radius: 16px;
+  padding: 36px 24px;
+  margin: 0;
+  margin-top: -1px; /* Prevent double borders */
+  border: 1px solid #0F3F2F;
   text-decoration: none;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
   cursor: pointer;
   position: relative;
-}
-
-.project-row--first {
-  border-top-color: transparent;
 }
 
 @media (min-width: 768px) {
   .project-row {
     grid-template-columns: 64px 1fr;
     gap: 32px;
-    padding: 44px 24px;
-    margin: 0 -24px;
+    padding: 44px 32px;
+    margin: 0;
+    margin-top: -1px;
   }
 }
 
 .project-row:hover {
-  background: #ffffff;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.04);
-  border-top-color: transparent;
+  background: rgba(242, 232, 207, 0.35); /* Subtle light brown */
+  box-shadow: 0 16px 40px rgba(15, 63, 47, 0.04);
+  border-color: #0F3F2F;
   transform: translateY(-2px);
   z-index: 10;
 }
 
-.project-row:hover + .project-row {
-  border-top-color: transparent;
-}
-
 .project-row:hover .project-name {
-  color: var(--color-text);
+  color: #0F3F2F;
 }
 
 .project-row:hover .project-arrow {
-  color: var(--color-text);
+  color: #0F3F2F;
   transform: translate(3px, -3px);
 }
 
@@ -148,24 +141,26 @@ defineProps<{
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .project-tag {
   font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  color: var(--color-text-3);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  padding: 4px 10px;
-  border-radius: 4px;
-  transition: color 0.2s, border-color 0.2s;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #4A5551;
+  background: rgba(15, 63, 47, 0.04);
+  border: 1px solid rgba(15, 63, 47, 0.18);
+  padding: 4px 9px;
+  border-radius: 0;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
 .project-row:hover .project-tag {
-  color: var(--color-text-2);
-  border-color: var(--color-border-2);
+  color: #0F3F2F;
+  border-color: #0F3F2F;
+  background: rgba(15, 63, 47, 0.08);
 }
 </style>

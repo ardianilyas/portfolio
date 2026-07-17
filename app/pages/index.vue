@@ -1,10 +1,12 @@
 <template>
   <div>
-    <Navbar />
     <Hero />
     <Skills />
     <Tools />
     <Projects />
+    <ClientOnly>
+      <SpotifyStatus />
+    </ClientOnly>
   </div>
 </template>
 

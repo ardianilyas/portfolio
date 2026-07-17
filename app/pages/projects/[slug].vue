@@ -4,7 +4,7 @@
     <!-- Floating Back Button -->
     <NuxtLink 
       to="/" 
-      class="fixed top-6 left-6 md:top-10 md:left-10 z-[100] flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-300 hover:scale-110 group cursor-pointer backdrop-blur-md"
+      class="fixed top-6 left-6 md:top-10 md:left-10 z-[100] flex items-center justify-center w-12 h-12 border transition-all duration-300 hover:scale-110 group cursor-pointer backdrop-blur-md"
       :class="isScrolledPastHero ? 'border-black/10 bg-black/5 text-black hover:bg-black/10' : 'border-white/30 bg-white/10 text-white hover:bg-white/20'"
     >
       <svg class="transition-transform group-hover:-translate-x-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -204,22 +204,23 @@ onMounted(() => {
 }
 
 .tech-tag {
-  font-family: var(--font-sans);
-  font-size: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.01em;
-  color: var(--color-text-2);
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  padding: 6px 14px;
-  border-radius: 9999px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #0F3F2F;
+  background: rgba(15, 63, 47, 0.04);
+  border: 1px solid rgba(15, 63, 47, 0.2);
+  padding: 5px 12px;
+  border-radius: 0;
   transition: all 0.2s ease;
-  backdrop-filter: blur(8px);
 }
 
 .tech-tag:hover {
-  background: rgba(0, 0, 0, 0.06);
-  color: var(--color-text);
+  background: #0F3F2F;
+  color: #f2e8cf;
+  border-color: #0F3F2F;
   transform: translateY(-1px);
 }
 
@@ -230,7 +231,6 @@ onMounted(() => {
   justify-content: center;
   gap: 8px;
   padding: 12px 24px;
-  border-radius: 9999px;
   font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 600;
@@ -279,7 +279,6 @@ onMounted(() => {
   flex-direction: column;
   gap: 4px;
   padding: 12px 16px;
-  border-radius: 12px;
   background: transparent;
   text-decoration: none;
   transition: all 0.2s ease;

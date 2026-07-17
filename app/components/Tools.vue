@@ -202,7 +202,7 @@ const tools = [
   transition: opacity 0.3s ease;
   background: radial-gradient(
     600px circle at var(--mouse-x, 0) var(--mouse-y, 0),
-    rgba(255, 255, 255, 0.7), 
+    rgba(242, 232, 207, 0.15), /* Subtle warm spotlight on dark */
     transparent 40%
   );
   z-index: 3;
@@ -218,7 +218,7 @@ const tools = [
 .bento-card-inner {
   position: absolute;
   inset: 1px;
-  background-color: var(--color-surface);
+  background-color: #0F3F2F; /* Dark Green */
   border-radius: 15px;
   z-index: 2;
   transition: background-color 0.3s ease;
@@ -226,7 +226,7 @@ const tools = [
 }
 
 .bento-card:hover .bento-card-inner {
-  background-color: var(--color-bg);
+  background-color: #124c38; /* Slightly lighter dark green */
 }
 
 .bento-content {
@@ -282,7 +282,7 @@ const tools = [
   font-weight: 500;
   line-height: 1.4;
   letter-spacing: -0.01em;
-  color: var(--color-text);
+  color: #f2e8cf; /* Light Brown */
   margin: 0;
 }
 
@@ -291,7 +291,7 @@ const tools = [
   font-size: 13px;
   font-weight: 400;
   letter-spacing: 0.03em;
-  color: var(--color-text-3);
+  color: rgba(242, 232, 207, 0.7);
   margin: 0;
 }
 
@@ -312,15 +312,17 @@ const tools = [
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 16px;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .bento-card:hover .tool-icon-wrapper {
   transform: scale(1.08) translateY(-2px);
+  background-color: rgba(242, 232, 207, 0.15);
+  border-color: rgba(242, 232, 207, 0.4);
 }
 
 .tool-icon {
@@ -331,12 +333,12 @@ const tools = [
 }
 
 .tool-icon--svg {
-  color: var(--color-text-2);
+  color: #f2e8cf;
   transition: color 0.3s ease;
 }
 
 .bento-card:hover .tool-icon--svg {
-  color: var(--color-text);
+  color: #ffffff;
 }
 
 /* ── Info block ───────────────────────────────────────── */
@@ -355,16 +357,21 @@ const tools = [
   font-family: var(--font-sans);
   font-size: 16px;
   font-weight: 600;
-  color: var(--color-text);
+  color: #f2e8cf;
   line-height: 1.2;
   letter-spacing: -0.01em;
+  transition: color 0.3s ease;
+}
+
+.bento-card:hover .tool-name {
+  color: #ffffff;
 }
 
 .tool-category {
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 400;
-  color: var(--color-text-3);
+  color: rgba(242, 232, 207, 0.6);
   line-height: 1.2;
 }
 
@@ -374,11 +381,11 @@ const tools = [
   bottom: calc(100% + 12px); /* Just above the card */
   left: 50%;
   transform: translateX(-50%) translateY(8px);
-  background: rgba(255, 255, 255, 0.7); /* Light glass */
+  background: rgba(15, 63, 47, 0.85); /* Dark Green glass */
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
+  border: 1px solid rgba(242, 232, 207, 0.15); /* Subtle bone border */
+  color: #f2e8cf; /* Light bone text */
   padding: 10px 16px;
   border-radius: 12px;
   font-family: var(--font-sans);
@@ -391,13 +398,13 @@ const tools = [
   visibility: hidden;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 20;
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0,0,0,0.02);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0,0,0,0.05);
 }
 
 /* For dark mode support if needed, you could use var(--color-surface) but semi-transparent */
 @media (prefers-color-scheme: dark) {
   .tool-tooltip {
-    background: rgba(30, 30, 30, 0.7);
+    background: rgba(15, 63, 47, 0.9);
     color: #ffffff;
     border: 1px solid rgba(255,255,255,0.1);
   }

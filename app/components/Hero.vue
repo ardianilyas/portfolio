@@ -4,21 +4,27 @@
     class="hero"
     aria-label="Introduction"
     ref="heroSection"
-    @mousemove="onMouseMove"
-    @mouseleave="onMouseLeave"
   >
-    <div class="hero-inner" :class="{ 'is-visible': isVisible }">
+    <!-- Turbulence Background SVGs -->
+    <div class="hero-bg-turbulence" aria-hidden="true">
+      <div class="tb-item tb-1"><img src="https://svgl.app/library/typescript.svg" alt="" /></div>
+      <div class="tb-item tb-2"><img src="https://svgl.app/library/laravel.svg" alt="" /></div>
+      <div class="tb-item tb-3"><img src="https://svgl.app/library/drizzle-orm_dark.svg" alt="" /></div>
+      <div class="tb-item tb-4"><img src="https://svgl.app/library/expressjs.svg" alt="" /></div>
+    </div>
 
-      <!-- 3D Chromatic Split Headline -->
-      <div class="hero-headline-wrap fade-up fade-up-1">
-        <h1 
-          class="hero-headline"
-          :style="{ 
-            '--x': mouseNorm.x, 
-            '--y': mouseNorm.y,
-            '--active': isHovering ? 1 : 0
-          }"
-        >
+    <div class="hero-inner" :class="{ 'is-visible': isVisible }">
+      <!-- Status badge (moved to top) -->
+      <div class="hero-status fade-up fade-up-1 mb-8" aria-label="Availability status">
+        <svg class="status-spark" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor" />
+        </svg>
+        <span class="hero-status-text">Available for new opportunities</span>
+      </div>
+
+      <!-- Headline -->
+      <div class="hero-headline-wrap fade-up fade-up-2">
+        <h1 class="hero-headline">
           <span
             v-for="(word, i) in headlineWords"
             :key="i"
@@ -29,13 +35,13 @@
       </div>
 
       <!-- Sub -->
-      <p class="hero-sub fade-up fade-up-2">
-        I'm Ardian Ilyas — a Full-Stack Developer transforming complex requirements
+      <p class="hero-sub fade-up fade-up-3">
+        A Full-Stack Developer transforming complex requirements
         into high-performing digital products with TypeScript, Go, and modern web frameworks.
       </p>
 
       <!-- CTAs -->
-      <div class="hero-actions fade-up fade-up-3">
+      <div class="hero-actions fade-up fade-up-4">
         <a href="#portfolio" class="btn-primary" @click.prevent="scrollTo('portfolio')">
           View my work
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
@@ -43,12 +49,6 @@
         <a href="mailto:ardianilyas@gmail.com" class="btn-ghost">
           Get in touch
         </a>
-      </div>
-
-      <!-- Status badge -->
-      <div class="hero-status fade-up fade-up-4" aria-label="Availability status">
-        <span class="status-dot"></span>
-        <span class="hero-status-text">Available for new opportunities</span>
       </div>
 
     </div>
@@ -80,40 +80,61 @@ function scrollTo(id: string) {
 
 // ── Headline words ──────────────────────────────────────
 const headlineWords = [
-  { text: 'Code', accent: false },
-  { text: 'that', accent: false },
-  { text: 'scales.', accent: false },
-  { text: 'Design', accent: false },
-  { text: 'that', accent: true },
-  { text: 'feels.', accent: true },
+  { text: "Hi,", accent: false },
+  { text: "I'm", accent: false },
+  { text: 'Ardian', accent: true },
+  { text: 'Ilyas.', accent: true },
 ]
 
-// ── Mouse tracking for Chromatic Split ──────────────────
-const mouseNorm = reactive({ x: 0, y: 0 })
-const isHovering = ref(false)
 
-function onMouseMove(e: MouseEvent) {
-  isHovering.value = true
-  // Normalize mouse position from -1 to 1 based on viewport
-  const cx = window.innerWidth / 2
-  const cy = window.innerHeight / 2
-  
-  // Ease the mouse values slightly for a smoother feel
-  const targetX = (e.clientX - cx) / cx
-  const targetY = (e.clientY - cy) / cy
-  
-  mouseNorm.x = targetX
-  mouseNorm.y = targetY
-}
-
-function onMouseLeave() {
-  isHovering.value = false
-  mouseNorm.x = 0
-  mouseNorm.y = 0
-}
 </script>
 
 <style scoped>
+/* ── Turbulence Background ──────────────────────────── */
+.hero-bg-turbulence {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.tb-item {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  animation: turbulence 12s ease-in-out infinite alternate;
+}
+
+.tb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tb-1 { top: 15%; left: 10%; animation-delay: 0s; animation-duration: 15s; }
+.tb-2 { top: 60%; left: 15%; animation-delay: -3s; animation-duration: 12s; }
+.tb-3 { top: 20%; right: 12%; animation-delay: -7s; animation-duration: 18s; }
+.tb-4 { top: 65%; right: 10%; animation-delay: -10s; animation-duration: 14s; }
+
+@keyframes turbulence {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  33% { transform: translate(15px, -20px) rotate(5deg) scale(1.05); }
+  66% { transform: translate(-10px, 15px) rotate(-3deg) scale(0.95); }
+  100% { transform: translate(20px, 20px) rotate(8deg) scale(1); }
+}
+
+@media (max-width: 767px) {
+  .tb-item {
+    width: 40px;
+    height: 40px;
+  }
+  .tb-1 { top: 18%; left: 5%; }
+  .tb-2 { top: 82%; left: 8%; }
+  .tb-3 { top: 22%; right: 5%; }
+  .tb-4 { top: 78%; right: 8%; }
+}
+
 /* ── Shell ───────────────────────────────────────────── */
 .hero {
   position: relative;
@@ -124,9 +145,11 @@ function onMouseLeave() {
 }
 
 .hero-inner {
+  position: relative;
+  z-index: 10;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 60px 20px 60px;
+  padding: 30px 20px 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -166,30 +189,47 @@ function onMouseLeave() {
   max-width: 900px;
   user-select: none;
   
-  /* Chromatic split shadow logic */
-  --split-dist: calc(15px * var(--active));
-  --cyan-x: calc(var(--x) * var(--split-dist) * -1);
-  --cyan-y: calc(var(--y) * var(--split-dist) * -1);
-  
-  --magenta-x: calc(var(--x) * var(--split-dist));
-  --magenta-y: calc(var(--y) * var(--split-dist));
-  
-  /* Apply the shadows: cyan moves opposite to mouse, magenta moves with mouse */
-  text-shadow: 
-    calc(var(--cyan-x)) calc(var(--cyan-y)) 0 rgba(0, 255, 255, calc(0.5 * var(--active))),
-    calc(var(--magenta-x)) calc(var(--magenta-y)) 0 rgba(255, 0, 255, calc(0.5 * var(--active)));
-    
-  transition: text-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-headline:hover .hero-word {
+  opacity: 0.15;
+  filter: blur(8px);
+  transform: scale(0.95);
 }
 
 .hero-word {
   display: inline-block;
   color: var(--color-text); /* Solid black */
   cursor: default;
+  position: relative;
+  transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
+}
+
+.hero-headline .hero-word:hover {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1.1) translateY(-8px) rotate(-2deg);
+  z-index: 10;
 }
 
 .hero-word--accent {
   color: var(--color-accent);
+}
+
+.hero-headline .hero-word--accent:hover {
+  color: var(--color-accent);
+}
+
+@media (max-width: 767px) {
+  .hero-headline:hover .hero-word {
+    opacity: 0.25;
+    filter: blur(4px);
+    transform: scale(0.98);
+  }
+  .hero-headline .hero-word:hover {
+    transform: scale(1.05) translateY(-4px) rotate(-1deg);
+  }
 }
 
 /* ── Sub ──────────────────────────────────────────────── */
@@ -212,6 +252,18 @@ function onMouseLeave() {
   gap: 16px;
   flex-wrap: wrap;
   margin-bottom: 48px;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .hero-actions {
+    flex-direction: column;
+    padding: 0 20px;
+  }
+  .hero-actions > * {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .btn-primary {
@@ -221,10 +273,9 @@ function onMouseLeave() {
   font-family: var(--font-sans);
   font-size: 15px;
   font-weight: 500;
-  color: var(--color-text-inv);
-  background: var(--color-text);
+  color: #f2e8cf;
+  background: #0F3F2F;
   padding: 12px 28px;
-  border-radius: 9999px;
   transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -239,7 +290,7 @@ function onMouseLeave() {
 .btn-primary:hover {
   opacity: 0.95;
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 20px -10px rgba(15, 63, 47, 0.4);
 }
 
 .btn-ghost {
@@ -249,7 +300,6 @@ function onMouseLeave() {
   color: var(--color-text);
   background: transparent;
   padding: 12px 28px;
-  border-radius: 9999px;
   border: 1px solid var(--color-border);
   transition: background 0.2s ease, transform 0.2s ease;
 }
@@ -264,31 +314,27 @@ function onMouseLeave() {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--color-surface);
-  padding: 8px 20px;
-  border-radius: 9999px;
-  border: 1px solid var(--color-border);
+  padding: 0;
+  background: transparent;
+  border: none;
 }
 
-.status-dot {
-  width: 8px;
-  height: 8px;
-  background-color: var(--color-accent);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--color-accent);
-  animation: dot-pulse 2s ease-in-out infinite;
+.status-spark {
+  color: #0F3F2F;
+  animation: spark-spin 8s linear infinite;
 }
 
-@keyframes dot-pulse {
-  0%, 100% { box-shadow: 0 0 8px var(--color-accent); }
-  50% { box-shadow: 0 0 16px var(--color-accent), 0 0 24px rgba(22, 163, 74, 0.3); }
+@keyframes spark-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .hero-status-text {
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
-  color: var(--color-text-2);
+  letter-spacing: 0.02em;
+  color: #0F3F2F;
 }
 
 /* ── Entrance animation ───────────────────────────────── */
