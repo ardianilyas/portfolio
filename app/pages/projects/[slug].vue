@@ -204,22 +204,23 @@ onMounted(() => {
 }
 
 .tech-tag {
-  font-family: var(--font-sans);
-  font-size: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.01em;
-  color: var(--color-text-2);
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  padding: 6px 14px;
-  border-radius: 9999px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #0F3F2F;
+  background: rgba(15, 63, 47, 0.04);
+  border: 1px solid rgba(15, 63, 47, 0.2);
+  padding: 5px 12px;
+  border-radius: 0;
   transition: all 0.2s ease;
-  backdrop-filter: blur(8px);
 }
 
 .tech-tag:hover {
-  background: rgba(0, 0, 0, 0.06);
-  color: var(--color-text);
+  background: #0F3F2F;
+  color: #f2e8cf;
+  border-color: #0F3F2F;
   transform: translateY(-1px);
 }
 

@@ -141,24 +141,26 @@ defineProps<{
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .project-tag {
   font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  color: var(--color-text-3);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  padding: 4px 10px;
-  border-radius: 4px;
-  transition: color 0.2s, border-color 0.2s;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #4A5551;
+  background: rgba(15, 63, 47, 0.04);
+  border: 1px solid rgba(15, 63, 47, 0.18);
+  padding: 4px 9px;
+  border-radius: 0;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
 .project-row:hover .project-tag {
-  color: var(--color-text-2);
-  border-color: var(--color-border-2);
+  color: #0F3F2F;
+  border-color: #0F3F2F;
+  background: rgba(15, 63, 47, 0.08);
 }
 </style>
