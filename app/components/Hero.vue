@@ -273,8 +273,8 @@ const headlineWords = [
   font-family: var(--font-sans);
   font-size: 15px;
   font-weight: 500;
-  color: var(--color-text-inv);
-  background: var(--color-text);
+  color: #ffffff;
+  background: #1DB954;
   padding: 12px 28px;
   transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
 }
@@ -290,7 +290,7 @@ const headlineWords = [
 .btn-primary:hover {
   opacity: 0.95;
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 20px -10px rgba(29, 185, 84, 0.4);
 }
 
 .btn-ghost {
