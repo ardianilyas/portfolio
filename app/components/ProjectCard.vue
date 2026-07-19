@@ -5,29 +5,15 @@
     :class="{ 'project-row--first': isFirst }"
     :aria-label="`${name} — view source on GitHub`"
   >
-    <!-- Index number -->
-    <span class="project-index" aria-hidden="true">{{ index }}</span>
+    <!-- Col 1: Index number -->
+    <div class="project-col project-col-index" aria-hidden="true">
+      <span class="project-index">{{ index }}</span>
+    </div>
 
-    <!-- Content -->
-    <div class="project-body">
+    <!-- Col 2: Content -->
+    <div class="project-col project-col-body">
       <div class="project-head">
         <h3 class="project-name">{{ name }}</h3>
-        <div class="project-head-right">
-          <!-- Inline Skewed Logo Badge -->
-          <div class="project-inline-logo" aria-hidden="true">
-            <img v-if="logo" :src="logo" alt="" class="inline-logo-img" />
-            <span v-else class="inline-logo-text">{{ name.charAt(0) }}</span>
-          </div>
-
-          <span class="project-arrow" aria-hidden="true">
-            <svg class="arrow-svg arrow-main" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
-            </svg>
-            <svg class="arrow-svg arrow-clone" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
-            </svg>
-          </span>
-        </div>
       </div>
       <p class="project-desc">{{ description }}</p>
       <div class="project-tags" aria-label="Technologies used">
@@ -35,6 +21,23 @@
       </div>
     </div>
 
+    <!-- Col 3: Massive Skewed Logo -->
+    <div class="project-col project-col-logo" aria-hidden="true">
+      <img v-if="logo" :src="logo" alt="" class="col-logo-img" />
+      <span v-else class="col-logo-text">{{ name.charAt(0) }}</span>
+    </div>
+
+    <!-- Col 4: Arrow -->
+    <div class="project-col project-col-arrow" aria-hidden="true">
+      <span class="project-arrow">
+        <svg class="arrow-svg arrow-main" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+        </svg>
+        <svg class="arrow-svg arrow-clone" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+        </svg>
+      </span>
+    </div>
   </NuxtLink>
 </template>
 
@@ -55,9 +58,8 @@ defineProps<{
 /* ── Row ─────────────────────────────────────────────── */
 .project-row {
   display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 24px;
-  padding: 36px 24px;
+  grid-template-columns: 48px 1fr 32px; /* Mobile: Hide Logo */
+  padding: 0;
   margin: 0;
   margin-top: -1px; /* Prevent double borders */
   border: 1px solid #0F3F2F;
@@ -65,20 +67,17 @@ defineProps<{
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
   cursor: pointer;
   position: relative;
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
   .project-row {
-    grid-template-columns: 64px 1fr;
-    gap: 32px;
-    padding: 44px 32px;
-    margin: 0;
-    margin-top: -1px;
+    grid-template-columns: 64px 1fr 180px 64px; /* Desktop: 4 Columns */
   }
 }
 
 .project-row:hover {
-  background: rgba(242, 232, 207, 0.35); /* Subtle light brown */
+  background: rgba(242, 232, 207, 0.35);
   box-shadow: 0 16px 40px rgba(15, 63, 47, 0.04);
   border-color: #0F3F2F;
   transform: translateY(-2px);
@@ -90,76 +89,19 @@ defineProps<{
   transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
 }
 
-.project-row:hover .project-name {
-  color: #0F3F2F;
-}
-
-.project-row:hover .project-arrow {
-  color: #0F3F2F;
-}
-
-.project-row:hover .arrow-main {
-  transform: translate(100%, -100%);
-}
-
-.project-row:hover .arrow-clone {
-  transform: translate(0, 0);
-}
-
-.project-row:hover .inline-logo-img {
-  opacity: 1;
-  filter: grayscale(0%) contrast(100%);
-  transform: scale(1.05); /* Slight zoom on hover */
-}
-
-.project-row:hover .inline-logo-text {
-  color: #0F3F2F;
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-.project-row:hover .project-inline-logo {
-  border-color: #0F3F2F;
-}
-
-/* ── Inline Logo Badge ────────────────────────────────── */
-.project-head-right {
+/* ── Columns ─────────────────────────────────────────── */
+.project-col {
   display: flex;
-  align-items: center;
-  gap: 16px;
 }
 
-.project-inline-logo {
-  width: 56px;
-  height: 36px;
-  /* NO green background, the image itself acts as the background */
-  clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%); /* Skewed shape */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+/* Col 1: Index */
+.project-col-index {
+  padding: 36px 0 36px 24px;
+}
+@media (min-width: 768px) {
+  .project-col-index { padding: 44px 0 44px 32px; }
 }
 
-.inline-logo-text {
-  font-family: var(--font-sans);
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--color-text-3); /* Muted text if no logo */
-  line-height: 1;
-  transition: opacity 0.3s ease, color 0.3s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.inline-logo-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Image completely fills the skewed badge */
-  opacity: 0.4;
-  filter: grayscale(100%) contrast(120%);
-  transition: opacity 0.3s ease, filter 0.3s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* ── Index ────────────────────────────────────────────── */
 .project-index {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -170,18 +112,20 @@ defineProps<{
   user-select: none;
 }
 
-/* ── Body ─────────────────────────────────────────────── */
-.project-body {
-  display: flex;
+/* Col 2: Body */
+.project-col-body {
+  padding: 36px 16px;
   flex-direction: column;
-  gap: 10px;
+  justify-content: center;
+  gap: 12px;
+}
+@media (min-width: 768px) {
+  .project-col-body { padding: 44px 32px; gap: 16px; }
 }
 
 .project-head {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
 }
 
 .project-name {
@@ -193,6 +137,77 @@ defineProps<{
   margin: 0;
   line-height: 1.2;
   transition: color 0.2s;
+}
+
+.project-desc {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text-3);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 480px;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.project-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-3);
+  padding: 4px 8px;
+  border: 1px solid rgba(15, 63, 47, 0.15);
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+/* Col 3: Logo */
+.project-col-logo {
+  display: none; /* Hide on mobile */
+  clip-path: polygon(40px 0, 100% 0, 100% 100%, 0 100%);
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-right: 1px solid transparent;
+}
+@media (min-width: 768px) {
+  .project-col-logo { display: flex; }
+}
+
+.col-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.2;
+  filter: grayscale(100%);
+  transition: opacity 0.5s ease, filter 0.5s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(1.1);
+  transform-origin: center;
+}
+
+.col-logo-text {
+  font-family: var(--font-sans);
+  font-size: 80px;
+  font-weight: 800;
+  color: #0F3F2F; 
+  opacity: 0.1;
+  line-height: 1;
+  padding-left: 20px;
+  transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Col 4: Arrow */
+.project-col-arrow {
+  padding: 36px 24px 36px 0;
+  justify-content: flex-end;
+}
+@media (min-width: 768px) {
+  .project-col-arrow { padding: 44px 32px 44px 0; }
 }
 
 .project-arrow {
@@ -213,49 +228,35 @@ defineProps<{
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.arrow-main {
-  transform: translate(0, 0);
-}
-
 .arrow-clone {
   transform: translate(-100%, 100%);
 }
 
-/* ── Desc ─────────────────────────────────────────────── */
-.project-desc {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--color-text-3);
-  line-height: 1.65;
-  margin: 0;
-  max-width: 68ch;
-}
-
-/* ── Tags ─────────────────────────────────────────────── */
-.project-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 6px;
-}
-
-.project-tag {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: #4A5551;
-  background: rgba(15, 63, 47, 0.04);
-  border: 1px solid rgba(15, 63, 47, 0.18);
-  padding: 4px 9px;
-  border-radius: 0;
-  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-}
-
-.project-row:hover .project-tag {
+/* ── Hover Effects ────────────────────────────────────── */
+.project-row:hover .project-name {
   color: #0F3F2F;
-  border-color: #0F3F2F;
-  background: rgba(15, 63, 47, 0.08);
+}
+
+.project-row:hover .project-arrow {
+  color: #0F3F2F;
+}
+
+.project-row:hover .arrow-main {
+  transform: translate(100%, -100%);
+}
+
+.project-row:hover .arrow-clone {
+  transform: translate(0, 0);
+}
+
+.project-row:hover .col-logo-img {
+  opacity: 0.6;
+  filter: grayscale(0%);
+  transform: scale(1);
+}
+
+.project-row:hover .col-logo-text {
+  opacity: 0.25;
+  transform: scale(1.1) translateX(10px);
 }
 </style>
