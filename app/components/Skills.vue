@@ -32,7 +32,7 @@
               'is-skill': word.isSkill,
               'is-active': isVisible 
             }"
-            :style="{ transitionDelay: `${index * 0.04}s` }"
+            :style="{ transitionDelay: `${Math.min(index * 0.016, 0.35).toFixed(3)}s` }"
           >
             {{ word.text }}
           </span>
@@ -154,10 +154,10 @@ const words = proseRaw.split(' ').map(w => {
 /* ── Mobile Transition Animation ───────────────────────────── */
 .mobile-word {
   opacity: 0;
-  transform: translateY(15px);
-  /* The transition delay is applied inline per-word */
+  transform: translateY(12px);
+  /* The transition delay is capped at 350ms max for snappy entry */
   transition-property: opacity, transform, color;
-  transition-duration: 0.8s;
+  transition-duration: 0.45s;
   transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 

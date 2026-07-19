@@ -304,6 +304,11 @@ const tools = [
   justify-content: space-between;
 }
 
+.bento-card:active {
+  transform: translateY(-1px) scale(0.99);
+  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
+}
+
 /* ── Icon ─────────────────────────────────────────────── */
 .tool-icon-wrapper {
   display: flex;
@@ -315,14 +320,15 @@ const tools = [
   background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 16px;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .bento-card:hover .tool-icon-wrapper {
-  transform: scale(1.08) translateY(-2px);
-  background-color: rgba(242, 232, 207, 0.15);
-  border-color: rgba(242, 232, 207, 0.4);
+  transform: translateY(-4px) scale(1.1) rotate(-4deg);
+  background-color: rgba(242, 232, 207, 0.2);
+  border-color: rgba(242, 232, 207, 0.5);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .tool-icon {

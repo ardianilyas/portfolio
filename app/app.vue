@@ -1,5 +1,9 @@
 <template>
   <div class="relative w-full min-h-screen bg-[var(--color-bg)]">
+    <!-- Accessibility Skip Link -->
+    <a href="#main-content" class="skip-to-content">
+      Skip to main content
+    </a>
 
     <!-- Navbar lives here, outside <main>, so it is never trapped by any stacking context -->
     <Navbar />
@@ -7,7 +11,7 @@
     <!-- Main Content Wrapper —— transform: translateZ(0) promotes this to its own GPU
          compositing layer which prevents the fixed footer behind it from flashing
          through during smooth-scroll repaints. Navbar is above this so it is unaffected. -->
-    <main class="relative z-10 bg-[var(--color-bg)] mb-[60vh] md:mb-[65vh]" style="transform: translateZ(0);">
+    <main id="main-content" class="relative z-10 bg-[var(--color-bg)] mb-[60vh] md:mb-[65vh]" style="transform: translateZ(0);">
 
       <NuxtPage />
     </main>

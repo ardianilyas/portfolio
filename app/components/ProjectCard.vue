@@ -13,7 +13,10 @@
       <div class="project-head">
         <h3 class="project-name">{{ name }}</h3>
         <span class="project-arrow" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <svg class="arrow-svg arrow-main" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+          </svg>
+          <svg class="arrow-svg arrow-clone" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
           </svg>
         </span>
@@ -73,13 +76,25 @@ defineProps<{
   z-index: 10;
 }
 
+.project-row:active {
+  transform: scale(0.995) translateY(0);
+  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
+}
+
 .project-row:hover .project-name {
   color: #0F3F2F;
 }
 
 .project-row:hover .project-arrow {
   color: #0F3F2F;
-  transform: translate(3px, -3px);
+}
+
+.project-row:hover .arrow-main {
+  transform: translate(100%, -100%);
+}
+
+.project-row:hover .arrow-clone {
+  transform: translate(0, 0);
 }
 
 /* ── Index ────────────────────────────────────────────── */
@@ -122,8 +137,26 @@ defineProps<{
   color: var(--color-text-3);
   flex-shrink: 0;
   margin-top: 2px;
-  transition: color 0.2s, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  transition: color 0.25s ease;
+}
+
+.arrow-svg {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.arrow-main {
+  transform: translate(0, 0);
+}
+
+.arrow-clone {
+  transform: translate(-100%, 100%);
 }
 
 /* ── Desc ─────────────────────────────────────────────── */

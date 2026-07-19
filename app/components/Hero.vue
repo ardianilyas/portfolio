@@ -293,6 +293,11 @@ const headlineWords = [
   box-shadow: 0 10px 20px -10px rgba(15, 63, 47, 0.4);
 }
 
+.btn-primary:active {
+  transform: scale(0.97) translateY(0);
+  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
+}
+
 .btn-ghost {
   font-family: var(--font-sans);
   font-size: 15px;
@@ -307,6 +312,11 @@ const headlineWords = [
 .btn-ghost:hover {
   background: var(--color-surface);
   transform: translateY(-2px);
+}
+
+.btn-ghost:active {
+  transform: scale(0.97) translateY(0);
+  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
 }
 
 /* ── Status badge ─────────────────────────────────────── */
