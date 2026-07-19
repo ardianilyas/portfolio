@@ -29,7 +29,8 @@
 
     <!-- Skewed Logo Box on Right -->
     <div class="project-logo-box" aria-hidden="true">
-      <span class="project-logo-text">{{ name.charAt(0) }}</span>
+      <img v-if="logo" :src="logo" alt="" class="project-logo-img" />
+      <span v-else class="project-logo-text">{{ name.charAt(0) }}</span>
     </div>
 
   </NuxtLink>
@@ -44,6 +45,7 @@ defineProps<{
   slug: string
   index: string
   isFirst?: boolean
+  logo?: string
 }>()
 </script>
 
@@ -148,6 +150,26 @@ defineProps<{
   .project-logo-text {
     font-size: 64px;
   }
+}
+
+.project-logo-img {
+  width: 60px;
+  height: auto;
+  opacity: 0.25;
+  filter: grayscale(100%) contrast(200%);
+  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .project-logo-img {
+    width: 80px;
+  }
+}
+
+.project-row:hover .project-logo-img {
+  opacity: 1;
+  transform: scale(1.1) translateX(4px);
+  filter: grayscale(0%) contrast(100%);
 }
 
 /* ── Index ────────────────────────────────────────────── */

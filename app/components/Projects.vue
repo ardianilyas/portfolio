@@ -19,6 +19,7 @@
           :slug="project.slug"
           :index="String(i + 1).padStart(2, '0')"
           :is-first="i === 0"
+          :logo="project.logo"
         />
 
       </div>

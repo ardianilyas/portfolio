@@ -9,9 +9,23 @@ export interface Project {
   description: string;
   heroClass: string;
   galleryClasses: string[];
+  logo?: string;
 }
 
 export const projects: Project[] = [
+  {
+    slug: 'decko',
+    name: 'Decko',
+    year: '2026',
+    tech: ['Vue', 'TypeScript', 'TailwindCSS'],
+    github: 'https://github.com/ardianilyas/decko',
+    live: null,
+    shortDescription: 'Presentation and slide deck builder with modern web technologies.',
+    description: 'A presentation tool built for the modern web.',
+    heroClass: 'bg-gradient-to-br from-zinc-800 to-black',
+    galleryClasses: ['bg-gradient-to-tr from-zinc-100 to-zinc-300'],
+    logo: '/projects/decko.png'
+  },
   {
     slug: 'portfolio',
     name: 'Personal Portfolio',
