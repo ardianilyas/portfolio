@@ -5,13 +5,15 @@
     :class="{ 'project-row--first': isFirst }"
     :aria-label="`${name} — view source on GitHub`"
   >
-    <!-- Col 1: Index + Stamp stacked vertically -->
+    <!-- Full Card Background Logo -->
+    <div class="project-bg-logo" aria-hidden="true">
+      <img v-if="logo" :src="logo" alt="" class="bg-logo-img" />
+      <span v-else class="bg-logo-text">{{ name.charAt(0) }}</span>
+    </div>
+
+    <!-- Col 1: Index number -->
     <div class="project-col project-col-index" aria-hidden="true">
       <span class="project-index">{{ index }}</span>
-      <div class="project-stamp">
-        <img v-if="logo" :src="logo" alt="" class="stamp-img" />
-        <span v-else class="stamp-text">{{ name.charAt(0) }}</span>
-      </div>
     </div>
 
     <!-- Col 2: Content -->
@@ -55,7 +57,7 @@ defineProps<{
 /* ── Row ─────────────────────────────────────────────── */
 .project-row {
   display: grid;
-  grid-template-columns: 72px 1fr; /* 2 Columns */
+  grid-template-columns: 48px 1fr; /* Mobile: 2 Columns */
   padding: 0;
   margin: 0;
   margin-top: -1px; /* Prevent double borders */
@@ -64,11 +66,12 @@ defineProps<{
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
   cursor: pointer;
   position: relative;
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
   .project-row {
-    grid-template-columns: 96px 1fr; /* 2 Columns */
+    grid-template-columns: 64px 1fr; /* Desktop: 2 Columns */
   }
 }
 
@@ -90,17 +93,12 @@ defineProps<{
   display: flex;
 }
 
-/* Col 1: Index + Stamp (vertical stack) */
+/* Col 1: Index */
 .project-col-index {
-  padding: 28px 0 28px 20px;
-  flex-direction: column;
-  justify-content: space-between; /* number top, stamp bottom */
-  align-items: flex-start;
-  border-right: 1px solid rgba(15, 63, 47, 0.12);
-  gap: 12px;
+  padding: 36px 0 36px 24px;
 }
 @media (min-width: 768px) {
-  .project-col-index { padding: 36px 0 36px 28px; }
+  .project-col-index { padding: 44px 0 44px 32px; }
 }
 
 .project-index {
@@ -109,8 +107,8 @@ defineProps<{
   font-weight: 400;
   color: var(--color-text-3);
   letter-spacing: 0.04em;
+  padding-top: 4px;
   user-select: none;
-  flex-shrink: 0;
 }
 
 /* Col 2: Body */
@@ -119,7 +117,8 @@ defineProps<{
   flex-direction: column;
   justify-content: center;
   gap: 12px;
-  z-index: 1;
+  z-index: 1; /* Content sits above background logo */
+  pointer-events: none; /* Let hover events pass if needed, but not necessary here */
 }
 @media (min-width: 768px) {
   .project-col-body { padding: 44px 32px 44px 0; gap: 16px; }
@@ -132,40 +131,6 @@ defineProps<{
   gap: 16px;
 }
 
-/* ── The Stamp ───────────────────────────────────────── */
-.project-stamp {
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(15, 63, 47, 0.2);
-  border-radius: 0; /* Brutalist/Industrial sharp corners */
-  background: rgba(15, 63, 47, 0.02);
-  padding: 8px;
-  flex-shrink: 0;
-  transition: border-color 0.3s ease, background 0.3s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.stamp-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: grayscale(100%) contrast(150%);
-  opacity: 0.6;
-  transition: filter 0.3s ease, opacity 0.3s ease;
-}
-
-.stamp-text {
-  font-family: var(--font-mono); /* Use mono for industrial feel */
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--color-text-3);
-  line-height: 1;
-  transition: color 0.3s ease;
-}
-
-/* ── Typography ──────────────────────────────────────── */
 .project-name {
   font-family: var(--font-sans);
   font-size: clamp(18px, 2vw, 24px);
@@ -202,6 +167,43 @@ defineProps<{
   border: 1px solid rgba(15, 63, 47, 0.15);
   border-radius: 9999px;
   white-space: nowrap;
+}
+
+/* ── Full Background Logo ────────────────────────────── */
+.project-bg-logo {
+  position: absolute;
+  inset: 0; /* Fill entire card */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Align to the right side of the card */
+  z-index: 0;
+  pointer-events: none;
+  padding-right: 15%; /* Keep it visually on the right */
+}
+
+.bg-logo-img {
+  height: 80%; /* Keep it within bounds so it doesn't crop when skewed */
+  width: auto;
+  max-width: 60%;
+  object-fit: contain;
+  object-position: center right;
+  opacity: 0.06;
+  filter: grayscale(100%);
+  transform: skewY(-10deg); /* Removed translateY that pushed it out of bounds */
+  transition: opacity 0.5s ease, filter 0.5s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center right;
+}
+
+.bg-logo-text {
+  font-family: var(--font-sans);
+  font-size: 200px; /* Massive fallback text */
+  font-weight: 800;
+  color: #0F3F2F; 
+  opacity: 0.03;
+  line-height: 1;
+  transform: skewY(-10deg) translateY(10%);
+  transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-right: -40px; /* Bleed off the edge */
 }
 
 /* ── Arrow ──────────────────────────────────────────── */
@@ -245,20 +247,14 @@ defineProps<{
   transform: translate(0, 0);
 }
 
-.project-row:hover .project-stamp {
-  border-color: #0F3F2F;
-  background: rgba(15, 63, 47, 0.06);
-  transform: scale(1.05);
-}
-
-.project-row:hover .stamp-img {
+.project-row:hover .bg-logo-img {
+  opacity: 0.2;
   filter: grayscale(0%);
-  opacity: 1;
+  transform: skewY(-10deg) scale(1.05) translateX(-20px); /* Removed translateY */
 }
 
-.project-row:hover .stamp-text {
-  color: #0F3F2F;
+.project-row:hover .bg-logo-text {
+  opacity: 0.08;
+  transform: skewY(-10deg) scale(1.1) translateY(10%) translateX(10px);
 }
 </style>
-
-
