@@ -172,38 +172,42 @@ defineProps<{
 /* ── Full Background Logo ────────────────────────────── */
 .project-bg-logo {
   position: absolute;
-  inset: 0; /* Fill entire card */
+  left: 0;
+  right: 0;
+  bottom: -40px; /* Bleed deeply off the bottom edge */
+  height: auto;
   display: flex;
-  align-items: center;
-  justify-content: flex-end; /* Align to the right side of the card */
+  align-items: flex-end;
+  justify-content: flex-start; /* Start from the left */
   z-index: 0;
   pointer-events: none;
-  padding-right: 15%; /* Keep it visually on the right */
 }
 
 .bg-logo-img {
-  height: 80%; /* Keep it within bounds so it doesn't crop when skewed */
+  height: 220px; /* Massive fixed height */
   width: auto;
-  max-width: 60%;
+  max-width: none; /* Allow bleeding off the right edge */
   object-fit: contain;
-  object-position: center right;
-  opacity: 0.06;
+  object-position: bottom left;
+  opacity: 0.03; /* Extremely faint */
   filter: grayscale(100%);
-  transform: skewY(-10deg); /* Removed translateY that pushed it out of bounds */
+  transform: translateX(0);
+  /* Use a smooth ease out for initial load, but we will change this on hover */
   transition: opacity 0.5s ease, filter 0.5s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  transform-origin: center right;
+  transform-origin: bottom left;
 }
 
 .bg-logo-text {
   font-family: var(--font-sans);
-  font-size: 200px; /* Massive fallback text */
+  font-size: 280px; /* Massive fallback text */
   font-weight: 800;
   color: #0F3F2F; 
-  opacity: 0.03;
-  line-height: 1;
-  transform: skewY(-10deg) translateY(10%);
-  transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  margin-right: -40px; /* Bleed off the edge */
+  opacity: 0.02;
+  line-height: 0.8;
+  white-space: nowrap;
+  transform: translateX(0);
+  transition: opacity 0.4s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-left: -20px; /* Bleed off left edge slightly */
 }
 
 /* ── Arrow ──────────────────────────────────────────── */
@@ -248,13 +252,16 @@ defineProps<{
 }
 
 .project-row:hover .bg-logo-img {
-  opacity: 0.2;
+  opacity: 0.08;
   filter: grayscale(0%);
-  transform: skewY(-10deg) scale(1.05) translateX(-20px); /* Removed translateY */
+  /* Pan horizontally like a slow marquee */
+  transform: translateX(-15%);
+  transition: opacity 0.5s ease, filter 0.5s ease, transform 6s linear; 
 }
 
 .project-row:hover .bg-logo-text {
-  opacity: 0.08;
-  transform: skewY(-10deg) scale(1.1) translateY(10%) translateX(10px);
+  opacity: 0.05;
+  transform: translateX(-15%);
+  transition: opacity 0.4s ease, transform 6s linear;
 }
 </style>
