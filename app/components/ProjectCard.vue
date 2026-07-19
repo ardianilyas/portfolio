@@ -182,13 +182,14 @@ defineProps<{
 }
 
 .bg-logo-img {
-  height: 140%; /* Very large to act as a dramatic watermark */
-  width: auto; /* Maintain aspect ratio */
-  max-width: 70%;
+  height: 80%; /* Keep it within bounds so it doesn't crop when skewed */
+  width: auto;
+  max-width: 60%;
   object-fit: contain;
-  opacity: 0.06; /* Extremely faint watermark */
+  object-position: center right;
+  opacity: 0.06;
   filter: grayscale(100%);
-  transform: skewY(-10deg) scale(1) translateY(10%);
+  transform: skewY(-10deg); /* Removed translateY that pushed it out of bounds */
   transition: opacity 0.5s ease, filter 0.5s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   transform-origin: center right;
 }
@@ -247,9 +248,9 @@ defineProps<{
 }
 
 .project-row:hover .bg-logo-img {
-  opacity: 0.2; /* Bring opacity up but keep it as a background */
+  opacity: 0.2;
   filter: grayscale(0%);
-  transform: skewY(-10deg) scale(1.1) translateY(10%) translateX(-20px);
+  transform: skewY(-10deg) scale(1.05) translateX(-20px); /* Removed translateY */
 }
 
 .project-row:hover .bg-logo-text {
