@@ -5,6 +5,12 @@
     :class="{ 'project-row--first': isFirst }"
     :aria-label="`${name} — view source on GitHub`"
   >
+    <!-- Full Card Background Logo -->
+    <div class="project-bg-logo" aria-hidden="true">
+      <img v-if="logo" :src="logo" alt="" class="bg-logo-img" />
+      <span v-else class="bg-logo-text">{{ name.charAt(0) }}</span>
+    </div>
+
     <!-- Col 1: Index number -->
     <div class="project-col project-col-index" aria-hidden="true">
       <span class="project-index">{{ index }}</span>
@@ -14,29 +20,22 @@
     <div class="project-col project-col-body">
       <div class="project-head">
         <h3 class="project-name">{{ name }}</h3>
+        
+        <span class="project-arrow" aria-hidden="true">
+          <svg class="arrow-svg arrow-main" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+          </svg>
+          <svg class="arrow-svg arrow-clone" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+          </svg>
+        </span>
       </div>
+      
       <p class="project-desc">{{ description }}</p>
+      
       <div class="project-tags" aria-label="Technologies used">
         <span v-for="tag in tags" :key="tag" class="project-tag">{{ tag }}</span>
       </div>
-    </div>
-
-    <!-- Col 3: Massive Skewed Logo -->
-    <div class="project-col project-col-logo" aria-hidden="true">
-      <img v-if="logo" :src="logo" alt="" class="col-logo-img" />
-      <span v-else class="col-logo-text">{{ name.charAt(0) }}</span>
-    </div>
-
-    <!-- Col 4: Arrow -->
-    <div class="project-col project-col-arrow" aria-hidden="true">
-      <span class="project-arrow">
-        <svg class="arrow-svg arrow-main" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
-        </svg>
-        <svg class="arrow-svg arrow-clone" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
-        </svg>
-      </span>
     </div>
   </NuxtLink>
 </template>
@@ -58,7 +57,7 @@ defineProps<{
 /* ── Row ─────────────────────────────────────────────── */
 .project-row {
   display: grid;
-  grid-template-columns: 48px 1fr 32px; /* Mobile: Hide Logo */
+  grid-template-columns: 48px 1fr; /* Mobile: 2 Columns */
   padding: 0;
   margin: 0;
   margin-top: -1px; /* Prevent double borders */
@@ -72,7 +71,7 @@ defineProps<{
 
 @media (min-width: 768px) {
   .project-row {
-    grid-template-columns: 64px 1fr 180px 64px; /* Desktop: 4 Columns */
+    grid-template-columns: 64px 1fr; /* Desktop: 2 Columns */
   }
 }
 
@@ -114,18 +113,22 @@ defineProps<{
 
 /* Col 2: Body */
 .project-col-body {
-  padding: 36px 16px;
+  padding: 36px 24px 36px 0;
   flex-direction: column;
   justify-content: center;
   gap: 12px;
+  z-index: 1; /* Content sits above background logo */
+  pointer-events: none; /* Let hover events pass if needed, but not necessary here */
 }
 @media (min-width: 768px) {
-  .project-col-body { padding: 44px 32px; gap: 16px; }
+  .project-col-body { padding: 44px 32px 44px 0; gap: 16px; }
 }
 
 .project-head {
   display: flex;
   align-items: flex-start;
+  justify-content: space-between; /* Space out name and arrow */
+  gap: 16px;
 }
 
 .project-name {
@@ -166,49 +169,43 @@ defineProps<{
   white-space: nowrap;
 }
 
-/* Col 3: Logo */
-.project-col-logo {
-  display: none; /* Hide on mobile */
+/* ── Full Background Logo ────────────────────────────── */
+.project-bg-logo {
+  position: absolute;
+  inset: 0; /* Fill entire card */
+  display: flex;
   align-items: center;
-  justify-content: center;
-  /* Removed clip-path to prevent chopping the logo */
-}
-@media (min-width: 768px) {
-  .project-col-logo { display: flex; }
+  justify-content: flex-end; /* Align to the right side of the card */
+  z-index: 0;
+  pointer-events: none;
+  padding-right: 15%; /* Keep it visually on the right */
 }
 
-.col-logo-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* Ensure the whole wordmark is visible */
-  object-position: center right; /* Align it towards the arrow */
-  opacity: 0.25;
+.bg-logo-img {
+  height: 140%; /* Very large to act as a dramatic watermark */
+  width: auto; /* Maintain aspect ratio */
+  max-width: 70%;
+  object-fit: contain;
+  opacity: 0.06; /* Extremely faint watermark */
   filter: grayscale(100%);
-  /* Apply vertical skew (uphill slant from bottom-left to top-right) instead of italic */
-  transform: skewY(-10deg) scale(1);
+  transform: skewY(-10deg) scale(1) translateY(10%);
   transition: opacity 0.5s ease, filter 0.5s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  transform-origin: center;
+  transform-origin: center right;
 }
 
-.col-logo-text {
+.bg-logo-text {
   font-family: var(--font-sans);
-  font-size: 80px;
+  font-size: 200px; /* Massive fallback text */
   font-weight: 800;
   color: #0F3F2F; 
-  opacity: 0.1;
+  opacity: 0.03;
   line-height: 1;
-  transform: skewY(-10deg); /* Apply uphill skew to fallback text too */
+  transform: skewY(-10deg) translateY(10%);
   transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-right: -40px; /* Bleed off the edge */
 }
 
-/* Col 4: Arrow */
-.project-col-arrow {
-  padding: 36px 24px 36px 0;
-  justify-content: flex-end;
-}
-@media (min-width: 768px) {
-  .project-col-arrow { padding: 44px 32px 44px 0; }
-}
+/* ── Arrow ──────────────────────────────────────────── */
 
 .project-arrow {
   color: var(--color-text-3);
@@ -249,14 +246,14 @@ defineProps<{
   transform: translate(0, 0);
 }
 
-.project-row:hover .col-logo-img {
-  opacity: 0.7;
+.project-row:hover .bg-logo-img {
+  opacity: 0.2; /* Bring opacity up but keep it as a background */
   filter: grayscale(0%);
-  transform: skewY(-10deg) scale(1.05) translateX(-8px);
+  transform: skewY(-10deg) scale(1.1) translateY(10%) translateX(-20px);
 }
 
-.project-row:hover .col-logo-text {
-  opacity: 0.25;
-  transform: skewY(-10deg) scale(1.1) translateX(10px);
+.project-row:hover .bg-logo-text {
+  opacity: 0.08;
+  transform: skewY(-10deg) scale(1.1) translateY(10%) translateX(10px);
 }
 </style>
