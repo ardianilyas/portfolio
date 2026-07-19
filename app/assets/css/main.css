@@ -56,6 +56,17 @@ html {
   overflow-x: hidden;
 }
 
+html.has-custom-cursor,
+html.has-custom-cursor body,
+html.has-custom-cursor a,
+html.has-custom-cursor button,
+html.has-custom-cursor input,
+html.has-custom-cursor textarea,
+html.has-custom-cursor select,
+html.has-custom-cursor [role="button"] {
+  cursor: none !important;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--color-bg);

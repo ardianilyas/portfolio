@@ -70,6 +70,7 @@ onMounted(() => {
 
   if (hasFinePointer && !prefersReduced) {
     isEnabled.value = true
+    document.documentElement.classList.add('has-custom-cursor')
     window.addEventListener('mousemove', onMouseMove, { passive: true })
     window.addEventListener('mousedown', onMouseDown, { passive: true })
     window.addEventListener('mouseup', onMouseUp, { passive: true })
@@ -78,6 +79,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  document.documentElement.classList.remove('has-custom-cursor')
   window.removeEventListener('mousemove', onMouseMove)
   window.removeEventListener('mousedown', onMouseDown)
   window.removeEventListener('mouseup', onMouseUp)
@@ -95,10 +97,10 @@ onUnmounted(() => {
 
 .cursor-dot {
   position: fixed;
-  top: -2px;
-  left: -2px;
-  width: 4px;
-  height: 4px;
+  top: -3px;
+  left: -3px;
+  width: 6px;
+  height: 6px;
   background-color: #0F3F2F;
   border-radius: 50%;
   pointer-events: none;
@@ -107,12 +109,12 @@ onUnmounted(() => {
 
 .cursor-halo {
   position: fixed;
-  top: -10px;
-  left: -10px;
-  width: 20px;
-  height: 20px;
+  top: -14px;
+  left: -14px;
+  width: 28px;
+  height: 28px;
   background-color: rgba(15, 63, 47, 0.12);
-  border: 1px solid rgba(15, 63, 47, 0.2);
+  border: 1.5px solid rgba(15, 63, 47, 0.25);
   border-radius: 50%;
   pointer-events: none;
   will-change: transform;
@@ -125,19 +127,19 @@ onUnmounted(() => {
 }
 
 .cursor-halo.is-hovered {
-  width: 34px;
-  height: 34px;
-  top: -17px;
-  left: -17px;
+  width: 44px;
+  height: 44px;
+  top: -22px;
+  left: -22px;
   background-color: rgba(15, 63, 47, 0.08);
-  border-color: rgba(15, 63, 47, 0.4);
+  border-color: rgba(15, 63, 47, 0.5);
 }
 
 .cursor-halo.is-pressed {
-  width: 14px;
-  height: 14px;
-  top: -7px;
-  left: -7px;
-  background-color: rgba(15, 63, 47, 0.25);
+  width: 16px;
+  height: 16px;
+  top: -8px;
+  left: -8px;
+  background-color: rgba(15, 63, 47, 0.3);
 }
 </style>
