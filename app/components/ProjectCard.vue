@@ -4,13 +4,9 @@
     class="project-row"
     :class="{ 'project-row--first': isFirst }"
     :aria-label="`${name} — view source on GitHub`"
+    @mouseenter="isHovered = true"
+    @mouseleave="isHovered = false"
   >
-    <!-- Full Card Background Logo -->
-    <div class="project-bg-logo" aria-hidden="true">
-      <img v-if="logo" :src="logo" alt="" class="bg-logo-img" />
-      <span v-else class="bg-logo-text">{{ name.charAt(0) }}</span>
-    </div>
-
     <!-- Col 1: Index number -->
     <div class="project-col project-col-index" aria-hidden="true">
       <span class="project-index">{{ index }}</span>
@@ -37,10 +33,25 @@
         <span v-for="tag in tags" :key="tag" class="project-tag">{{ tag }}</span>
       </div>
     </div>
+
+    <!-- Floating Cursor Reveal (Awwwards Style) -->
+    <Teleport to="body">
+      <div 
+        v-if="logo"
+        class="project-cursor-follower" 
+        :class="{ 'is-active': isHovered }"
+        :style="{ transform: `translate3d(calc(${x}px - 50%), calc(${y}px - 50%), 0) scale(${isHovered ? 1 : 0.5}) rotate(${isHovered ? 0 : 5}deg)` }"
+      >
+        <img :src="logo" class="follower-img" alt="" />
+      </div>
+    </Teleport>
   </NuxtLink>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useMouse } from '@vueuse/core'
+
 defineProps<{
   name: string
   description: string
@@ -51,13 +62,16 @@ defineProps<{
   isFirst?: boolean
   logo?: string
 }>()
+
+const isHovered = ref(false)
+const { x, y } = useMouse({ type: 'client' }) // client coordinates are perfect for position: fixed
 </script>
 
 <style scoped>
 /* ── Row ─────────────────────────────────────────────── */
 .project-row {
   display: grid;
-  grid-template-columns: 48px 1fr; /* Mobile: 2 Columns */
+  grid-template-columns: 48px 1fr; /* 2 Columns */
   padding: 0;
   margin: 0;
   margin-top: -1px; /* Prevent double borders */
@@ -66,12 +80,11 @@ defineProps<{
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
   cursor: pointer;
   position: relative;
-  overflow: hidden;
 }
 
 @media (min-width: 768px) {
   .project-row {
-    grid-template-columns: 64px 1fr; /* Desktop: 2 Columns */
+    grid-template-columns: 64px 1fr; /* 2 Columns */
   }
 }
 
@@ -117,8 +130,7 @@ defineProps<{
   flex-direction: column;
   justify-content: center;
   gap: 12px;
-  z-index: 1; /* Content sits above background logo */
-  pointer-events: none; /* Let hover events pass if needed, but not necessary here */
+  z-index: 1;
 }
 @media (min-width: 768px) {
   .project-col-body { padding: 44px 32px 44px 0; gap: 16px; }
@@ -169,47 +181,6 @@ defineProps<{
   white-space: nowrap;
 }
 
-/* ── Full Background Logo ────────────────────────────── */
-.project-bg-logo {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -40px; /* Bleed deeply off the bottom edge */
-  height: auto;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-start; /* Start from the left */
-  z-index: 0;
-  pointer-events: none;
-}
-
-.bg-logo-img {
-  height: 220px; /* Massive fixed height */
-  width: auto;
-  max-width: none; /* Allow bleeding off the right edge */
-  object-fit: contain;
-  object-position: bottom left;
-  opacity: 0.03; /* Extremely faint */
-  filter: grayscale(100%);
-  transform: translateX(0);
-  /* Use a smooth ease out for initial load, but we will change this on hover */
-  transition: opacity 0.5s ease, filter 0.5s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  transform-origin: bottom left;
-}
-
-.bg-logo-text {
-  font-family: var(--font-sans);
-  font-size: 280px; /* Massive fallback text */
-  font-weight: 800;
-  color: #0F3F2F; 
-  opacity: 0.02;
-  line-height: 0.8;
-  white-space: nowrap;
-  transform: translateX(0);
-  transition: opacity 0.4s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  margin-left: -20px; /* Bleed off left edge slightly */
-}
-
 /* ── Arrow ──────────────────────────────────────────── */
 
 .project-arrow {
@@ -250,18 +221,43 @@ defineProps<{
 .project-row:hover .arrow-clone {
   transform: translate(0, 0);
 }
+</style>
 
-.project-row:hover .bg-logo-img {
-  opacity: 0.08;
-  filter: grayscale(0%);
-  /* Pan horizontally like a slow marquee */
-  transform: translateX(-15%);
-  transition: opacity 0.5s ease, filter 0.5s ease, transform 6s linear; 
+<style>
+/* 
+  Global styles for the teleported cursor follower.
+  Must be unscoped because it is teleported to the body! 
+*/
+.project-cursor-follower {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  pointer-events: none; /* Let mouse interact with things beneath */
+  z-index: 99999;
+  opacity: 0;
+  /* Add a tiny delay to the transform to create a smooth lagging/spring effect */
+  transition: opacity 0.3s ease, transform 0.15s ease-out;
+  display: none; /* Hide on mobile */
 }
 
-.project-row:hover .bg-logo-text {
-  opacity: 0.05;
-  transform: translateX(-15%);
-  transition: opacity 0.4s ease, transform 6s linear;
+@media (min-width: 768px) {
+  .project-cursor-follower {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.project-cursor-follower.is-active {
+  opacity: 1;
+}
+
+.follower-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  /* Add a soft glow/shadow to lift it off the page */
+  filter: drop-shadow(0 20px 30px rgba(15, 63, 47, 0.15));
 }
 </style>
