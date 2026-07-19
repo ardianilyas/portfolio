@@ -1,18 +1,8 @@
 <template>
-  <ClientOnly>
-    <div v-if="isEnabled" class="custom-cursor-wrap" aria-hidden="true">
-      <div
-        ref="dotRef"
-        class="cursor-dot"
-        :class="{ 'is-hovered': isHovered, 'is-pressed': isPressed }"
-      ></div>
-      <div
-        ref="haloRef"
-        class="cursor-halo"
-        :class="{ 'is-hovered': isHovered, 'is-pressed': isPressed }"
-      ></div>
-    </div>
-  </ClientOnly>
+  <div class="custom-cursor-wrap" aria-hidden="true">
+    <div ref="dotRef" class="cursor-dot"></div>
+    <div ref="haloRef" class="cursor-halo"></div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -20,15 +10,15 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 const dotRef = ref<HTMLElement | null>(null)
 const haloRef = ref<HTMLElement | null>(null)
-const isEnabled = ref(false)
-const isHovered = ref(false)
-const isPressed = ref(false)
 
 let mouseX = -100
 let mouseY = -100
 let haloX = -100
 let haloY = -100
 let animFrameId: number | null = null
+let isHovered = false
+let isPressed = false
+let enabled = false
 
 const onMouseMove = (e: MouseEvent) => {
   mouseX = e.clientX
@@ -39,23 +29,27 @@ const onMouseMove = (e: MouseEvent) => {
 
   const target = e.target as HTMLElement | null
   if (target) {
-    const isInteractive = !!target.closest('a, button, input, textarea, select, .bento-card, .project-row, [role="button"]')
-    isHovered.value = isInteractive
+    const interactive = !!target.closest('a, button, input, textarea, select, .bento-card, .project-row, [role="button"]')
+    if (interactive !== isHovered) {
+      isHovered = interactive
+      haloRef.value?.classList.toggle('is-hovered', isHovered)
+    }
   }
 }
 
 const onMouseDown = () => {
-  isPressed.value = true
+  isPressed = true
+  haloRef.value?.classList.add('is-pressed')
 }
 
 const onMouseUp = () => {
-  isPressed.value = false
+  isPressed = false
+  haloRef.value?.classList.remove('is-pressed')
 }
 
 const animateHalo = () => {
-  const ease = 0.18
-  haloX += (mouseX - haloX) * ease
-  haloY += (mouseY - haloY) * ease
+  haloX += (mouseX - haloX) * 0.15
+  haloY += (mouseY - haloY) * 0.15
 
   if (haloRef.value) {
     haloRef.value.style.transform = `translate3d(${haloX}px, ${haloY}px, 0)`
@@ -65,24 +59,32 @@ const animateHalo = () => {
 }
 
 onMounted(() => {
+  if (typeof window === 'undefined') return
+
   const hasFinePointer = window.matchMedia('(pointer: fine)').matches
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-  if (hasFinePointer && !prefersReduced) {
-    isEnabled.value = true
-    document.documentElement.classList.add('has-custom-cursor')
-    window.addEventListener('mousemove', onMouseMove, { passive: true })
-    window.addEventListener('mousedown', onMouseDown, { passive: true })
-    window.addEventListener('mouseup', onMouseUp, { passive: true })
-    animFrameId = requestAnimationFrame(animateHalo)
+  if (!hasFinePointer || prefersReduced) {
+    // Hide elements on touch/reduced-motion
+    dotRef.value?.style.setProperty('display', 'none')
+    haloRef.value?.style.setProperty('display', 'none')
+    return
   }
+
+  enabled = true
+  document.documentElement.classList.add('has-custom-cursor')
+  document.addEventListener('mousemove', onMouseMove, { passive: true })
+  document.addEventListener('mousedown', onMouseDown, { passive: true })
+  document.addEventListener('mouseup', onMouseUp, { passive: true })
+  animFrameId = requestAnimationFrame(animateHalo)
 })
 
 onUnmounted(() => {
+  if (!enabled) return
   document.documentElement.classList.remove('has-custom-cursor')
-  window.removeEventListener('mousemove', onMouseMove)
-  window.removeEventListener('mousedown', onMouseDown)
-  window.removeEventListener('mouseup', onMouseUp)
+  document.removeEventListener('mousemove', onMouseMove)
+  document.removeEventListener('mousedown', onMouseDown)
+  document.removeEventListener('mouseup', onMouseUp)
   if (animFrameId) cancelAnimationFrame(animFrameId)
 })
 </script>
@@ -105,6 +107,7 @@ onUnmounted(() => {
   border-radius: 50%;
   pointer-events: none;
   will-change: transform;
+  transform: translate3d(-100px, -100px, 0);
 }
 
 .cursor-halo {
@@ -113,16 +116,17 @@ onUnmounted(() => {
   left: -14px;
   width: 28px;
   height: 28px;
-  background-color: rgba(15, 63, 47, 0.12);
-  border: 1.5px solid rgba(15, 63, 47, 0.25);
+  background-color: rgba(15, 63, 47, 0.10);
+  border: 1.5px solid rgba(15, 63, 47, 0.20);
   border-radius: 50%;
   pointer-events: none;
   will-change: transform;
-  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-              height 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-              top 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-              left 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-              background-color 0.3s ease, 
+  transform: translate3d(-100px, -100px, 0);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              top 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              left 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.3s ease,
               border-color 0.3s ease;
 }
 
@@ -131,8 +135,8 @@ onUnmounted(() => {
   height: 44px;
   top: -22px;
   left: -22px;
-  background-color: rgba(15, 63, 47, 0.08);
-  border-color: rgba(15, 63, 47, 0.5);
+  background-color: rgba(15, 63, 47, 0.06);
+  border-color: rgba(15, 63, 47, 0.45);
 }
 
 .cursor-halo.is-pressed {
