@@ -4,23 +4,17 @@
     class="project-row"
     :class="{ 'project-row--first': isFirst }"
     :aria-label="`${name} — view source on GitHub`"
-    @mouseenter="isHovered = true"
-    @mouseleave="isHovered = false"
   >
-    <!-- Col 1: Index number -->
+    <!-- Col 1: Index + Stamp stacked vertically -->
     <div class="project-col project-col-index" aria-hidden="true">
       <span class="project-index">{{ index }}</span>
-    </div>
-
-    <!-- Col 2: Logo Stamp -->
-    <div class="project-col project-col-stamp" aria-hidden="true">
       <div class="project-stamp">
         <img v-if="logo" :src="logo" alt="" class="stamp-img" />
         <span v-else class="stamp-text">{{ name.charAt(0) }}</span>
       </div>
     </div>
 
-    <!-- Col 3: Content -->
+    <!-- Col 2: Content -->
     <div class="project-col project-col-body">
       <div class="project-head">
         <h3 class="project-name">{{ name }}</h3>
@@ -61,7 +55,7 @@ defineProps<{
 /* ── Row ─────────────────────────────────────────────── */
 .project-row {
   display: grid;
-  grid-template-columns: 48px 64px 1fr; /* 3 Columns */
+  grid-template-columns: 72px 1fr; /* 2 Columns */
   padding: 0;
   margin: 0;
   margin-top: -1px; /* Prevent double borders */
@@ -74,7 +68,7 @@ defineProps<{
 
 @media (min-width: 768px) {
   .project-row {
-    grid-template-columns: 64px 80px 1fr; /* 3 Columns */
+    grid-template-columns: 96px 1fr; /* 2 Columns */
   }
 }
 
@@ -96,12 +90,17 @@ defineProps<{
   display: flex;
 }
 
-/* Col 1: Index */
+/* Col 1: Index + Stamp (vertical stack) */
 .project-col-index {
-  padding: 36px 0 36px 24px;
+  padding: 28px 0 28px 20px;
+  flex-direction: column;
+  justify-content: space-between; /* number top, stamp bottom */
+  align-items: flex-start;
+  border-right: 1px solid rgba(15, 63, 47, 0.12);
+  gap: 12px;
 }
 @media (min-width: 768px) {
-  .project-col-index { padding: 44px 0 44px 32px; }
+  .project-col-index { padding: 36px 0 36px 28px; }
 }
 
 .project-index {
@@ -110,23 +109,11 @@ defineProps<{
   font-weight: 400;
   color: var(--color-text-3);
   letter-spacing: 0.04em;
-  padding-top: 4px;
   user-select: none;
+  flex-shrink: 0;
 }
 
-/* Col 2: Stamp */
-.project-col-stamp {
-  padding: 36px 0;
-  display: flex;
-  align-items: flex-start;
-}
-@media (min-width: 768px) {
-  .project-col-stamp {
-    padding: 44px 0;
-  }
-}
-
-/* Col 3: Body */
+/* Col 2: Body */
 .project-col-body {
   padding: 36px 24px 36px 0;
   flex-direction: column;
