@@ -160,7 +160,7 @@ const tools = [
 
 .bento-card {
   position: relative;
-  border-radius: 16px;
+  border-radius: 0;
   background: var(--color-border); /* Outer border color */
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
@@ -180,7 +180,7 @@ const tools = [
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: inherit;
+  border-radius: 0;
   opacity: 0;
   transition: opacity 0.3s ease;
   background: radial-gradient(
@@ -197,7 +197,7 @@ const tools = [
   content: "";
   position: absolute;
   inset: 1px;
-  border-radius: 15px;
+  border-radius: 0;
   opacity: 0;
   transition: opacity 0.3s ease;
   background: radial-gradient(
@@ -219,7 +219,7 @@ const tools = [
   position: absolute;
   inset: 1px;
   background-color: #0F3F2F; /* Dark Green */
-  border-radius: 15px;
+  border-radius: 0;
   z-index: 2;
   transition: background-color 0.3s ease;
   overflow: hidden;
@@ -316,7 +316,7 @@ const tools = [
   justify-content: center;
   width: 44px;
   height: 44px;
-  border-radius: 10px;
+  border-radius: 0;
   background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 16px;
@@ -393,7 +393,7 @@ const tools = [
   border: 1px solid rgba(242, 232, 207, 0.15); /* Subtle bone border */
   color: #f2e8cf; /* Light bone text */
   padding: 10px 16px;
-  border-radius: 12px;
+  border-radius: 0;
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
