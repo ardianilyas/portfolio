@@ -1,5 +1,8 @@
 <template>
   <div class="relative w-full min-h-screen bg-[var(--color-bg)]">
+    <!-- Custom Cursor -->
+    <CustomCursor />
+
     <!-- Accessibility Skip Link -->
     <a href="#main-content" class="skip-to-content">
       Skip to main content
