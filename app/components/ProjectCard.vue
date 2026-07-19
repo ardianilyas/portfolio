@@ -27,6 +27,11 @@
       </div>
     </div>
 
+    <!-- Skewed Logo Box on Right -->
+    <div class="project-logo-box" aria-hidden="true">
+      <span class="project-logo-text">{{ name.charAt(0) }}</span>
+    </div>
+
   </NuxtLink>
 </template>
 
@@ -48,7 +53,7 @@ defineProps<{
   display: grid;
   grid-template-columns: 48px 1fr;
   gap: 24px;
-  padding: 36px 24px;
+  padding: 36px 120px 36px 24px;
   margin: 0;
   margin-top: -1px; /* Prevent double borders */
   border: 1px solid #0F3F2F;
@@ -56,13 +61,14 @@ defineProps<{
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
   cursor: pointer;
   position: relative;
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
   .project-row {
     grid-template-columns: 64px 1fr;
     gap: 32px;
-    padding: 44px 32px;
+    padding: 44px 160px 44px 32px;
     margin: 0;
     margin-top: -1px;
   }
@@ -95,6 +101,53 @@ defineProps<{
 
 .project-row:hover .arrow-clone {
   transform: translate(0, 0);
+}
+
+.project-row:hover .project-logo-text {
+  opacity: 1;
+  transform: scale(1.1) translateX(4px);
+}
+
+/* ── Logo Box ─────────────────────────────────────────── */
+.project-logo-box {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100px;
+  background: #0F3F2F; /* Dark green block */
+  clip-path: polygon(30px 0, 100% 0, 100% 100%, 0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 15px; /* Offset to center inside the skew */
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .project-logo-box {
+    width: 140px;
+    clip-path: polygon(40px 0, 100% 0, 100% 100%, 0 100%);
+    padding-left: 20px;
+  }
+}
+
+.project-logo-text {
+  font-family: var(--font-sans);
+  font-size: 42px;
+  font-weight: 800;
+  color: #f2e8cf; /* Bone text */
+  opacity: 0.25;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 768px) {
+  .project-logo-text {
+    font-size: 64px;
+  }
 }
 
 /* ── Index ────────────────────────────────────────────── */
