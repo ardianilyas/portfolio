@@ -29,6 +29,7 @@
           <span class="eq-bar"></span>
           <span class="eq-bar"></span>
           <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
         </div>
       </div>
       <div class="spotify-info">
@@ -254,17 +255,47 @@ onUnmounted(() => {
 
 .eq-bar {
   width: 3px;
-  height: 14px;
-  background-color: #0F3F2F;
-  animation: eq-bounce 0.8s ease-in-out infinite alternate;
+  height: 16px;
+  background-color: #f2e8cf;
+  border-radius: 2px;
+  transform-origin: bottom;
+  animation: eq-bounce-1 0.7s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
 }
 
-.eq-bar:nth-child(2) { animation-delay: -0.3s; }
-.eq-bar:nth-child(3) { animation-delay: -0.6s; }
+.eq-bar:nth-child(2) {
+  animation-name: eq-bounce-2;
+  animation-duration: 0.55s;
+  animation-delay: -0.2s;
+}
 
-@keyframes eq-bounce {
+.eq-bar:nth-child(3) {
+  animation-name: eq-bounce-3;
+  animation-duration: 0.8s;
+  animation-delay: -0.4s;
+}
+
+.eq-bar:nth-child(4) {
+  animation-name: eq-bounce-1;
+  animation-duration: 0.65s;
+  animation-delay: -0.1s;
+}
+
+@keyframes eq-bounce-1 {
+  0% { transform: scaleY(0.2); }
+  50% { transform: scaleY(0.85); }
+  100% { transform: scaleY(0.4); }
+}
+
+@keyframes eq-bounce-2 {
+  0% { transform: scaleY(0.6); }
+  50% { transform: scaleY(0.25); }
+  100% { transform: scaleY(1.0); }
+}
+
+@keyframes eq-bounce-3 {
   0% { transform: scaleY(0.3); }
-  100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.9); }
+  100% { transform: scaleY(0.5); }
 }
 
 .spotify-icon-wrap {

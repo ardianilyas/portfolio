@@ -14,7 +14,7 @@
         <div class="footer-cta-block">
           <p class="footer-pre">Let's work together</p>
           <h2 class="footer-headline">
-            Ready to build<br>something great?
+            <SplitText text="Ready to build something great?" :staggerDelay="40" />
           </h2>
           <a
             href="mailto:ardianilyas@gmail.com"

@@ -1,7 +1,7 @@
 <template>
   <header
     class="navbar"
-    :class="{ 'navbar--scrolled': scrolled || isOpen }"
+    :class="{ 'navbar--scrolled': scrolled || isOpen, 'is-loaded': isLoaded }"
     role="banner"
   >
     <div class="navbar-inner">
@@ -15,14 +15,17 @@
 
       <!-- Center: Desktop nav links -->
       <div class="navbar-center">
-        <nav class="navbar-links" aria-label="Primary navigation">
+        <nav class="navbar-links" aria-label="Primary navigation" ref="navLinksContainer">
+          <span class="active-pill-indicator" :style="pillStyle"></span>
           <a
             v-for="link in navLinks"
             :key="link.id"
+            :ref="el => setLinkRef(link.id, el)"
             :href="'#' + link.id"
             class="navbar-link"
             :class="{ 'navbar-link--active': activeSection === link.id }"
             @click.prevent="scrollTo(link.id)"
+            v-magnetic="0.15"
           >
             {{ link.label }}
           </a>
@@ -35,6 +38,7 @@
           href="mailto:ardianilyas@gmail.com"
           class="navbar-cta hidden md:inline-flex"
           aria-label="Get in touch via email"
+          v-magnetic="0.2"
         >
           Get in touch
         </a>
@@ -92,17 +96,47 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, watch, nextTick, onMounted, onUnmounted } from 'vue'
 
 const isOpen = ref(false)
 const scrolled = ref(false)
+const isLoaded = ref(false)
 const activeSection = ref('')
+const navLinksContainer = ref<HTMLElement | null>(null)
+const linkRefs = reactive<Record<string, HTMLElement | null>>({})
 
 const navLinks = [
   { id: 'skills',    label: 'Skills' },
   { id: 'tools',     label: 'Tools' },
   { id: 'portfolio', label: 'Projects' },
 ]
+
+const setLinkRef = (id: string, el: any) => {
+  if (el) linkRefs[id] = el as HTMLElement
+}
+
+const pillStyle = reactive({
+  transform: 'translateX(0px)',
+  width: '0px',
+  opacity: 0
+})
+
+const updatePill = () => {
+  nextTick(() => {
+    const el = linkRefs[activeSection.value]
+    if (el) {
+      pillStyle.transform = `translateX(${el.offsetLeft}px)`
+      pillStyle.width = `${el.offsetWidth}px`
+      pillStyle.opacity = 1
+    } else {
+      pillStyle.opacity = 0
+    }
+  })
+}
+
+watch(activeSection, () => {
+  updatePill()
+})
 
 let observer: IntersectionObserver | null = null
 
@@ -123,6 +157,11 @@ function onScroll() {
 
 onMounted(() => {
   window.addEventListener('scroll', onScroll, { passive: true })
+  
+  // Trigger initial drop-down animation
+  setTimeout(() => {
+    isLoaded.value = true
+  }, 50)
   
   // Setup scroll spy
   const options = {
@@ -158,6 +197,9 @@ onMounted(() => {
     const el = document.getElementById(id)
     if (el) observer?.observe(el)
   })
+
+  updatePill()
+  window.addEventListener('resize', updatePill, { passive: true })
 })
 
 onUnmounted(() => {
@@ -172,15 +214,19 @@ onUnmounted(() => {
   position: fixed;
   top: 16px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -150%);
   width: calc(100% - 32px);
   max-width: 900px;
   z-index: 100;
   height: 60px;
   background: transparent;
-  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   border: 1px solid transparent;
   border-radius: 9999px;
+}
+
+.navbar.is-loaded {
+  transform: translate(-50%, 0);
 }
 
 .navbar--scrolled {
@@ -236,6 +282,7 @@ onUnmounted(() => {
 
 /* ── Desktop links ─────────────────────────────────────── */
 .navbar-links {
+  position: relative;
   display: none;
   align-items: center;
   gap: 4px;
@@ -250,7 +297,22 @@ onUnmounted(() => {
   .navbar-links { display: flex; }
 }
 
+.active-pill-indicator {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: calc(100% - 8px);
+  background: #0F3F2F;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(15, 63, 47, 0.15);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), width 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .navbar-link {
+  position: relative;
+  z-index: 1;
   font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 500;
@@ -258,7 +320,7 @@ onUnmounted(() => {
   color: var(--color-text-2);
   padding: 8px 16px;
   border-radius: 9999px;
-  transition: color 0.3s ease, background 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 .navbar-link:not(.navbar-link--active):hover {
@@ -266,9 +328,7 @@ onUnmounted(() => {
 }
 
 .navbar-link--active {
-  background: #0F3F2F;
   color: #f2e8cf;
-  box-shadow: 0 4px 12px rgba(15, 63, 47, 0.15);
 }
 
 /* ── CTA ─────────────────────────────────────────────── */
@@ -283,13 +343,15 @@ onUnmounted(() => {
   transition: opacity 0.2s, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.navbar-cta:active {
+  transform: scale(0.96) translateY(1px);
+  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
+}
+
 .navbar-cta:hover { 
   opacity: 0.95; 
   transform: translateY(-1px);
   box-shadow: 0 10px 20px -10px rgba(15, 63, 47, 0.4);
-}
-.navbar-cta:active {
-  transform: translateY(1px);
 }
 
 /* ── Hamburger ─────────────────────────────────────────── */

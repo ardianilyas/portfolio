@@ -7,7 +7,6 @@
       <div 
         class="bento-grid max-w-[1100px] mx-auto fade-up fade-up-1" 
         ref="bentoGrid"
-        @mousemove="onMouseMove"
       >
         
         <!-- Large Philosophy Card (Spans 2x2 on desktop) -->
@@ -15,9 +14,11 @@
           <div class="bento-card-inner"></div>
           <div class="bento-content">
             <div class="philosophy-content-wrap">
-              <p class="philosophy-text">
-                Good tooling fades into the background. I choose tools that remove friction, scale with the project, and get out of the way so the work can speak for itself.
-              </p>
+              <SplitText 
+                text="Good tooling fades into the background. I choose tools that remove friction, scale with the project, and get out of the way so the work can speak for itself."
+                class="philosophy-text"
+                :staggerDelay="35"
+              />
               <p class="philosophy-sub">
                 The stack adapts to the problem — not the other way around.
               </p>
@@ -141,7 +142,7 @@ const tools = [
   z-index: 1;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 0;
   padding: 40px 0;
 }
 
@@ -160,73 +161,34 @@ const tools = [
 
 .bento-card {
   position: relative;
-  border-radius: 16px;
-  background: var(--color-border); /* Outer border color */
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 0;
+  border: 1px solid #0F3F2F;
+  margin-top: -1px;
+  margin-left: -1px;
+  background: var(--color-surface);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
   will-change: transform;
   /* Ensure proper stacking */
   z-index: 1;
 }
 
 .bento-card:hover {
-  transform: translateY(-4px) scale(1.01) rotate(1.5deg); /* Slight tilt (miring) */
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+  background: rgba(242, 232, 207, 0.35); /* Light brown tint matching project card */
+  box-shadow: 0 16px 40px rgba(15, 63, 47, 0.04);
+  border-color: #0F3F2F;
   z-index: 5;
-}
-
-/* ── Spotlight Gradients ──────────────────────────────── */
-/* Outer Border Spotlight */
-.bento-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  background: radial-gradient(
-    800px circle at var(--mouse-x, 0) var(--mouse-y, 0),
-    rgba(0, 0, 0, 0.15), 
-    transparent 40%
-  );
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* Inner Surface Spotlight */
-.bento-card::after {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  border-radius: 15px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  background: radial-gradient(
-    600px circle at var(--mouse-x, 0) var(--mouse-y, 0),
-    rgba(242, 232, 207, 0.15), /* Subtle warm spotlight on dark */
-    transparent 40%
-  );
-  z-index: 3;
-  pointer-events: none;
-}
-
-.bento-grid:hover .bento-card::before,
-.bento-grid:hover .bento-card::after {
-  opacity: 1;
 }
 
 /* ── Inner Wrapper ────────────────────────────────────── */
 .bento-card-inner {
   position: absolute;
-  inset: 1px;
-  background-color: #0F3F2F; /* Dark Green */
-  border-radius: 15px;
+  inset: 0;
+  background-color: transparent;
+  border-radius: 0;
   z-index: 2;
   transition: background-color 0.3s ease;
   overflow: hidden;
-}
-
-.bento-card:hover .bento-card-inner {
-  background-color: #124c38; /* Slightly lighter dark green */
 }
 
 .bento-content {
@@ -282,7 +244,7 @@ const tools = [
   font-weight: 500;
   line-height: 1.4;
   letter-spacing: -0.01em;
-  color: #f2e8cf; /* Light Brown */
+  color: #16211E;
   margin: 0;
 }
 
@@ -291,7 +253,7 @@ const tools = [
   font-size: 13px;
   font-weight: 400;
   letter-spacing: 0.03em;
-  color: rgba(242, 232, 207, 0.7);
+  color: var(--color-text-3);
   margin: 0;
 }
 
@@ -304,6 +266,11 @@ const tools = [
   justify-content: space-between;
 }
 
+.bento-card:active {
+  transform: scale(0.995) translateY(0);
+  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
+}
+
 /* ── Icon ─────────────────────────────────────────────── */
 .tool-icon-wrapper {
   display: flex;
@@ -311,18 +278,18 @@ const tools = [
   justify-content: center;
   width: 44px;
   height: 44px;
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
   margin-bottom: 16px;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
 .bento-card:hover .tool-icon-wrapper {
   transform: scale(1.08) translateY(-2px);
-  background-color: rgba(242, 232, 207, 0.15);
-  border-color: rgba(242, 232, 207, 0.4);
+  background-color: rgba(242, 232, 207, 0.5);
+  border-color: #0F3F2F;
 }
 
 .tool-icon {
@@ -333,12 +300,12 @@ const tools = [
 }
 
 .tool-icon--svg {
-  color: #f2e8cf;
+  color: var(--color-text-2);
   transition: color 0.3s ease;
 }
 
 .bento-card:hover .tool-icon--svg {
-  color: #ffffff;
+  color: #0F3F2F;
 }
 
 /* ── Info block ───────────────────────────────────────── */
@@ -350,44 +317,44 @@ const tools = [
 }
 
 .bento-card:hover .tool-info {
-  transform: translateX(6px); /* Slide text to the right on hover */
+  transform: translateX(4px);
 }
 
 .tool-name {
   font-family: var(--font-sans);
   font-size: 16px;
   font-weight: 600;
-  color: #f2e8cf;
+  color: #16211E;
   line-height: 1.2;
   letter-spacing: -0.01em;
   transition: color 0.3s ease;
 }
 
 .bento-card:hover .tool-name {
-  color: #ffffff;
+  color: #0F3F2F;
 }
 
 .tool-category {
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 400;
-  color: rgba(242, 232, 207, 0.6);
+  color: var(--color-text-3);
   line-height: 1.2;
 }
 
 /* ── Tooltip ──────────────────────────────────────────── */
 .tool-tooltip {
   position: absolute;
-  bottom: calc(100% + 12px); /* Just above the card */
+  bottom: calc(100% + 12px);
   left: 50%;
   transform: translateX(-50%) translateY(8px);
-  background: rgba(15, 63, 47, 0.85); /* Dark Green glass */
+  background: rgba(250, 250, 248, 0.95);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(242, 232, 207, 0.15); /* Subtle bone border */
-  color: #f2e8cf; /* Light bone text */
+  border: 1px solid #0F3F2F;
+  color: #16211E;
   padding: 10px 16px;
-  border-radius: 12px;
+  border-radius: 0;
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
@@ -398,7 +365,7 @@ const tools = [
   visibility: hidden;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 20;
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 30px -5px rgba(15, 63, 47, 0.15);
 }
 
 /* For dark mode support if needed, you could use var(--color-surface) but semi-transparent */

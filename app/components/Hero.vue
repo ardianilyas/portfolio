@@ -42,11 +42,18 @@
 
       <!-- CTAs -->
       <div class="hero-actions fade-up fade-up-4">
-        <a href="#portfolio" class="btn-primary" @click.prevent="scrollTo('portfolio')">
+        <a href="#portfolio" class="btn-primary" @click.prevent="scrollTo('portfolio')" v-magnetic="0.15">
           View my work
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          <span class="btn-icon" aria-hidden="true">
+            <svg class="btn-arrow-svg arrow-main" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+            </svg>
+            <svg class="btn-arrow-svg arrow-clone" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+            </svg>
+          </span>
         </a>
-        <a href="mailto:ardianilyas@gmail.com" class="btn-ghost">
+        <a href="mailto:ardianilyas@gmail.com" class="btn-ghost" v-magnetic="0.15">
           Get in touch
         </a>
       </div>
@@ -280,17 +287,44 @@ const headlineWords = [
 }
 
 .btn-icon {
-  transition: transform 0.2s ease;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
 }
 
-.btn-primary:hover .btn-icon {
-  transform: translateX(4px);
+.btn-arrow-svg {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.arrow-main {
+  transform: translate(0, 0);
+}
+
+.arrow-clone {
+  transform: translate(-100%, 100%);
+}
+
+.btn-primary:hover .arrow-main {
+  transform: translate(100%, -100%);
+}
+
+.btn-primary:hover .arrow-clone {
+  transform: translate(0, 0);
 }
 
 .btn-primary:hover {
   opacity: 0.95;
   transform: translateY(-2px);
   box-shadow: 0 10px 20px -10px rgba(15, 63, 47, 0.4);
+}
+
+.btn-primary:active {
+  transform: scale(0.97) translateY(0);
+  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .btn-ghost {
@@ -307,6 +341,11 @@ const headlineWords = [
 .btn-ghost:hover {
   background: var(--color-surface);
   transform: translateY(-2px);
+}
+
+.btn-ghost:active {
+  transform: scale(0.97) translateY(0);
+  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
 }
 
 /* ── Status badge ─────────────────────────────────────── */

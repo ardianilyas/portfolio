@@ -56,6 +56,17 @@ html {
   overflow-x: hidden;
 }
 
+html.has-custom-cursor,
+html.has-custom-cursor body,
+html.has-custom-cursor a,
+html.has-custom-cursor button,
+html.has-custom-cursor input,
+html.has-custom-cursor textarea,
+html.has-custom-cursor select,
+html.has-custom-cursor [role="button"] {
+  cursor: none !important;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--color-bg);
@@ -74,6 +85,34 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* ── Focus & Accessibility ────────────────────────────── */
+:focus-visible {
+  outline: 2px solid #0F3F2F !important;
+  outline-offset: 3px !important;
+  border-radius: 4px;
+}
+
+.skip-to-content {
+  position: absolute;
+  top: -100px;
+  left: 20px;
+  z-index: 1000;
+  background: #0F3F2F;
+  color: #f2e8cf;
+  padding: 10px 18px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: top 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.skip-to-content:focus {
+  top: 20px;
 }
 
 /* ── Heading Tracking ─────────────────────────────────── */
