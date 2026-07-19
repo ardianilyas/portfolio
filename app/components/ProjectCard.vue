@@ -12,17 +12,18 @@
       <span class="project-index">{{ index }}</span>
     </div>
 
-    <!-- Col 2: Content -->
+    <!-- Col 2: Logo Stamp -->
+    <div class="project-col project-col-stamp" aria-hidden="true">
+      <div class="project-stamp">
+        <img v-if="logo" :src="logo" alt="" class="stamp-img" />
+        <span v-else class="stamp-text">{{ name.charAt(0) }}</span>
+      </div>
+    </div>
+
+    <!-- Col 3: Content -->
     <div class="project-col project-col-body">
       <div class="project-head">
-        <div class="project-head-left">
-          <!-- The Typographic Stamp -->
-          <div class="project-stamp" aria-hidden="true">
-            <img v-if="logo" :src="logo" alt="" class="stamp-img" />
-            <span v-else class="stamp-text">{{ name.charAt(0) }}</span>
-          </div>
-          <h3 class="project-name">{{ name }}</h3>
-        </div>
+        <h3 class="project-name">{{ name }}</h3>
         
         <span class="project-arrow" aria-hidden="true">
           <svg class="arrow-svg arrow-main" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -60,7 +61,7 @@ defineProps<{
 /* ── Row ─────────────────────────────────────────────── */
 .project-row {
   display: grid;
-  grid-template-columns: 48px 1fr; /* 2 Columns */
+  grid-template-columns: 48px 64px 1fr; /* 3 Columns */
   padding: 0;
   margin: 0;
   margin-top: -1px; /* Prevent double borders */
@@ -73,7 +74,7 @@ defineProps<{
 
 @media (min-width: 768px) {
   .project-row {
-    grid-template-columns: 64px 1fr; /* 2 Columns */
+    grid-template-columns: 64px 80px 1fr; /* 3 Columns */
   }
 }
 
@@ -113,7 +114,19 @@ defineProps<{
   user-select: none;
 }
 
-/* Col 2: Body */
+/* Col 2: Stamp */
+.project-col-stamp {
+  padding: 36px 0;
+  display: flex;
+  align-items: flex-start;
+}
+@media (min-width: 768px) {
+  .project-col-stamp {
+    padding: 44px 0;
+  }
+}
+
+/* Col 3: Body */
 .project-col-body {
   padding: 36px 24px 36px 0;
   flex-direction: column;
@@ -129,12 +142,6 @@ defineProps<{
   display: flex;
   align-items: flex-start;
   justify-content: space-between; /* Space out name and arrow */
-  gap: 16px;
-}
-
-.project-head-left {
-  display: flex;
-  align-items: center;
   gap: 16px;
 }
 
