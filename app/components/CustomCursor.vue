@@ -18,6 +18,7 @@ let haloY = -100
 let animFrameId: number | null = null
 let isHovered = false
 let isPressed = false
+let isInverted = false
 let enabled = false
 
 const onMouseMove = (e: MouseEvent) => {
@@ -33,6 +34,13 @@ const onMouseMove = (e: MouseEvent) => {
     if (interactive !== isHovered) {
       isHovered = interactive
       haloRef.value?.classList.toggle('is-hovered', isHovered)
+    }
+
+    const inverted = !!target.closest('footer, .footer, [data-theme="dark"]')
+    if (inverted !== isInverted) {
+      isInverted = inverted
+      dotRef.value?.classList.toggle('is-inverted', isInverted)
+      haloRef.value?.classList.toggle('is-inverted', isInverted)
     }
   }
 }
@@ -145,5 +153,24 @@ onUnmounted(() => {
   top: -8px;
   left: -8px;
   background-color: rgba(15, 63, 47, 0.3);
+}
+
+/* ── Inverted Mode (Over dark sections) ── */
+.cursor-dot.is-inverted {
+  background-color: #f2e8cf;
+}
+
+.cursor-halo.is-inverted {
+  background-color: rgba(242, 232, 207, 0.15);
+  border-color: rgba(242, 232, 207, 0.3);
+}
+
+.cursor-halo.is-hovered.is-inverted {
+  background-color: rgba(242, 232, 207, 0.1);
+  border-color: rgba(242, 232, 207, 0.6);
+}
+
+.cursor-halo.is-pressed.is-inverted {
+  background-color: rgba(242, 232, 207, 0.4);
 }
 </style>
