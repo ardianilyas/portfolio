@@ -15,7 +15,14 @@
     <!-- Col 2: Content -->
     <div class="project-col project-col-body">
       <div class="project-head">
-        <h3 class="project-name">{{ name }}</h3>
+        <div class="project-head-left">
+          <!-- The Typographic Stamp -->
+          <div class="project-stamp" aria-hidden="true">
+            <img v-if="logo" :src="logo" alt="" class="stamp-img" />
+            <span v-else class="stamp-text">{{ name.charAt(0) }}</span>
+          </div>
+          <h3 class="project-name">{{ name }}</h3>
+        </div>
         
         <span class="project-arrow" aria-hidden="true">
           <svg class="arrow-svg arrow-main" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -33,25 +40,10 @@
         <span v-for="tag in tags" :key="tag" class="project-tag">{{ tag }}</span>
       </div>
     </div>
-
-    <!-- Floating Cursor Reveal (Awwwards Style) -->
-    <Teleport to="body">
-      <div 
-        v-if="logo"
-        class="project-cursor-follower" 
-        :class="{ 'is-active': isHovered }"
-        :style="{ transform: `translate3d(calc(${x}px - 50%), calc(${y}px - 50%), 0) scale(${isHovered ? 1 : 0.5}) rotate(${isHovered ? 0 : 5}deg)` }"
-      >
-        <img :src="logo" class="follower-img" alt="" />
-      </div>
-    </Teleport>
   </NuxtLink>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useMouse } from '@vueuse/core'
-
 defineProps<{
   name: string
   description: string
@@ -62,9 +54,6 @@ defineProps<{
   isFirst?: boolean
   logo?: string
 }>()
-
-const isHovered = ref(false)
-const { x, y } = useMouse({ type: 'client' }) // client coordinates are perfect for position: fixed
 </script>
 
 <style scoped>
@@ -143,6 +132,46 @@ const { x, y } = useMouse({ type: 'client' }) // client coordinates are perfect 
   gap: 16px;
 }
 
+.project-head-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ── The Stamp ───────────────────────────────────────── */
+.project-stamp {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(15, 63, 47, 0.2);
+  border-radius: 0; /* Brutalist/Industrial sharp corners */
+  background: rgba(15, 63, 47, 0.02);
+  padding: 8px;
+  flex-shrink: 0;
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stamp-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: grayscale(100%) contrast(150%);
+  opacity: 0.6;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.stamp-text {
+  font-family: var(--font-mono); /* Use mono for industrial feel */
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-3);
+  line-height: 1;
+  transition: color 0.3s ease;
+}
+
+/* ── Typography ──────────────────────────────────────── */
 .project-name {
   font-family: var(--font-sans);
   font-size: clamp(18px, 2vw, 24px);
@@ -221,43 +250,21 @@ const { x, y } = useMouse({ type: 'client' }) // client coordinates are perfect 
 .project-row:hover .arrow-clone {
   transform: translate(0, 0);
 }
-</style>
 
-<style>
-/* 
-  Global styles for the teleported cursor follower.
-  Must be unscoped because it is teleported to the body! 
-*/
-.project-cursor-follower {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 220px;
-  pointer-events: none; /* Let mouse interact with things beneath */
-  z-index: 99999;
-  opacity: 0;
-  /* Add a tiny delay to the transform to create a smooth lagging/spring effect */
-  transition: opacity 0.3s ease, transform 0.15s ease-out;
-  display: none; /* Hide on mobile */
+.project-row:hover .project-stamp {
+  border-color: #0F3F2F;
+  background: rgba(15, 63, 47, 0.06);
+  transform: scale(1.05);
 }
 
-@media (min-width: 768px) {
-  .project-cursor-follower {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-.project-cursor-follower.is-active {
+.project-row:hover .stamp-img {
+  filter: grayscale(0%);
   opacity: 1;
 }
 
-.follower-img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  /* Add a soft glow/shadow to lift it off the page */
-  filter: drop-shadow(0 20px 30px rgba(15, 63, 47, 0.15));
+.project-row:hover .stamp-text {
+  color: #0F3F2F;
 }
 </style>
+
+
