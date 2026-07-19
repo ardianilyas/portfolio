@@ -7,7 +7,6 @@
       <div 
         class="bento-grid max-w-[1100px] mx-auto fade-up fade-up-1" 
         ref="bentoGrid"
-        @mousemove="onMouseMove"
       >
         
         <!-- Large Philosophy Card (Spans 2x2 on desktop) -->
@@ -177,46 +176,6 @@ const tools = [
   box-shadow: 0 16px 40px rgba(15, 63, 47, 0.04);
   border-color: #0F3F2F;
   z-index: 5;
-}
-
-/* ── Spotlight Gradients ──────────────────────────────── */
-/* Outer Border Spotlight */
-.bento-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 0;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  background: radial-gradient(
-    800px circle at var(--mouse-x, 0) var(--mouse-y, 0),
-    rgba(15, 63, 47, 0.08), 
-    transparent 40%
-  );
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* Inner Surface Spotlight */
-.bento-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 0;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  background: radial-gradient(
-    600px circle at var(--mouse-x, 0) var(--mouse-y, 0),
-    rgba(242, 232, 207, 0.5),
-    transparent 40%
-  );
-  z-index: 3;
-  pointer-events: none;
-}
-
-.bento-grid:hover .bento-card::before,
-.bento-grid:hover .bento-card::after {
-  opacity: 1;
 }
 
 /* ── Inner Wrapper ────────────────────────────────────── */
