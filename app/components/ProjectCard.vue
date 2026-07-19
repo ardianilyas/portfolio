@@ -12,25 +12,28 @@
     <div class="project-body">
       <div class="project-head">
         <h3 class="project-name">{{ name }}</h3>
-        <span class="project-arrow" aria-hidden="true">
-          <svg class="arrow-svg arrow-main" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
-          </svg>
-          <svg class="arrow-svg arrow-clone" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
-          </svg>
-        </span>
+        
+        <div class="project-head-right">
+          <!-- Inline Skewed Logo Badge -->
+          <div class="project-inline-logo" aria-hidden="true">
+            <img v-if="logo" :src="logo" alt="" class="inline-logo-img" />
+            <span v-else class="inline-logo-text">{{ name.charAt(0) }}</span>
+          </div>
+
+          <span class="project-arrow" aria-hidden="true">
+            <svg class="arrow-svg arrow-main" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+            </svg>
+            <svg class="arrow-svg arrow-clone" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+            </svg>
+          </span>
+        </div>
       </div>
       <p class="project-desc">{{ description }}</p>
       <div class="project-tags" aria-label="Technologies used">
         <span v-for="tag in tags" :key="tag" class="project-tag">{{ tag }}</span>
       </div>
-    </div>
-
-    <!-- Skewed Logo Box on Right -->
-    <div class="project-logo-box" aria-hidden="true">
-      <img v-if="logo" :src="logo" alt="" class="project-logo-img" />
-      <span v-else class="project-logo-text">{{ name.charAt(0) }}</span>
     </div>
 
   </NuxtLink>
@@ -55,7 +58,7 @@ defineProps<{
   display: grid;
   grid-template-columns: 48px 1fr;
   gap: 24px;
-  padding: 36px 120px 36px 24px;
+  padding: 36px 24px;
   margin: 0;
   margin-top: -1px; /* Prevent double borders */
   border: 1px solid #0F3F2F;
@@ -63,14 +66,13 @@ defineProps<{
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
   cursor: pointer;
   position: relative;
-  overflow: hidden;
 }
 
 @media (min-width: 768px) {
   .project-row {
     grid-template-columns: 64px 1fr;
     gap: 32px;
-    padding: 44px 160px 44px 32px;
+    padding: 44px 32px;
     margin: 0;
     margin-top: -1px;
   }
@@ -105,71 +107,57 @@ defineProps<{
   transform: translate(0, 0);
 }
 
-.project-row:hover .project-logo-text {
+.project-row:hover .inline-logo-img {
   opacity: 1;
-  transform: scale(1.1) translateX(4px);
+  filter: grayscale(0%) contrast(100%);
+  transform: scale(1.1);
 }
 
-/* ── Logo Box ─────────────────────────────────────────── */
-.project-logo-box {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 100px;
-  background: #0F3F2F; /* Dark green block */
-  clip-path: polygon(30px 0, 100% 0, 100% 100%, 0 100%);
+.project-row:hover .inline-logo-text {
+  color: #0F3F2F;
+  opacity: 1;
+}
+
+.project-row:hover .project-inline-logo {
+  background: #f2e8cf;
+  border-color: #0F3F2F;
+}
+
+/* ── Inline Logo ──────────────────────────────────────── */
+.project-head-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.project-inline-logo {
+  width: 48px;
+  height: 32px;
+  background: #0F3F2F;
+  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%); /* Skewed pill */
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: 15px; /* Offset to center inside the skew */
-  z-index: 0;
-  pointer-events: none;
+  transition: background 0.3s ease, border-color 0.3s ease;
+  border: 1px solid transparent;
 }
 
-@media (min-width: 768px) {
-  .project-logo-box {
-    width: 140px;
-    clip-path: polygon(40px 0, 100% 0, 100% 100%, 0 100%);
-    padding-left: 20px;
-  }
-}
-
-.project-logo-text {
+.inline-logo-text {
   font-family: var(--font-sans);
-  font-size: 42px;
-  font-weight: 800;
-  color: #f2e8cf; /* Bone text */
-  opacity: 0.25;
-  letter-spacing: -0.05em;
+  font-size: 16px;
+  font-weight: 700;
+  color: #f2e8cf;
+  opacity: 0.6;
   line-height: 1;
-  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.3s ease, color 0.3s ease;
 }
 
-@media (min-width: 768px) {
-  .project-logo-text {
-    font-size: 64px;
-  }
-}
-
-.project-logo-img {
-  width: 60px;
+.inline-logo-img {
+  width: 24px;
   height: auto;
-  opacity: 0.25;
+  opacity: 0.5;
   filter: grayscale(100%) contrast(200%);
-  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
-}
-
-@media (min-width: 768px) {
-  .project-logo-img {
-    width: 80px;
-  }
-}
-
-.project-row:hover .project-logo-img {
-  opacity: 1;
-  transform: scale(1.1) translateX(4px);
-  filter: grayscale(0%) contrast(100%);
+  transition: opacity 0.3s ease, filter 0.3s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ── Index ────────────────────────────────────────────── */
