@@ -42,24 +42,20 @@
 
       <!-- CTAs -->
       <div class="hero-actions fade-up fade-up-4">
-        <Magnetic :strength="0.15">
-          <a href="#portfolio" class="btn-primary" @click.prevent="scrollTo('portfolio')">
-            View my work
-            <span class="btn-icon" aria-hidden="true">
-              <svg class="btn-arrow-svg arrow-main" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
-              </svg>
-              <svg class="btn-arrow-svg arrow-clone" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
-              </svg>
-            </span>
-          </a>
-        </Magnetic>
-        <Magnetic :strength="0.15">
-          <a href="mailto:ardianilyas@gmail.com" class="btn-ghost">
-            Get in touch
-          </a>
-        </Magnetic>
+        <a href="#portfolio" class="btn-primary" @click.prevent="scrollTo('portfolio')" v-magnetic="0.15">
+          View my work
+          <span class="btn-icon" aria-hidden="true">
+            <svg class="btn-arrow-svg arrow-main" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+            </svg>
+            <svg class="btn-arrow-svg arrow-clone" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+            </svg>
+          </span>
+        </a>
+        <a href="mailto:ardianilyas@gmail.com" class="btn-ghost" v-magnetic="0.15">
+          Get in touch
+        </a>
       </div>
 
     </div>

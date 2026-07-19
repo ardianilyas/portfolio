@@ -17,31 +17,31 @@
       <div class="navbar-center">
         <nav class="navbar-links" aria-label="Primary navigation" ref="navLinksContainer">
           <span class="active-pill-indicator" :style="pillStyle"></span>
-          <Magnetic v-for="link in navLinks" :key="link.id" :strength="0.15">
-            <a
-              :ref="el => setLinkRef(link.id, el)"
-              :href="'#' + link.id"
-              class="navbar-link"
-              :class="{ 'navbar-link--active': activeSection === link.id }"
-              @click.prevent="scrollTo(link.id)"
-            >
-              {{ link.label }}
-            </a>
-          </Magnetic>
+          <a
+            v-for="link in navLinks"
+            :key="link.id"
+            :ref="el => setLinkRef(link.id, el)"
+            :href="'#' + link.id"
+            class="navbar-link"
+            :class="{ 'navbar-link--active': activeSection === link.id }"
+            @click.prevent="scrollTo(link.id)"
+            v-magnetic="0.15"
+          >
+            {{ link.label }}
+          </a>
         </nav>
       </div>
 
       <!-- Right: CTA & Mobile Hamburger -->
       <div class="navbar-right">
-        <Magnetic :strength="0.2" class="hidden md:inline-flex">
-          <a
-            href="mailto:ardianilyas@gmail.com"
-            class="navbar-cta"
-            aria-label="Get in touch via email"
-          >
-            Get in touch
-          </a>
-        </Magnetic>
+        <a
+          href="mailto:ardianilyas@gmail.com"
+          class="navbar-cta hidden md:inline-flex"
+          aria-label="Get in touch via email"
+          v-magnetic="0.2"
+        >
+          Get in touch
+        </a>
         
         <button
           class="hamburger md:hidden"
