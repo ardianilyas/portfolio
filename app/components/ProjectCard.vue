@@ -67,6 +67,10 @@ defineProps<{
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  /* Hardware acceleration hints to prevent lag */
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 @media (min-width: 768px) {
@@ -79,12 +83,12 @@ defineProps<{
   background: rgba(242, 232, 207, 0.35);
   box-shadow: 0 16px 40px rgba(15, 63, 47, 0.04);
   border-color: #0F3F2F;
-  transform: translateY(-2px);
+  transform: translateY(-2px) translateZ(0);
   z-index: 10;
 }
 
 .project-row:active {
-  transform: scale(0.995) translateY(0);
+  transform: scale(0.995) translateY(0) translateZ(0);
   transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
 }
 
@@ -188,10 +192,12 @@ defineProps<{
   object-fit: contain;
   object-position: center right;
   opacity: 0.06;
-  filter: grayscale(100%);
-  transform: skewY(-10deg); /* Removed translateY that pushed it out of bounds */
-  transition: opacity 0.5s ease, filter 0.5s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Removed heavy filter: grayscale(100%) to fix lag */
+  transform: skewY(-10deg) translateZ(0); 
+  transition: opacity 0.5s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   transform-origin: center right;
+  will-change: transform, opacity;
+  backface-visibility: hidden; /* Fix jagged edges */
 }
 
 .bg-logo-text {
@@ -248,9 +254,8 @@ defineProps<{
 }
 
 .project-row:hover .bg-logo-img {
-  opacity: 0.2;
-  filter: grayscale(0%);
-  transform: skewY(-10deg) scale(1.05) translateX(-20px); /* Removed translateY */
+  opacity: 0.15; /* Replaces the need for filter animation */
+  transform: skewY(-10deg) scale(1.05) translateX(-20px) translateZ(0); 
 }
 
 .project-row:hover .bg-logo-text {
