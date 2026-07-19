@@ -184,8 +184,8 @@ defineProps<{
   object-position: center right; /* Align it towards the arrow */
   opacity: 0.25;
   filter: grayscale(100%);
-  /* Apply actual visual skew to the logo image! */
-  transform: skewX(-12deg) scale(1);
+  /* Apply vertical skew (uphill slant from bottom-left to top-right) instead of italic */
+  transform: skewY(-10deg) scale(1);
   transition: opacity 0.5s ease, filter 0.5s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   transform-origin: center;
 }
@@ -197,7 +197,7 @@ defineProps<{
   color: #0F3F2F; 
   opacity: 0.1;
   line-height: 1;
-  transform: skewX(-12deg); /* Apply skew to fallback text too */
+  transform: skewY(-10deg); /* Apply uphill skew to fallback text too */
   transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -252,11 +252,11 @@ defineProps<{
 .project-row:hover .col-logo-img {
   opacity: 0.7;
   filter: grayscale(0%);
-  transform: skewX(-12deg) scale(1.05) translateX(-8px);
+  transform: skewY(-10deg) scale(1.05) translateX(-8px);
 }
 
 .project-row:hover .col-logo-text {
   opacity: 0.25;
-  transform: skewX(-12deg) scale(1.1) translateX(10px);
+  transform: skewY(-10deg) scale(1.1) translateX(10px);
 }
 </style>
