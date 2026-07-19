@@ -1,7 +1,7 @@
 <template>
   <header
     class="navbar"
-    :class="{ 'navbar--scrolled': scrolled || isOpen }"
+    :class="{ 'navbar--scrolled': scrolled || isOpen, 'is-loaded': isLoaded }"
     role="banner"
   >
     <div class="navbar-inner">
@@ -17,29 +17,31 @@
       <div class="navbar-center">
         <nav class="navbar-links" aria-label="Primary navigation" ref="navLinksContainer">
           <span class="active-pill-indicator" :style="pillStyle"></span>
-          <a
-            v-for="link in navLinks"
-            :key="link.id"
-            :ref="el => setLinkRef(link.id, el)"
-            :href="'#' + link.id"
-            class="navbar-link"
-            :class="{ 'navbar-link--active': activeSection === link.id }"
-            @click.prevent="scrollTo(link.id)"
-          >
-            {{ link.label }}
-          </a>
+          <Magnetic v-for="link in navLinks" :key="link.id" :strength="0.15">
+            <a
+              :ref="el => setLinkRef(link.id, el)"
+              :href="'#' + link.id"
+              class="navbar-link"
+              :class="{ 'navbar-link--active': activeSection === link.id }"
+              @click.prevent="scrollTo(link.id)"
+            >
+              {{ link.label }}
+            </a>
+          </Magnetic>
         </nav>
       </div>
 
       <!-- Right: CTA & Mobile Hamburger -->
       <div class="navbar-right">
-        <a
-          href="mailto:ardianilyas@gmail.com"
-          class="navbar-cta hidden md:inline-flex"
-          aria-label="Get in touch via email"
-        >
-          Get in touch
-        </a>
+        <Magnetic :strength="0.2" class="hidden md:inline-flex">
+          <a
+            href="mailto:ardianilyas@gmail.com"
+            class="navbar-cta"
+            aria-label="Get in touch via email"
+          >
+            Get in touch
+          </a>
+        </Magnetic>
         
         <button
           class="hamburger md:hidden"
@@ -98,7 +100,9 @@ import { ref, reactive, watch, nextTick, onMounted, onUnmounted } from 'vue'
 
 const isOpen = ref(false)
 const scrolled = ref(false)
+const isLoaded = ref(false)
 const activeSection = ref('')
+const navLinksContainer = ref<HTMLElement | null>(null)
 const linkRefs = reactive<Record<string, HTMLElement | null>>({})
 
 const navLinks = [
@@ -154,6 +158,11 @@ function onScroll() {
 onMounted(() => {
   window.addEventListener('scroll', onScroll, { passive: true })
   
+  // Trigger initial drop-down animation
+  setTimeout(() => {
+    isLoaded.value = true
+  }, 50)
+  
   // Setup scroll spy
   const options = {
     root: null,
@@ -205,15 +214,19 @@ onUnmounted(() => {
   position: fixed;
   top: 16px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -150%);
   width: calc(100% - 32px);
   max-width: 900px;
   z-index: 100;
   height: 60px;
   background: transparent;
-  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   border: 1px solid transparent;
   border-radius: 9999px;
+}
+
+.navbar.is-loaded {
+  transform: translate(-50%, 0);
 }
 
 .navbar--scrolled {

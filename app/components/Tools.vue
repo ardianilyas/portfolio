@@ -14,9 +14,11 @@
           <div class="bento-card-inner"></div>
           <div class="bento-content">
             <div class="philosophy-content-wrap">
-              <p class="philosophy-text">
-                Good tooling fades into the background. I choose tools that remove friction, scale with the project, and get out of the way so the work can speak for itself.
-              </p>
+              <SplitText 
+                text="Good tooling fades into the background. I choose tools that remove friction, scale with the project, and get out of the way so the work can speak for itself."
+                class="philosophy-text"
+                :staggerDelay="35"
+              />
               <p class="philosophy-sub">
                 The stack adapts to the problem — not the other way around.
               </p>
