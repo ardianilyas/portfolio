@@ -43,7 +43,7 @@
       <!-- CTAs -->
       <div class="hero-actions fade-up fade-up-4">
         <a href="#portfolio" class="btn-primary" @click.prevent="scrollTo('portfolio')" v-magnetic="0.15">
-          View my work
+          {{ $t('hero.view_work') }}
           <span class="btn-icon" aria-hidden="true">
             <svg class="btn-arrow-svg arrow-main" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
@@ -67,7 +67,7 @@ import { ref, reactive } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 
 const heroSection = ref<HTMLElement | null>(null)
-const isVisible = ref(false)
+const isVisible = ref(true)
 
 useIntersectionObserver(
   heroSection,
@@ -281,7 +281,7 @@ const headlineWords = [
   font-size: 15px;
   font-weight: 500;
   color: #f2e8cf;
-  background: #0F3F2F;
+  background: var(--color-accent);
   padding: 12px 28px;
   transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
 }
@@ -359,7 +359,7 @@ const headlineWords = [
 }
 
 .status-spark {
-  color: #0F3F2F;
+  color: var(--color-accent);
   animation: spark-spin 8s linear infinite;
 }
 
@@ -373,7 +373,7 @@ const headlineWords = [
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.02em;
-  color: #0F3F2F;
+  color: var(--color-accent);
 }
 
 /* ── Entrance animation ───────────────────────────────── */

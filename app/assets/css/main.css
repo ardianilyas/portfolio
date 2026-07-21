@@ -89,7 +89,7 @@ a {
 
 /* ── Focus & Accessibility ────────────────────────────── */
 :focus-visible {
-  outline: 2px solid #0F3F2F !important;
+  outline: 2px solid var(--color-accent) !important;
   outline-offset: 3px !important;
   border-radius: 4px;
 }

@@ -209,8 +209,8 @@ onMounted(() => {
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #0F3F2F;
-  background: rgba(15, 63, 47, 0.04);
+  color: var(--color-accent);
+  background: var(--color-accent-dim);
   border: 1px solid rgba(15, 63, 47, 0.2);
   padding: 5px 12px;
   border-radius: 0;
@@ -218,9 +218,9 @@ onMounted(() => {
 }
 
 .tech-tag:hover {
-  background: #0F3F2F;
+  background: var(--color-accent);
   color: #f2e8cf;
-  border-color: #0F3F2F;
+  border-color: var(--color-accent);
   transform: translateY(-1px);
 }
 

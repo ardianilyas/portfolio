@@ -1,0 +1,23 @@
+{
+  "hero": {
+    "role": "// Junior Web Developer",
+    "view_work": "View Work",
+    "github": "GitHub ↗"
+  },
+  "skills": {
+    "label": "// SKILLS",
+    "heading": "What I work with"
+  },
+  "tools": {
+    "label": "// TOOLS",
+    "heading": "My toolbox"
+  },
+  "portfolio": {
+    "label": "// PORTFOLIO",
+    "heading": "Selected Projects",
+    "view_github": "View on GitHub"
+  },
+  "nav": {
+    "blog": "Blog"
+  }
+}

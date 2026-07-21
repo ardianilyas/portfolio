@@ -205,7 +205,7 @@ onUnmounted(() => {
   content: '';
   position: absolute;
   inset: -1px;
-  border: 1px solid #0F3F2F;
+  border: 1px solid var(--color-accent);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -324,7 +324,7 @@ onUnmounted(() => {
 .spotify-icon {
   width: 12px;
   height: 12px;
-  color: #0F3F2F;
+  color: var(--color-accent);
 }
 
 .spotify-icon.offline {
@@ -380,7 +380,7 @@ onUnmounted(() => {
 
 .spotify-progress-fill {
   height: 100%;
-  background-color: #0F3F2F;
+  background-color: var(--color-accent);
   transition: width 1s linear;
 }
 
