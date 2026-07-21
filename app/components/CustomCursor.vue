@@ -111,7 +111,7 @@ onUnmounted(() => {
   left: -3px;
   width: 6px;
   height: 6px;
-  background-color: #0F3F2F;
+  background-color: var(--color-accent);
   border-radius: 50%;
   pointer-events: none;
   will-change: transform;

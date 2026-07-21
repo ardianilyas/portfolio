@@ -1,6 +1,6 @@
 <template>
   <section id="tools" aria-labelledby="tools-heading" ref="toolsSection">
-    <SectionHeader title="Workflow" />
+    <SectionHeader :title="$t('tools.heading')" />
 
     <div class="tools-wrap" :class="{ 'is-visible': isVisible }">
       <!-- Bento Grid with mouse tracking for spotlight -->
@@ -162,7 +162,7 @@ const tools = [
 .bento-card {
   position: relative;
   border-radius: 0;
-  border: 1px solid #0F3F2F;
+  border: 1px solid var(--color-border);
   margin-top: -1px;
   margin-left: -1px;
   background: var(--color-surface);
@@ -176,7 +176,7 @@ const tools = [
   transform: translateY(-2px);
   background: rgba(242, 232, 207, 0.35); /* Light brown tint matching project card */
   box-shadow: 0 16px 40px rgba(15, 63, 47, 0.04);
-  border-color: #0F3F2F;
+  border-color: var(--color-accent);
   z-index: 5;
 }
 
@@ -244,7 +244,7 @@ const tools = [
   font-weight: 500;
   line-height: 1.4;
   letter-spacing: -0.01em;
-  color: #16211E;
+  color: var(--color-text);
   margin: 0;
 }
 
@@ -305,7 +305,7 @@ const tools = [
 }
 
 .bento-card:hover .tool-icon--svg {
-  color: #0F3F2F;
+  color: var(--color-accent);
 }
 
 /* ── Info block ───────────────────────────────────────── */
@@ -324,14 +324,14 @@ const tools = [
   font-family: var(--font-sans);
   font-size: 16px;
   font-weight: 600;
-  color: #16211E;
+  color: var(--color-text);
   line-height: 1.2;
   letter-spacing: -0.01em;
   transition: color 0.3s ease;
 }
 
 .bento-card:hover .tool-name {
-  color: #0F3F2F;
+  color: var(--color-accent);
 }
 
 .tool-category {
@@ -351,8 +351,8 @@ const tools = [
   background: rgba(250, 250, 248, 0.95);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  border: 1px solid #0F3F2F;
-  color: #16211E;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
   padding: 10px 16px;
   border-radius: 0;
   font-family: var(--font-sans);
@@ -366,15 +366,6 @@ const tools = [
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 20;
   box-shadow: 0 10px 30px -5px rgba(15, 63, 47, 0.15);
-}
-
-/* For dark mode support if needed, you could use var(--color-surface) but semi-transparent */
-@media (prefers-color-scheme: dark) {
-  .tool-tooltip {
-    background: rgba(15, 63, 47, 0.9);
-    color: #ffffff;
-    border: 1px solid rgba(255,255,255,0.1);
-  }
 }
 
 .tool-tooltip::after {

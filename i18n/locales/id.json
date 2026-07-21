@@ -1,0 +1,23 @@
+{
+  "hero": {
+    "role": "// Junior Web Developer",
+    "view_work": "Lihat Portofolio",
+    "github": "GitHub ↗"
+  },
+  "skills": {
+    "label": "// KEAHLIAN",
+    "heading": "Teknologi yang saya gunakan"
+  },
+  "tools": {
+    "label": "// ALAT",
+    "heading": "Alat kerja saya"
+  },
+  "portfolio": {
+    "label": "// PORTOFOLIO",
+    "heading": "Proyek Pilihan",
+    "view_github": "Lihat di GitHub"
+  },
+  "nav": {
+    "blog": "Blog"
+  }
+}

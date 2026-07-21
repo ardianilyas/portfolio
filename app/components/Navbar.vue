@@ -34,6 +34,7 @@
 
       <!-- Right: CTA & Mobile Hamburger -->
       <div class="navbar-right">
+        <LanguageSwitcher class="hidden md:inline-flex" />
         <a
           href="mailto:ardianilyas@gmail.com"
           class="navbar-cta hidden md:inline-flex"
@@ -90,6 +91,9 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
           </svg>
         </a>
+        <div class="mobile-actions">
+          <LanguageSwitcher />
+        </div>
       </div>
     </Transition>
   </header>
@@ -98,11 +102,13 @@
 <script setup lang="ts">
 import { ref, reactive, watch, nextTick, onMounted, onUnmounted } from 'vue'
 
+const route = useRoute()
+const router = useRouter()
+
 const isOpen = ref(false)
 const scrolled = ref(false)
 const isLoaded = ref(false)
 const activeSection = ref('')
-const navLinksContainer = ref<HTMLElement | null>(null)
 const linkRefs = reactive<Record<string, HTMLElement | null>>({})
 
 const navLinks = [
@@ -124,7 +130,7 @@ const pillStyle = reactive({
 const updatePill = () => {
   nextTick(() => {
     const el = linkRefs[activeSection.value]
-    if (el) {
+    if (el && activeSection.value && activeSection.value !== 'hero') {
       pillStyle.transform = `translateX(${el.offsetLeft}px)`
       pillStyle.width = `${el.offsetWidth}px`
       pillStyle.opacity = 1
@@ -138,73 +144,63 @@ watch(activeSection, () => {
   updatePill()
 })
 
-let observer: IntersectionObserver | null = null
-
 function scrollTo(id: string) {
   isOpen.value = false
-  setTimeout(() => {
-    const el = document.getElementById(id)
-    if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY - 72
-      window.scrollTo({ top, behavior: 'smooth' })
-    }
-  }, 100)
+  if (route.path !== '/') {
+    router.push('/#' + id)
+    return
+  }
+
+  activeSection.value = id
+  updatePill()
+
+  const el = document.getElementById(id)
+  if (el) {
+    const top = el.getBoundingClientRect().top + window.scrollY - 72
+    window.scrollTo({ top, behavior: 'smooth' })
+  }
 }
 
 function onScroll() {
   scrolled.value = window.scrollY > 12
+
+  if (route.path !== '/') return
+
+  const sections = ['hero', 'skills', 'tools', 'portfolio']
+  const scrollPosition = window.scrollY + window.innerHeight * 0.35
+
+  let current = ''
+  for (let i = sections.length - 1; i >= 0; i--) {
+    const el = document.getElementById(sections[i])
+    if (el) {
+      const top = el.offsetTop
+      if (scrollPosition >= top) {
+        current = sections[i]
+        break
+      }
+    }
+  }
+
+  if (current !== activeSection.value) {
+    activeSection.value = current
+  }
 }
 
 onMounted(() => {
   window.addEventListener('scroll', onScroll, { passive: true })
   
-  // Trigger initial drop-down animation
   setTimeout(() => {
     isLoaded.value = true
   }, 50)
-  
-  // Setup scroll spy
-  const options = {
-    root: null,
-    rootMargin: '-30% 0px -40% 0px',
-    threshold: 0
-  }
-  
-  const visibleSections = new Set()
 
-  observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        visibleSections.add(entry.target.id)
-      } else {
-        visibleSections.delete(entry.target.id)
-      }
-    })
-    
-    // Pick the last section in our list that is currently visible
-    const sectionsArr = ['hero', ...navLinks.map(l => l.id)]
-    for (let i = sectionsArr.length - 1; i >= 0; i--) {
-      if (visibleSections.has(sectionsArr[i])) {
-        activeSection.value = sectionsArr[i]
-        break
-      }
-    }
-  }, options)
-
-  // Observe all sections including hero
-  const sections = ['hero', ...navLinks.map(l => l.id)]
-  sections.forEach(id => {
-    const el = document.getElementById(id)
-    if (el) observer?.observe(el)
-  })
-
+  onScroll()
   updatePill()
   window.addEventListener('resize', updatePill, { passive: true })
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
-  if (observer) observer.disconnect()
+  window.removeEventListener('resize', updatePill)
 })
 </script>
 
@@ -214,19 +210,15 @@ onUnmounted(() => {
   position: fixed;
   top: 16px;
   left: 50%;
-  transform: translate(-50%, -150%);
+  transform: translate(-50%, 0);
   width: calc(100% - 32px);
   max-width: 900px;
   z-index: 100;
   height: 60px;
   background: transparent;
-  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid transparent;
   border-radius: 9999px;
-}
-
-.navbar.is-loaded {
-  transform: translate(-50%, 0);
 }
 
 .navbar--scrolled {
@@ -266,6 +258,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  gap: 16px;
 }
 
 /* ── Logo ─────────────────────────────────────────────── */
@@ -302,7 +295,7 @@ onUnmounted(() => {
   top: 4px;
   left: 0;
   height: calc(100% - 8px);
-  background: #0F3F2F;
+  background: var(--color-accent);
   border-radius: 9999px;
   box-shadow: 0 4px 12px rgba(15, 63, 47, 0.15);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), width 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
@@ -324,11 +317,12 @@ onUnmounted(() => {
 }
 
 .navbar-link:not(.navbar-link--active):hover {
-  color: #0F3F2F;
+  color: var(--color-accent);
 }
 
 .navbar-link--active {
   color: #f2e8cf;
+  font-weight: 600;
 }
 
 /* ── CTA ─────────────────────────────────────────────── */
@@ -337,7 +331,7 @@ onUnmounted(() => {
   font-size: 14px;
   font-weight: 500;
   color: #f2e8cf;
-  background: #0F3F2F;
+  background: var(--color-accent);
   padding: 10px 20px;
   border-radius: 9999px;
   transition: opacity 0.2s, transform 0.2s ease, box-shadow 0.2s ease;
@@ -417,17 +411,26 @@ onUnmounted(() => {
 }
 
 .mobile-link:hover {
-  color: #0F3F2F;
+  color: var(--color-accent);
   background: rgba(242, 232, 207, 0.35);
 }
 
 .mobile-link--active {
-  color: #0F3F2F;
+  color: var(--color-accent);
   font-weight: 600;
 }
 
 .mobile-link--accent {
   color: var(--color-accent);
+}
+
+.mobile-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  padding: 14px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 /* ── Transitions ───────────────────────────────────────── */

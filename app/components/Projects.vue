@@ -2,7 +2,7 @@
   <section id="portfolio" aria-labelledby="portfolio-heading" class="bg-[var(--color-surface)] py-8 md:py-16" ref="projectsSection">
 
     <SectionHeader 
-      title="Projects" 
+      :title="$t('portfolio.heading')" 
       subtitle="A selection of my recent full-stack work and side projects."
     />
 

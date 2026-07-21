@@ -1,10 +1,13 @@
+import { defineNuxtPlugin } from '#app'
+
 export default defineNuxtPlugin((nuxtApp) => {
-  if (typeof window === 'undefined') return
-
-  const isMobile = window.matchMedia('(pointer: coarse)').matches
-
   nuxtApp.vueApp.directive('magnetic', {
+    getSSRProps() {
+      return {} // Return empty props for SSR
+    },
     mounted(el, binding) {
+      if (typeof window === 'undefined') return
+      const isMobile = window.matchMedia('(pointer: coarse)').matches
       if (isMobile) return
 
       const strength = binding.value || 0.25

@@ -61,7 +61,7 @@ defineProps<{
   padding: 0;
   margin: 0;
   margin-top: -1px; /* Prevent double borders */
-  border: 1px solid #0F3F2F;
+  border: 1px solid var(--color-border);
   text-decoration: none;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
   cursor: pointer;
@@ -82,7 +82,7 @@ defineProps<{
 .project-row:hover {
   background: rgba(242, 232, 207, 0.35);
   box-shadow: 0 16px 40px rgba(15, 63, 47, 0.04);
-  border-color: #0F3F2F;
+  border-color: var(--color-accent);
   transform: translateY(-2px) translateZ(0);
   z-index: 10;
 }
@@ -204,7 +204,7 @@ defineProps<{
   font-family: var(--font-sans);
   font-size: 200px; /* Massive fallback text */
   font-weight: 800;
-  color: #0F3F2F; 
+  color: var(--color-accent); 
   opacity: 0.03;
   line-height: 1;
   transform: skewY(-10deg) translateY(10%);
@@ -238,11 +238,11 @@ defineProps<{
 
 /* ── Hover Effects ────────────────────────────────────── */
 .project-row:hover .project-name {
-  color: #0F3F2F;
+  color: var(--color-accent);
 }
 
 .project-row:hover .project-arrow {
-  color: #0F3F2F;
+  color: var(--color-accent);
 }
 
 .project-row:hover .arrow-main {

@@ -3,7 +3,23 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ['@vueuse/nuxt'],
+  modules: [
+    '@vueuse/nuxt',
+    '@nuxtjs/i18n',
+    '@nuxt/content'
+  ],
+  i18n: {
+    locales: [
+      { code: 'en', file: 'en.json', name: 'English' },
+      { code: 'id', file: 'id.json', name: 'Bahasa Indonesia' }
+    ],
+    defaultLocale: 'en',
+    lazy: true,
+    langDir: 'locales'
+  },
+  content: {
+    // Add custom content options here if needed
+  },
   css: ["~/assets/css/main.css"],
   runtimeConfig: {
     spotifyClientId: process.env.SPOTIFY_CLIENT_ID || '',
