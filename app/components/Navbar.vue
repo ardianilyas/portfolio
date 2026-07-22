@@ -142,6 +142,7 @@ const pillStyle = reactive({
 })
 
 const updatePill = () => {
+  if (typeof window === 'undefined') return
   nextTick(() => {
     const el = linkRefs[activeSection.value]
     if (el && activeSection.value && activeSection.value !== 'hero') {
@@ -159,6 +160,7 @@ watch(activeSection, () => {
 })
 
 watch(() => route.path, (newPath) => {
+  if (typeof window === 'undefined') return
   if (newPath.startsWith('/blog')) {
     activeSection.value = 'blog'
     updatePill()
@@ -183,6 +185,7 @@ function handleNavClick(link: NavItem, event: MouseEvent) {
 }
 
 function scrollTo(id: string) {
+  if (typeof window === 'undefined') return
   if (route.path !== '/') {
     router.push('/#' + id)
     return
@@ -199,6 +202,7 @@ function scrollTo(id: string) {
 }
 
 function onScroll() {
+  if (typeof window === 'undefined') return
   scrolled.value = window.scrollY > 12
 
   if (route.path !== '/') return

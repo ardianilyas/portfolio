@@ -87,6 +87,7 @@ useIntersectionObserver(
 )
 
 function scrollTo(id: string) {
+  if (typeof window === 'undefined') return
   const el = document.getElementById(id)
   if (el) {
     const top = el.getBoundingClientRect().top + window.scrollY - 72
