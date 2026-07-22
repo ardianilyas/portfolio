@@ -237,7 +237,7 @@ function cycleWord(word: HeadlineWord) {
   color: var(--color-text);
   cursor: default;
   position: relative;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease, text-shadow 0.3s ease;
+  transition: opacity 0.35s ease, filter 0.35s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
 }
 
 .hero-word:hover {
@@ -246,14 +246,20 @@ function cycleWord(word: HeadlineWord) {
 }
 
 .hero-word--accent {
-  color: var(--color-text);
-  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--color-accent);
 }
 
-/* Highlight green text on headline hover */
+/* On headline hover: blur non-accent text (Crafting, with, &) */
+.hero-headline:hover .hero-word:not(.hero-word--accent) {
+  opacity: 0.3;
+  filter: blur(4px);
+}
+
+/* Keep green accent text crisp & highlighted on headline hover (no glow) */
 .hero-headline:hover .hero-word--accent {
   color: var(--color-accent);
-  text-shadow: 0 4px 20px rgba(15, 63, 47, 0.2);
+  opacity: 1;
+  filter: none;
 }
 
 .hero-word--accent:hover {
@@ -274,7 +280,6 @@ function cycleWord(word: HeadlineWord) {
 
 .hero-word--interactive:hover {
   border-bottom-color: var(--color-accent);
-  color: var(--color-accent);
 }
 
 .interactive-hint {
