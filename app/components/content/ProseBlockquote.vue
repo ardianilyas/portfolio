@@ -30,13 +30,14 @@ function getTextFromVNodes(vnodes: any[]): string {
 // Detect callout type from slot content text
 const calloutType = computed(() => {
   const defaultSlot = slots.default ? slots.default() : []
-  const text = getTextFromVNodes(defaultSlot)
+  const text = getTextFromVNodes(defaultSlot).trim()
+  const upper = text.toUpperCase()
   
-  if (text.includes('[!WARNING]') || text.includes('WARNING:')) return 'warning'
-  if (text.includes('[!TIP]') || text.includes('TIP:')) return 'tip'
-  if (text.includes('[!IMPORTANT]') || text.includes('IMPORTANT:')) return 'important'
-  if (text.includes('[!CAUTION]') || text.includes('CAUTION:')) return 'caution'
-  if (text.includes('[!INFO]') || text.includes('INFO:')) return 'info'
+  if (upper.startsWith('!WARNING') || upper.startsWith('[!WARNING]') || upper.startsWith('WARNING:')) return 'warning'
+  if (upper.startsWith('!TIP') || upper.startsWith('[!TIP]') || upper.startsWith('TIP:')) return 'tip'
+  if (upper.startsWith('!IMPORTANT') || upper.startsWith('[!IMPORTANT]') || upper.startsWith('IMPORTANT:')) return 'important'
+  if (upper.startsWith('!CAUTION') || upper.startsWith('[!CAUTION]') || upper.startsWith('CAUTION:')) return 'caution'
+  if (upper.startsWith('!INFO') || upper.startsWith('[!INFO]') || upper.startsWith('INFO:')) return 'info'
   return 'note'
 })
 
@@ -51,12 +52,12 @@ const calloutTitle = computed(() => {
   }
 })
 
-// Clean [!TYPE] marker text directly in VNode AST for instant SSR & Client rendering
+// Clean !TYPE and [!TYPE] marker text directly in VNode AST for instant SSR & Client rendering
 function cleanVNodes(vnodes: VNode[]): VNode[] {
   if (!vnodes || !Array.isArray(vnodes)) return vnodes
   return vnodes.map(node => {
     if (typeof node.children === 'string') {
-      const cleanedText = node.children.replace(/^\[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION|INFO)\]\s*/gi, '')
+      const cleanedText = node.children.replace(/^\[?!?(NOTE|TIP|WARNING|IMPORTANT|CAUTION|INFO)\]?:?\s*/gi, '')
       return h(node.type as any, node.props, cleanedText)
     }
     if (Array.isArray(node.children)) {
