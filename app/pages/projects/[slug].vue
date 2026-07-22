@@ -202,24 +202,24 @@ onMounted(() => {
 /* ── Floating Back Button (Sticky & Sharp) ─────────────── */
 .back-floating-btn {
   position: fixed;
-  top: 16px;
+  top: 86px;
   left: 16px;
-  z-index: 100;
+  z-index: 90;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 18px;
-  background: rgba(250, 250, 248, 0.9);
+  padding: 8px 14px;
+  background: rgba(250, 250, 248, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--color-border-2);
   border-radius: 0;
   color: var(--color-text);
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   text-decoration: none;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -227,6 +227,8 @@ onMounted(() => {
   .back-floating-btn {
     top: 24px;
     left: 24px;
+    padding: 10px 18px;
+    font-size: 13px;
   }
 }
 
