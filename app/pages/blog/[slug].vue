@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-post-container">
+  <div class="blog-post-container is-visible">
     <div class="blog-header fade-up">
       <NuxtLink to="/blog" class="back-link">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
