@@ -195,28 +195,35 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* ── Floating Back Button ──────────────────────────────── */
+/* ── Floating Back Button (Sticky & Sharp) ─────────────── */
 .back-floating-btn {
   position: fixed;
-  top: 24px;
-  left: 24px;
+  top: 16px;
+  left: 16px;
   z-index: 100;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 18px;
-  background: rgba(250, 250, 248, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(250, 250, 248, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--color-border-2);
-  border-radius: 9999px;
+  border-radius: 0;
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
   text-decoration: none;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 768px) {
+  .back-floating-btn {
+    top: 24px;
+    left: 24px;
+  }
 }
 
 .back-floating-btn:hover {
@@ -224,6 +231,7 @@ onMounted(() => {
   color: #f2e8cf;
   border-color: var(--color-accent);
   transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(15, 63, 47, 0.2);
 }
 
 .back-arrow {
@@ -278,7 +286,7 @@ onMounted(() => {
   margin-bottom: 36px;
 }
 
-/* ── Hero Actions ────────────────────────────────────── */
+/* ── Hero Actions (Sharp 0px Buttons) ────────────────── */
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -293,7 +301,7 @@ onMounted(() => {
   font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 500;
-  border-radius: 9999px;
+  border-radius: 0;
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -460,7 +468,7 @@ onMounted(() => {
 .code-block-wrapper {
   background: #121816;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
+  border-radius: 0;
   overflow: hidden;
 }
 
@@ -526,22 +534,30 @@ onMounted(() => {
   border-radius: 0;
 }
 
-/* ── Section 4: Pagination ────────────────────────────── */
+/* ── Section 4: Mobile-UX Friendly Pagination ────────── */
 .project-pagination {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  grid-template-columns: 1fr;
+  gap: 12px;
   border-top: 1px solid var(--color-border);
   padding-top: 36px;
+}
+
+@media (min-width: 640px) {
+  .project-pagination {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
 }
 
 .pagination-card {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 20px 24px;
+  padding: 18px 20px;
   background: var(--color-bg);
   border: 1px solid var(--color-border);
+  border-radius: 0;
   text-decoration: none;
   transition: all 0.25s ease;
 }
@@ -553,7 +569,14 @@ onMounted(() => {
 }
 
 .pagination-placeholder {
-  visibility: hidden;
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .pagination-placeholder {
+    display: flex;
+    visibility: hidden;
+  }
 }
 
 .pag-dir {
@@ -567,8 +590,10 @@ onMounted(() => {
   letter-spacing: 0.05em;
 }
 
-.pagination-card.text-right .pag-dir {
-  justify-content: flex-end;
+@media (min-width: 640px) {
+  .pagination-card.text-right .pag-dir {
+    justify-content: flex-end;
+  }
 }
 
 .pag-title {
