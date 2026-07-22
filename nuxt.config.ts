@@ -18,7 +18,13 @@ export default defineNuxtConfig({
     langDir: 'locales'
   },
   content: {
-    // Add custom content options here if needed
+    build: {
+      markdown: {
+        highlight: {
+          theme: 'vitesse-dark',
+        }
+      }
+    }
   },
   css: ["~/assets/css/main.css"],
   runtimeConfig: {
