@@ -1,48 +1,61 @@
 <template>
-  <blockquote :class="['custom-callout', `callout-${calloutType}`]">
+  <blockquote :class="['custom-callout', `callout-${detectedType}`]">
     <div class="callout-header">
       // {{ calloutTitle }}
     </div>
-    <div class="callout-body">
+    <div class="callout-body" ref="calloutBodyRef">
       <component :is="renderCleanedContent" />
     </div>
   </blockquote>
 </template>
 
 <script setup lang="ts">
-import { computed, useSlots, h, type VNode } from 'vue'
+import { ref, computed, useSlots, h, onMounted, type VNode } from 'vue'
 
 const slots = useSlots()
+const calloutBodyRef = ref<HTMLElement | null>(null)
+const clientOverrideType = ref('')
 
-function getTextFromVNodes(vnodes: any[]): string {
+// Bulletproof text extraction across Vue VNodes & Nuxt MDC AST objects
+function getTextFromAST(vnodes: any): string {
   let str = ''
-  if (!vnodes || !Array.isArray(vnodes)) return str
-  for (const node of vnodes) {
-    if (typeof node.children === 'string') {
-      str += node.children
-    } else if (Array.isArray(node.children)) {
-      str += getTextFromVNodes(node.children)
+  if (!vnodes) return str
+  if (typeof vnodes === 'string') return vnodes
+  if (Array.isArray(vnodes)) {
+    for (const node of vnodes) {
+      str += getTextFromAST(node)
     }
+    return str
+  }
+  if (typeof vnodes === 'object' && vnodes !== null) {
+    if (typeof vnodes.children === 'string') str += vnodes.children
+    else if (typeof vnodes.value === 'string') str += vnodes.value
+    else if (typeof vnodes.text === 'string') str += vnodes.text
+    else if (Array.isArray(vnodes.children)) str += getTextFromAST(vnodes.children)
   }
   return str
 }
 
-// Detect callout type from slot content text
-const calloutType = computed(() => {
-  const defaultSlot = slots.default ? slots.default() : []
-  const text = getTextFromVNodes(defaultSlot).trim()
-  const upper = text.toUpperCase()
-  
-  if (upper.startsWith('!WARNING') || upper.startsWith('[!WARNING]') || upper.startsWith('WARNING:')) return 'warning'
-  if (upper.startsWith('!TIP') || upper.startsWith('[!TIP]') || upper.startsWith('TIP:')) return 'tip'
-  if (upper.startsWith('!IMPORTANT') || upper.startsWith('[!IMPORTANT]') || upper.startsWith('IMPORTANT:')) return 'important'
-  if (upper.startsWith('!CAUTION') || upper.startsWith('[!CAUTION]') || upper.startsWith('CAUTION:')) return 'caution'
-  if (upper.startsWith('!INFO') || upper.startsWith('[!INFO]') || upper.startsWith('INFO:')) return 'info'
+function parseCalloutType(text: string): string {
+  const upper = text.trim().toUpperCase()
+  if (upper.includes('!WARNING') || upper.includes('[!WARNING]') || upper.startsWith('WARNING:')) return 'warning'
+  if (upper.includes('!TIP') || upper.includes('[!TIP]') || upper.startsWith('TIP:')) return 'tip'
+  if (upper.includes('!IMPORTANT') || upper.includes('[!IMPORTANT]') || upper.startsWith('IMPORTANT:')) return 'important'
+  if (upper.includes('!CAUTION') || upper.includes('[!CAUTION]') || upper.startsWith('CAUTION:')) return 'caution'
+  if (upper.includes('!INFO') || upper.includes('[!INFO]') || upper.startsWith('INFO:')) return 'info'
   return 'note'
+}
+
+// Detect callout type from AST or client override
+const detectedType = computed(() => {
+  if (clientOverrideType.value) return clientOverrideType.value
+  const defaultSlot = slots.default ? slots.default() : []
+  const text = getTextFromAST(defaultSlot)
+  return parseCalloutType(text)
 })
 
 const calloutTitle = computed(() => {
-  switch (calloutType.value) {
+  switch (detectedType.value) {
     case 'warning': return 'WARNING'
     case 'tip': return 'TIP'
     case 'important': return 'IMPORTANT'
@@ -52,25 +65,52 @@ const calloutTitle = computed(() => {
   }
 })
 
-// Clean !TYPE and [!TYPE] marker text directly in VNode AST for instant SSR & Client rendering
-function cleanVNodes(vnodes: VNode[]): VNode[] {
-  if (!vnodes || !Array.isArray(vnodes)) return vnodes
-  return vnodes.map(node => {
-    if (typeof node.children === 'string') {
-      const cleanedText = node.children.replace(/^\[?!?(NOTE|TIP|WARNING|IMPORTANT|CAUTION|INFO)\]?:?\s*/gi, '')
-      return h(node.type as any, node.props, cleanedText)
+// Clean !TYPE and [!TYPE] marker text directly in VNode AST
+function cleanASTNodes(nodes: any): any {
+  if (!nodes) return nodes
+  if (Array.isArray(nodes)) {
+    return nodes.map(node => cleanASTNodes(node))
+  }
+  if (typeof nodes === 'object' && nodes !== null) {
+    if (typeof nodes.children === 'string') {
+      const cleaned = nodes.children.replace(/^\[?!?(NOTE|TIP|WARNING|IMPORTANT|CAUTION|INFO)\]?:?\s*/gi, '')
+      return h(nodes.type || 'span', nodes.props || {}, cleaned)
     }
-    if (Array.isArray(node.children)) {
-      return h(node.type as any, node.props, cleanVNodes(node.children as VNode[]))
+    if (typeof nodes.value === 'string') {
+      const cleaned = nodes.value.replace(/^\[?!?(NOTE|TIP|WARNING|IMPORTANT|CAUTION|INFO)\]?:?\s*/gi, '')
+      return h(nodes.type || 'span', nodes.props || {}, cleaned)
     }
-    return node
-  })
+    if (Array.isArray(nodes.children)) {
+      return h(nodes.type || 'span', nodes.props || {}, cleanASTNodes(nodes.children))
+    }
+  }
+  return nodes
 }
 
 const renderCleanedContent = () => {
   const rawNodes = slots.default ? slots.default() : []
-  return h('div', { class: 'callout-content-inner' }, cleanVNodes(rawNodes))
+  return h('div', { class: 'callout-content-inner' }, cleanASTNodes(rawNodes))
 }
+
+// DOM fallback onMounted to ensure 100% clean DOM & accurate type override
+onMounted(() => {
+  if (calloutBodyRef.value) {
+    const rawText = calloutBodyRef.value.textContent || ''
+    const domType = parseCalloutType(rawText)
+    if (domType !== 'note') {
+      clientOverrideType.value = domType
+    }
+
+    // Clean DOM text nodes
+    const walk = document.createTreeWalker(calloutBodyRef.value, NodeFilter.SHOW_TEXT, null)
+    let node: Node | null
+    while ((node = walk.nextNode())) {
+      if (node.nodeValue) {
+        node.nodeValue = node.nodeValue.replace(/^\[?!?(NOTE|TIP|WARNING|IMPORTANT|CAUTION|INFO)\]?:?\s*/gi, '')
+      }
+    }
+  }
+})
 </script>
 
 <style scoped>
@@ -116,8 +156,8 @@ const renderCleanedContent = () => {
 
 /* TIP (Emerald Green) */
 .callout-tip {
-  background: rgba(16, 185, 129, 0.04);
-  border-color: rgba(16, 185, 129, 0.18);
+  background: rgba(16, 185, 129, 0.05);
+  border-color: rgba(16, 185, 129, 0.2);
   border-left-color: #059669;
 }
 .callout-tip .callout-header {
@@ -126,8 +166,8 @@ const renderCleanedContent = () => {
 
 /* WARNING (Amber Gold) */
 .callout-warning {
-  background: rgba(217, 119, 6, 0.04);
-  border-color: rgba(217, 119, 6, 0.18);
+  background: rgba(217, 119, 6, 0.05);
+  border-color: rgba(217, 119, 6, 0.2);
   border-left-color: #D97706;
 }
 .callout-warning .callout-header {
@@ -136,8 +176,8 @@ const renderCleanedContent = () => {
 
 /* IMPORTANT / INFO (Slate Blue) */
 .callout-important, .callout-info {
-  background: rgba(37, 99, 235, 0.04);
-  border-color: rgba(37, 99, 235, 0.18);
+  background: rgba(37, 99, 235, 0.05);
+  border-color: rgba(37, 99, 235, 0.2);
   border-left-color: #2563EB;
 }
 .callout-important .callout-header,
@@ -147,8 +187,8 @@ const renderCleanedContent = () => {
 
 /* CAUTION (Rose Red) */
 .callout-caution {
-  background: rgba(225, 29, 72, 0.04);
-  border-color: rgba(225, 29, 72, 0.18);
+  background: rgba(225, 29, 72, 0.05);
+  border-color: rgba(225, 29, 72, 0.2);
   border-left-color: #E11D48;
 }
 .callout-caution .callout-header {
