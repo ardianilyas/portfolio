@@ -341,17 +341,26 @@ function calculateReadingTime(article: any): string {
   font-size: clamp(18px, 2.8vw, 24px);
 }
 
-.prose :deep(p) {
+.prose :deep(ul) {
+  list-style-type: disc;
   margin-bottom: 1.6em;
+  padding-left: 1.5em;
 }
 
-.prose :deep(ul), .prose :deep(ol) {
+.prose :deep(ol) {
+  list-style-type: decimal;
   margin-bottom: 1.6em;
-  padding-left: 1.4em;
+  padding-left: 1.5em;
 }
 
 .prose :deep(li) {
   margin-bottom: 0.6em;
+  padding-left: 0.2em;
+}
+
+.prose :deep(li::marker) {
+  color: var(--color-accent);
+  font-weight: 600;
 }
 
 .prose :deep(strong) {
