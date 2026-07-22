@@ -68,14 +68,14 @@ function getBentoSpan(index: number): string {
 .bento-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  gap: 0;
   padding-bottom: 72px;
 }
 
 @media (min-width: 768px) {
   .bento-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    gap: 0;
   }
 }
 

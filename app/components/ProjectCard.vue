@@ -68,7 +68,9 @@ defineProps<{
   min-height: 280px;
   background: var(--color-bg);
   border: 1px solid var(--color-border);
-  border-radius: 24px;
+  border-radius: 0;
+  margin-top: -1px;
+  margin-left: -1px;
   text-decoration: none;
   overflow: hidden;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
@@ -77,6 +79,7 @@ defineProps<{
               background 0.3s ease;
   will-change: transform;
   transform: translateZ(0);
+  z-index: 1;
 }
 
 @media (min-width: 768px) {
@@ -96,6 +99,7 @@ defineProps<{
   transform: translateY(-4px) translateZ(0);
   border-color: var(--color-accent);
   box-shadow: 0 20px 40px -15px rgba(15, 63, 47, 0.08);
+  z-index: 5;
 }
 
 .bento-card:active {
@@ -125,7 +129,7 @@ defineProps<{
   letter-spacing: 0.05em;
   background: var(--color-accent-dim);
   padding: 4px 10px;
-  border-radius: 9999px;
+  border-radius: 0;
 }
 
 .bento-year {
@@ -220,7 +224,7 @@ defineProps<{
   background: var(--color-surface);
   padding: 4px 10px;
   border: 1px solid var(--color-border);
-  border-radius: 9999px;
+  border-radius: 0;
   white-space: nowrap;
 }
 
