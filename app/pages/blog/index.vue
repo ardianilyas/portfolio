@@ -184,7 +184,8 @@ function calculateReadingTime(article: any): string {
 /* ── Title Row & Sub ─────────────────────────────────────── */
 .header-title-row {
   display: flex;
-  align-items: baseline;
+  width: 100%;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
