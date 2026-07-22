@@ -2,26 +2,24 @@
   <div class="project-detail-page bg-[var(--color-bg)] min-h-screen relative" v-if="project">
     <CustomCursor />
     
-    <!-- Floating Back Button (Teleported to body to escape transform: translateZ(0) containing block) -->
-    <ClientOnly>
-      <Teleport to="body">
-        <NuxtLink 
-          to="/#portfolio" 
-          class="back-floating-btn group"
-          aria-label="Back to projects"
-        >
-          <svg class="back-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-          <span class="back-text">Back</span>
-        </NuxtLink>
-      </Teleport>
-    </ClientOnly>
-
     <!-- Main Hero Header -->
     <header class="project-hero">
       <div class="hero-container max-w-[1100px] mx-auto px-6 md:px-10 pt-28 md:pt-36 pb-12">
         
+        <!-- Inline Back Link -->
+        <div class="back-link-wrapper fade-up">
+          <NuxtLink 
+            to="/#portfolio" 
+            class="back-inline-btn group"
+            aria-label="Back to projects"
+          >
+            <svg class="back-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>Back to Projects</span>
+          </NuxtLink>
+        </div>
+
         <!-- Eyebrow Tag -->
         <div class="project-eyebrow fade-up">
           <span class="eyebrow-dot"></span>
@@ -199,52 +197,33 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* ── Floating Back Button (Sticky & Sharp) ─────────────── */
-.back-floating-btn {
-  position: fixed;
-  top: 86px;
-  left: 16px;
-  z-index: 90;
+/* ── Inline Back Button (Non-sticky, in flow) ───────────── */
+.back-link-wrapper {
+  margin-bottom: 20px;
+}
+
+.back-inline-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 14px;
-  background: rgba(250, 250, 248, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--color-border-2);
-  border-radius: 0;
-  color: var(--color-text);
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
+  color: var(--color-text-2);
   text-decoration: none;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
-@media (min-width: 768px) {
-  .back-floating-btn {
-    top: 24px;
-    left: 24px;
-    padding: 10px 18px;
-    font-size: 13px;
-  }
-}
-
-.back-floating-btn:hover {
-  background: var(--color-accent);
-  color: #f2e8cf;
-  border-color: var(--color-accent);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(15, 63, 47, 0.2);
+.back-inline-btn:hover {
+  color: var(--color-accent);
+  transform: translateX(-2px);
 }
 
 .back-arrow {
   transition: transform 0.2s ease;
 }
 
-.back-floating-btn:hover .back-arrow {
+.back-inline-btn:hover .back-arrow {
   transform: translateX(-3px);
 }
 
