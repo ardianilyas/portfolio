@@ -1,47 +1,34 @@
 <template>
   <div class="blog-post-container is-visible">
-    <!-- 1. Top Reading Progress Bar (Teleported to Body to bypass transform stacking context) -->
-    <ClientOnly>
-      <Teleport to="body">
-        <div class="scroll-progress-bar" :style="{ width: `${scrollProgress}%` }"></div>
-      </Teleport>
-    </ClientOnly>
+    <!-- 1. Top Reading Progress Bar (Article Content Bounded) -->
+    <BlogProgressBar target-selector=".post-article" />
 
     <!-- Main Content Layout Grid -->
-    <div class="blog-layout-grid fade-up fade-up-1">
+    <div class="blog-layout-grid fade-up">
       <!-- 2. Sticky Left Sidebar TOC for Desktop -->
-      <aside v-if="post && tocLinks && tocLinks.length > 0" class="toc-sidebar" aria-label="Table of Contents">
-        <div class="toc-sidebar-inner">
-          <div class="toc-header">
-            <span class="toc-dot"></span>
-            <span class="toc-title">// CONTENTS</span>
-          </div>
-          <ul class="toc-list">
-            <li v-for="link in tocLinks" :key="link.id" :class="['toc-item', `depth-${link.depth}`]">
-              <a :href="`#${link.id}`" class="toc-link" :class="{ 'is-active': activeTocId === link.id }">
-                <span class="toc-hash">#</span>
-                <span class="toc-text">{{ link.text }}</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </aside>
+      <BlogToc
+        v-if="post && tocLinks && tocLinks.length > 0"
+        :toc-links="tocLinks"
+        :active-toc-id="activeTocId"
+        :is-mobile="false"
+      />
 
       <!-- Main Article Body -->
       <main class="blog-main">
         <article v-if="post" class="post-article">
-          <!-- Back Link Inside Article Container -->
-          <NuxtLink to="/blog" class="back-link group" aria-label="Back to Articles">
-            <svg class="back-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-            <span>Back to Articles</span>
-          </NuxtLink>
+          <!-- Article Header (Back Link & Eyebrow Vertically Aligned) -->
+          <div class="post-header">
+            <NuxtLink to="/blog" class="back-link group" aria-label="Back to Articles">
+              <svg class="back-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+              <span>Back to Articles</span>
+            </NuxtLink>
 
-          <!-- Eyebrow Tag -->
-          <div class="post-eyebrow">
-            <span class="eyebrow-dot"></span>
-            <span>// ARTICLE READOUT</span>
+            <div class="post-eyebrow">
+              <span class="eyebrow-dot"></span>
+              <span>// ARTICLE READOUT</span>
+            </div>
           </div>
 
           <!-- Post Title -->
@@ -62,20 +49,12 @@
           </div>
 
           <!-- Inline TOC for Mobile / Tablet -->
-          <nav v-if="tocLinks && tocLinks.length > 0" class="toc-inline-mobile" aria-label="Table of Contents Mobile">
-            <div class="toc-header">
-              <span class="toc-dot"></span>
-              <span class="toc-title">// TABLE OF CONTENTS</span>
-            </div>
-            <ul class="toc-list">
-              <li v-for="link in tocLinks" :key="link.id" :class="['toc-item', `depth-${link.depth}`]">
-                <a :href="`#${link.id}`" class="toc-link" :class="{ 'is-active': activeTocId === link.id }">
-                  <span class="toc-hash">#</span>
-                  <span>{{ link.text }}</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
+          <BlogToc
+            v-if="tocLinks && tocLinks.length > 0"
+            :toc-links="tocLinks"
+            :active-toc-id="activeTocId"
+            :is-mobile="true"
+          />
 
           <!-- Rendered Article Prose -->
           <div class="prose-wrapper">
@@ -105,12 +84,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useAsyncData } from '#imports'
+import BlogProgressBar from '~/components/blog/BlogProgressBar.vue'
+import BlogToc from '~/components/blog/BlogToc.vue'
 
 const route = useRoute()
 const slug = computed(() => route.params.slug as string)
-const scrollProgress = ref(0)
 const activeTocId = ref('')
 
 const { data: post } = await useAsyncData(`post-detail-${slug.value}`, async () => {
@@ -138,52 +118,33 @@ const tocLinks = computed(() => {
   return []
 })
 
-// Scroll Progress Tracker
-function handleScroll() {
-  if (typeof window === 'undefined') return
-  const docHeight = document.documentElement.scrollHeight
-  const winHeight = window.innerHeight
-  const totalScrollable = docHeight - winHeight
-  
-  if (totalScrollable > 0) {
-    const currentScroll = Math.max(0, window.scrollY)
-    const pct = (currentScroll / totalScrollable) * 100
-    scrollProgress.value = Math.min(100, Math.max(0, pct))
-  } else {
-    scrollProgress.value = 0
-  }
+// Scroll listener to update active TOC section
+function handleTocScroll() {
+  if (typeof window === 'undefined' || !tocLinks.value || tocLinks.value.length === 0) return
 
-  // Active TOC Highlight
-  if (tocLinks.value && tocLinks.value.length > 0) {
-    const headings = tocLinks.value
-      .map((link: any) => document.getElementById(link.id))
-      .filter((el: HTMLElement | null): el is HTMLElement => el !== null)
+  const headings = tocLinks.value
+    .map((link: any) => document.getElementById(link.id))
+    .filter((el: HTMLElement | null): el is HTMLElement => el !== null)
 
-    const scrollPos = window.scrollY + 140
-    for (let i = headings.length - 1; i >= 0; i--) {
-      if (headings[i].offsetTop <= scrollPos) {
-        activeTocId.value = headings[i].id
-        break
-      }
+  const scrollPos = window.scrollY + 140
+  for (let i = headings.length - 1; i >= 0; i--) {
+    if (headings[i].offsetTop <= scrollPos) {
+      activeTocId.value = headings[i].id
+      break
     }
   }
 }
 
 onMounted(() => {
   if (typeof window !== 'undefined') {
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('resize', handleScroll, { passive: true })
-    nextTick(() => {
-      handleScroll()
-      setTimeout(handleScroll, 300)
-    })
+    window.addEventListener('scroll', handleTocScroll, { passive: true })
+    handleTocScroll()
   }
 })
 
 onUnmounted(() => {
   if (typeof window !== 'undefined') {
-    window.removeEventListener('scroll', handleScroll)
-    window.removeEventListener('resize', handleScroll)
+    window.removeEventListener('scroll', handleTocScroll)
   }
 })
 
@@ -207,19 +168,6 @@ function calculateReadingTime(article: any): string {
 </script>
 
 <style scoped>
-/* ── Top Reading Progress Bar ────────────────────────────── */
-.scroll-progress-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 4px;
-  background: var(--color-accent);
-  box-shadow: 0 0 10px rgba(15, 63, 47, 0.5);
-  z-index: 10000;
-  transition: width 0.05s ease-out;
-  pointer-events: none;
-}
-
 .blog-post-container {
   max-width: 1180px;
   margin: 0 auto;
@@ -227,7 +175,35 @@ function calculateReadingTime(article: any): string {
   min-height: 100vh;
 }
 
-/* ── Back Link ───────────────────────────────────────────── */
+/* ── Layout Grid ─────────────────────────────────────────── */
+.blog-layout-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+@media (min-width: 1100px) {
+  .blog-layout-grid {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+}
+
+.blog-main {
+  min-width: 0;
+}
+
+/* ── Article Header (Back Link & Eyebrow Alignment) ─────── */
+.post-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
 .back-link {
   display: inline-flex;
   align-items: center;
@@ -236,7 +212,6 @@ function calculateReadingTime(article: any): string {
   font-size: 14px;
   font-weight: 500;
   color: var(--color-text-2);
-  margin-bottom: 36px;
   text-decoration: none;
   transition: color 0.2s ease, transform 0.2s ease;
 }
@@ -254,144 +229,6 @@ function calculateReadingTime(article: any): string {
   transform: translateX(-3px);
 }
 
-/* ── Layout Grid (Sidebar TOC + Article) ─────────────────── */
-.blog-layout-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-@media (min-width: 1100px) {
-  .blog-layout-grid {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: 64px;
-    align-items: start;
-  }
-}
-
-/* ── Desktop Sticky Left TOC Sidebar ─────────────────────── */
-.toc-sidebar {
-  display: none;
-}
-
-@media (min-width: 1100px) {
-  .toc-sidebar {
-    display: block;
-    position: sticky;
-    top: 120px;
-    align-self: start;
-    max-height: calc(100vh - 160px);
-    overflow-y: auto;
-  }
-}
-
-.toc-sidebar-inner {
-  padding: 20px 18px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-left: 3px solid var(--color-accent);
-}
-
-/* ── Mobile Inline TOC ───────────────────────────────────── */
-.toc-inline-mobile {
-  display: block;
-  margin: 0 0 36px;
-  padding: 20px 24px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-left: 3px solid var(--color-accent);
-}
-
-@media (min-width: 1100px) {
-  .toc-inline-mobile {
-    display: none;
-  }
-}
-
-/* ── Shared TOC Styles ───────────────────────────────────── */
-.toc-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-
-.toc-dot {
-  width: 5px;
-  height: 5px;
-  background: var(--color-accent);
-  border-radius: 50%;
-}
-
-.toc-title {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--color-accent);
-}
-
-.toc-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.toc-item.depth-3 {
-  padding-left: 14px;
-}
-
-.toc-link {
-  display: inline-flex;
-  align-items: flex-start;
-  gap: 6px;
-  font-family: var(--font-sans);
-  font-size: 13.5px;
-  color: var(--color-text-2);
-  text-decoration: none;
-  line-height: 1.4;
-  transition: all 0.2s ease;
-}
-
-.toc-hash {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--color-text-3);
-  opacity: 0.5;
-  transition: opacity 0.2s ease, color 0.2s ease;
-  flex-shrink: 0;
-}
-
-.toc-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.toc-link:hover, .toc-link.is-active {
-  color: var(--color-accent);
-  font-weight: 500;
-  transform: translateX(3px);
-}
-
-.toc-link:hover .toc-hash, .toc-link.is-active .toc-hash {
-  opacity: 1;
-  color: var(--color-accent);
-}
-
-/* ── Main Article Layout ─────────────────────────────────── */
-.blog-main {
-  min-width: 0; /* Prevents overflow in grid */
-}
-
-/* Eyebrow */
 .post-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -401,7 +238,6 @@ function calculateReadingTime(article: any): string {
   font-weight: 500;
   letter-spacing: 0.08em;
   color: var(--color-accent);
-  margin-bottom: 16px;
 }
 
 .eyebrow-dot {
@@ -411,7 +247,7 @@ function calculateReadingTime(article: any): string {
   background: var(--color-accent);
 }
 
-/* Post Title & Meta */
+/* ── Post Title & Meta ───────────────────────────────────── */
 .post-title {
   font-family: var(--font-sans);
   font-size: clamp(32px, 5.5vw, 54px);
