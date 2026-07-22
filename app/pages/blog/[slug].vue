@@ -3,83 +3,82 @@
     <!-- 1. Top Reading Progress Bar (Article Content Bounded) -->
     <BlogProgressBar target-selector=".post-article" />
 
-    <!-- Main Content Layout Grid -->
-    <div class="blog-layout-grid fade-up">
-      <!-- 2. Sticky Left Sidebar TOC for Desktop -->
-      <BlogToc
-        v-if="post && tocLinks && tocLinks.length > 0"
-        :toc-links="tocLinks"
-        :active-toc-id="activeTocId"
-        :is-mobile="false"
-      />
+    <!-- 2. Desktop Left Hanging TOC (Positioned absolute outside left boundary) -->
+    <BlogToc
+      v-if="post && tocLinks && tocLinks.length > 0"
+      :toc-links="tocLinks"
+      :active-toc-id="activeTocId"
+      :is-mobile="false"
+    />
 
-      <!-- Main Article Body -->
-      <main class="blog-main">
-        <article v-if="post" class="post-article">
-          <!-- Article Header (Back Link & Eyebrow Vertically Aligned) -->
-          <div class="post-header">
-            <NuxtLink to="/blog" class="back-link group" aria-label="Back to Articles">
-              <svg class="back-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-              </svg>
-              <span>Back to Articles</span>
-            </NuxtLink>
-
-            <div class="post-eyebrow">
-              <span class="eyebrow-dot"></span>
-              <span>// ARTICLE READOUT</span>
-            </div>
-          </div>
-
-          <!-- Post Title -->
-          <h1 class="post-title">{{ post.title }}</h1>
-
-          <!-- Post Meta Bar -->
-          <div class="post-meta">
-            <div class="meta-left">
-              <span class="post-date">{{ formatDate(post.date) }}</span>
-              <span class="meta-divider">•</span>
-              <span class="reading-time">{{ calculateReadingTime(post) }}</span>
-            </div>
-            <div class="post-tags" v-if="post.tags && post.tags.length">
-              <span v-for="tag in post.tags" :key="tag" class="post-tag">
-                #{{ tag }}
-              </span>
-            </div>
-          </div>
-
-          <!-- Inline TOC for Mobile / Tablet -->
-          <BlogToc
-            v-if="tocLinks && tocLinks.length > 0"
-            :toc-links="tocLinks"
-            :active-toc-id="activeTocId"
-            :is-mobile="true"
-          />
-
-          <!-- Rendered Article Prose -->
-          <div class="prose-wrapper">
-            <ContentRenderer :value="post" class="prose" />
-          </div>
-
-          <!-- Post Footer CTA -->
-          <footer class="post-footer">
-            <NuxtLink to="/blog" class="footer-back-btn">
-              ← Back to all articles
-            </NuxtLink>
-          </footer>
-        </article>
-
-        <!-- 404 / Not Found -->
-        <div v-else class="not-found-card">
-          <span class="not-found-code">// 404_NOT_FOUND</span>
-          <h2 class="not-found-title">Article not found</h2>
-          <p class="not-found-desc">The article you are looking for does not exist or has been relocated.</p>
-          <NuxtLink to="/blog" class="not-found-btn">
-            Return to Blog
+    <!-- Main Content Body (Centered & Perfectly Aligned with Navbar) -->
+    <main class="blog-main fade-up">
+      <article v-if="post" class="post-article">
+        <!-- Article Header (Back Link & Eyebrow Vertically Aligned) -->
+        <div class="post-header">
+          <NuxtLink to="/blog" class="back-link group" aria-label="Back to Articles">
+            <svg class="back-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>Back to Articles</span>
           </NuxtLink>
+
+          <div class="post-eyebrow">
+            <span class="eyebrow-dot"></span>
+            <span>// ARTICLE READOUT</span>
+          </div>
         </div>
-      </main>
-    </div>
+
+        <!-- Post Title -->
+        <h1 class="post-title">{{ post.title }}</h1>
+
+        <!-- Post Meta Bar with Word Count (Option 4) -->
+        <div class="post-meta">
+          <div class="meta-left">
+            <span class="post-date">{{ formatDate(post.date) }}</span>
+            <span class="meta-divider">•</span>
+            <span class="reading-time">{{ calculateReadingTime(post) }}</span>
+            <span class="meta-divider">•</span>
+            <span class="word-count">{{ getWordCount(post) }} WORDS</span>
+          </div>
+          <div class="post-tags" v-if="post.tags && post.tags.length">
+            <span v-for="tag in post.tags" :key="tag" class="post-tag">
+              #{{ tag }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Inline TOC for Mobile / Tablet -->
+        <BlogToc
+          v-if="tocLinks && tocLinks.length > 0"
+          :toc-links="tocLinks"
+          :active-toc-id="activeTocId"
+          :is-mobile="true"
+        />
+
+        <!-- Rendered Article Prose -->
+        <div class="prose-wrapper">
+          <ContentRenderer :value="post" class="prose" />
+        </div>
+
+        <!-- Post Footer CTA -->
+        <footer class="post-footer">
+          <NuxtLink to="/blog" class="footer-back-btn">
+            ← Back to all articles
+          </NuxtLink>
+        </footer>
+      </article>
+
+      <!-- 404 / Not Found -->
+      <div v-else class="not-found-card">
+        <span class="not-found-code">// 404_NOT_FOUND</span>
+        <h2 class="not-found-title">Article not found</h2>
+        <p class="not-found-desc">The article you are looking for does not exist or has been relocated.</p>
+        <NuxtLink to="/blog" class="not-found-btn">
+          Return to Blog
+        </NuxtLink>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -165,30 +164,23 @@ function calculateReadingTime(article: any): string {
   const mins = Math.max(2, Math.ceil(words / 150))
   return `${mins} min read`
 }
+
+function getWordCount(article: any): string {
+  if (!article) return '0'
+  const text = (article.description || '') + ' ' + (article.body ? JSON.stringify(article.body) : '')
+  const words = text.trim().split(/\s+/).length
+  return words.toLocaleString()
+}
 </script>
 
 <style scoped>
+/* ── Centered Container (Aligned with Navbar & rest of site) ── */
 .blog-post-container {
-  max-width: 1180px;
+  position: relative;
+  max-width: 820px;
   margin: 0 auto;
   padding: 120px 24px 100px;
   min-height: 100vh;
-}
-
-/* ── Layout Grid ─────────────────────────────────────────── */
-.blog-layout-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-@media (min-width: 1100px) {
-  .blog-layout-grid {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: 64px;
-    align-items: start;
-  }
 }
 
 .blog-main {
@@ -247,7 +239,7 @@ function calculateReadingTime(article: any): string {
   background: var(--color-accent);
 }
 
-/* ── Post Title & Meta ───────────────────────────────────── */
+/* ── Post Title & Meta Bar ───────────────────────────────── */
 .post-title {
   font-family: var(--font-sans);
   font-size: clamp(32px, 5.5vw, 54px);
@@ -287,8 +279,12 @@ function calculateReadingTime(article: any): string {
   opacity: 0.4;
 }
 
-.reading-time {
+.reading-time, .word-count {
   letter-spacing: 0.02em;
+}
+
+.word-count {
+  color: var(--color-text-2);
 }
 
 .post-tags {
@@ -339,6 +335,10 @@ function calculateReadingTime(article: any): string {
 
 .prose :deep(h3) {
   font-size: clamp(18px, 2.8vw, 24px);
+}
+
+.prose :deep(p) {
+  margin-bottom: 1.6em;
 }
 
 .prose :deep(ul) {

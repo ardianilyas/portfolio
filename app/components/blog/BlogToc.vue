@@ -35,30 +35,34 @@ defineProps({
 </script>
 
 <style scoped>
-/* ── Desktop Sticky Left TOC Sidebar ─────────────────────── */
+/* ── Desktop Left Hanging TOC Sidebar (Absolute Outside Container) ── */
 .toc-sidebar {
   display: none;
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 1280px) {
   .toc-sidebar {
     display: block;
+    position: absolute;
+    top: 220px;
+    right: calc(100% + 40px); /* Hangs outside the left boundary of centered container */
+    width: 220px;
+    z-index: 20;
+  }
+
+  .toc-sidebar-inner {
     position: sticky;
-    top: 120px;
-    align-self: start;
-    max-height: calc(100vh - 160px);
+    top: 140px;
+    max-height: calc(100vh - 180px);
     overflow-y: auto;
+    padding: 20px 18px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
   }
 }
 
-.toc-sidebar-inner {
-  padding: 20px 18px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-left: 3px solid var(--color-accent);
-}
-
-/* ── Mobile Inline TOC ───────────────────────────────────── */
+/* ── Mobile & Tablet Inline TOC ─────────────────────────── */
 .toc-inline-mobile {
   display: block;
   margin: 0 0 36px;
@@ -68,7 +72,7 @@ defineProps({
   border-left: 3px solid var(--color-accent);
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 1280px) {
   .toc-inline-mobile {
     display: none;
   }
