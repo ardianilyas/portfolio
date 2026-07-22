@@ -294,19 +294,6 @@ function calculateReadingTime(article: any): string {
   color: var(--color-text);
 }
 
-.prose :deep(pre) {
-  background: #111816;
-  color: #E2E8F0;
-  border: 1px solid var(--color-border);
-  padding: 24px;
-  border-radius: 0;
-  overflow-x: auto;
-  font-family: var(--font-mono);
-  font-size: 14px;
-  line-height: 1.6;
-  margin: 2em 0;
-}
-
 .prose :deep(code) {
   font-family: var(--font-mono);
   font-size: 0.9em;

@@ -21,7 +21,7 @@ export default defineNuxtConfig({
     build: {
       markdown: {
         highlight: {
-          theme: 'vitesse-dark',
+          theme: 'vitesse-light',
         }
       }
     }
