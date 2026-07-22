@@ -8,27 +8,27 @@
 
       <!-- Left: Logo -->
       <div class="navbar-left">
-        <a href="#" class="navbar-logo" aria-label="Ardian Ilyas — Home">
+        <NuxtLink to="/" class="navbar-logo" aria-label="Ardian Ilyas — Home">
           ardianilyas
-        </a>
+        </NuxtLink>
       </div>
 
       <!-- Center: Desktop nav links -->
       <div class="navbar-center">
         <nav class="navbar-links" aria-label="Primary navigation" ref="navLinksContainer">
           <span class="active-pill-indicator" :style="pillStyle"></span>
-          <a
+          <NuxtLink
             v-for="link in navLinks"
             :key="link.id"
             :ref="el => setLinkRef(link.id, el)"
-            :href="'#' + link.id"
+            :to="link.isPage ? link.path : '/#' + link.id"
             class="navbar-link"
             :class="{ 'navbar-link--active': activeSection === link.id }"
-            @click.prevent="scrollTo(link.id)"
+            @click="handleNavClick(link, $event)"
             v-magnetic="0.15"
           >
             {{ link.label }}
-          </a>
+          </NuxtLink>
         </nav>
       </div>
 
@@ -68,19 +68,19 @@
         role="navigation"
         aria-label="Mobile navigation"
       >
-        <a
+        <NuxtLink
           v-for="link in navLinks"
           :key="link.id"
-          :href="'#' + link.id"
+          :to="link.isPage ? link.path : '/#' + link.id"
           class="mobile-link"
           :class="{ 'mobile-link--active': activeSection === link.id }"
-          @click.prevent="scrollTo(link.id)"
+          @click="handleNavClick(link, $event)"
         >
           {{ link.label }}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
           </svg>
-        </a>
+        </NuxtLink>
         <a
           href="mailto:ardianilyas@gmail.com"
           class="mobile-link mobile-link--accent"
@@ -101,6 +101,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { useRoute, useRouter } from '#imports'
 
 const route = useRoute()
 const router = useRouter()
@@ -111,10 +112,18 @@ const isLoaded = ref(false)
 const activeSection = ref('')
 const linkRefs = reactive<Record<string, HTMLElement | null>>({})
 
-const navLinks = [
+interface NavItem {
+  id: string
+  label: string
+  isPage?: boolean
+  path?: string
+}
+
+const navLinks: NavItem[] = [
   { id: 'skills',    label: 'Skills' },
   { id: 'tools',     label: 'Tools' },
   { id: 'portfolio', label: 'Projects' },
+  { id: 'blog',      label: 'Blog', isPage: true, path: '/blog' },
 ]
 
 const setLinkRef = (id: string, el: any) => {
@@ -144,8 +153,31 @@ watch(activeSection, () => {
   updatePill()
 })
 
-function scrollTo(id: string) {
+watch(() => route.path, (newPath) => {
+  if (newPath.startsWith('/blog')) {
+    activeSection.value = 'blog'
+    updatePill()
+  } else if (newPath === '/') {
+    onScroll()
+  } else {
+    activeSection.value = ''
+    updatePill()
+  }
+}, { immediate: true })
+
+function handleNavClick(link: NavItem, event: MouseEvent) {
   isOpen.value = false
+  if (link.isPage) {
+    activeSection.value = link.id
+    updatePill()
+    return
+  }
+
+  event.preventDefault()
+  scrollTo(link.id)
+}
+
+function scrollTo(id: string) {
   if (route.path !== '/') {
     router.push('/#' + id)
     return
@@ -269,6 +301,7 @@ onUnmounted(() => {
   letter-spacing: -0.03em;
   color: var(--color-text);
   transition: opacity 0.2s;
+  text-decoration: none;
 }
 
 .navbar-logo:hover { opacity: 0.6; }
@@ -314,6 +347,7 @@ onUnmounted(() => {
   padding: 8px 16px;
   border-radius: 9999px;
   transition: color 0.3s ease;
+  text-decoration: none;
 }
 
 .navbar-link:not(.navbar-link--active):hover {
@@ -335,6 +369,7 @@ onUnmounted(() => {
   padding: 10px 20px;
   border-radius: 9999px;
   transition: opacity 0.2s, transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
 }
 
 .navbar-cta:active {
@@ -408,6 +443,7 @@ onUnmounted(() => {
   padding: 14px 24px;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
   transition: color 0.2s, background 0.2s;
+  text-decoration: none;
 }
 
 .mobile-link:hover {
