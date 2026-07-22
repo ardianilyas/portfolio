@@ -10,12 +10,16 @@
     </button>
     
     <!-- Code Block -->
-    <pre :class="$attrs.class"><slot /></pre>
+    <pre :class="$attrs.class" :style="$attrs.style as any"><slot /></pre>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+
+defineOptions({
+  inheritAttrs: false
+})
 
 const props = defineProps({
   code: {
