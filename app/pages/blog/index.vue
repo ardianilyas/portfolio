@@ -40,7 +40,6 @@
           :key="article.path || article.stem || article.title"
           :to="getPostUrl(article)"
           class="blog-card group"
-          v-magnetic="0.1"
         >
           <!-- Top Metadata Bar -->
           <div class="blog-card-meta">
@@ -122,6 +121,13 @@ function calculateReadingTime(article: any): string {
   min-height: 100vh;
 }
 
+/* ── Blog Header (Flex Column Stacked) ───────────────────── */
+.blog-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 /* ── Back Link ───────────────────────────────────────────── */
 .back-link {
   display: inline-flex;
@@ -131,7 +137,7 @@ function calculateReadingTime(article: any): string {
   font-size: 14px;
   font-weight: 500;
   color: var(--color-text-2);
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   text-decoration: none;
   transition: color 0.2s ease, transform 0.2s ease;
 }
