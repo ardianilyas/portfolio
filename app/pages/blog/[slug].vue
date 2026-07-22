@@ -1,5 +1,8 @@
 <template>
   <div class="blog-post-container is-visible">
+    <!-- 1. Scroll Progress Bar (Top Fixed) -->
+    <div class="scroll-progress-bar" :style="{ width: `${scrollProgress}%` }"></div>
+
     <!-- Header Navigation -->
     <div class="blog-header fade-up">
       <NuxtLink to="/blog" class="back-link group" aria-label="Back to Articles">
@@ -10,7 +13,7 @@
       </NuxtLink>
     </div>
 
-    <!-- Main Content Area -->
+    <!-- Main Content Layout -->
     <main class="blog-content fade-up fade-up-1">
       <article v-if="post" class="post-article">
         <!-- Eyebrow Tag -->
@@ -36,14 +39,30 @@
           </div>
         </div>
 
+        <!-- 2. Table of Contents (Inline & Side Widget) -->
+        <nav v-if="tocLinks && tocLinks.length > 0" class="toc-box" aria-label="Table of Contents">
+          <div class="toc-header">
+            <span class="toc-dot"></span>
+            <span class="toc-title">// TABLE OF CONTENTS</span>
+          </div>
+          <ul class="toc-list">
+            <li v-for="link in tocLinks" :key="link.id" :class="['toc-item', `depth-${link.depth}`]">
+              <a :href="`#${link.id}`" class="toc-link" :class="{ 'is-active': activeTocId === link.id }">
+                <span class="toc-hash">#</span>
+                <span>{{ link.text }}</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
         <!-- Rendered Article Prose -->
         <div class="prose-wrapper">
           <ContentRenderer :value="post" class="prose" />
         </div>
 
-        <!-- Post Footer CTA / Share -->
+        <!-- Post Footer CTA -->
         <footer class="post-footer">
-          <NuxtLink to="/blog" class="footer-back-btn" v-magnetic="0.15">
+          <NuxtLink to="/blog" class="footer-back-btn">
             ← Back to all articles
           </NuxtLink>
         </footer>
@@ -63,28 +82,73 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useAsyncData } from '#imports'
 
 const route = useRoute()
 const slug = computed(() => route.params.slug as string)
+const scrollProgress = ref(0)
+const activeTocId = ref('')
 
 const { data: post } = await useAsyncData(`post-detail-${slug.value}`, async () => {
   try {
-    // 1. Try querying by path /blog/:slug
     let item = await queryCollection('blog').path(`/blog/${slug.value}`).first()
     if (item) return item
 
-    // 2. Fallback query by stem (blog/:slug)
     item = await queryCollection('blog').where('stem', '=', `blog/${slug.value}`).first()
     if (item) return item
 
-    // 3. Fallback query all and find by slug match
     const all = await queryCollection('blog').all()
     return all.find((p: any) => p.stem?.endsWith(slug.value) || p.path?.endsWith(slug.value)) || null
   } catch (err) {
     console.error('Error fetching blog post:', err)
     return null
+  }
+})
+
+// Extract Table of Contents links
+const tocLinks = computed(() => {
+  if (!post.value) return []
+  const body = post.value.body as any
+  if (body?.toc?.links) return body.toc.links
+  if (post.value.toc?.links) return post.value.toc.links
+  return []
+})
+
+// Scroll Progress Tracker
+function handleScroll() {
+  if (typeof window === 'undefined') return
+  const totalHeight = document.documentElement.scrollHeight - window.innerHeight
+  if (totalHeight > 0) {
+    scrollProgress.value = Math.min(100, Math.max(0, (window.scrollY / totalHeight) * 100))
+  }
+
+  // Active TOC Highlight
+  if (tocLinks.value && tocLinks.value.length > 0) {
+    const headings = tocLinks.value
+      .map((link: any) => document.getElementById(link.id))
+      .filter((el: HTMLElement | null): el is HTMLElement => el !== null)
+
+    const scrollPos = window.scrollY + 140
+    for (let i = headings.length - 1; i >= 0; i--) {
+      if (headings[i].offsetTop <= scrollPos) {
+        activeTocId.value = headings[i].id
+        break
+      }
+    }
+  }
+}
+
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+  }
+})
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('scroll', handleScroll)
   }
 })
 
@@ -108,6 +172,17 @@ function calculateReadingTime(article: any): string {
 </script>
 
 <style scoped>
+/* ── Scroll Progress Bar ─────────────────────────────────── */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--color-accent);
+  z-index: 9999;
+  transition: width 0.08s linear;
+}
+
 .blog-post-container {
   max-width: 820px;
   margin: 0 auto;
@@ -178,7 +253,7 @@ function calculateReadingTime(article: any): string {
   justify-content: space-between;
   align-items: center;
   padding-bottom: 24px;
-  margin-bottom: 48px;
+  margin-bottom: 36px;
   border-bottom: 1px solid var(--color-border);
   flex-wrap: wrap;
   gap: 12px;
@@ -223,6 +298,81 @@ function calculateReadingTime(article: any): string {
   border: 1px solid var(--color-border);
 }
 
+/* ── Table of Contents Box ──────────────────────────────── */
+.toc-box {
+  margin: 0 0 44px;
+  padding: 20px 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 0;
+}
+
+.toc-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.toc-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--color-accent);
+  border-radius: 50%;
+}
+
+.toc-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toc-item.depth-3 {
+  padding-left: 16px;
+}
+
+.toc-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--color-text-2);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.toc-hash {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-3);
+  opacity: 0.5;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.toc-link:hover, .toc-link.is-active {
+  color: var(--color-accent);
+  font-weight: 500;
+  transform: translateX(3px);
+}
+
+.toc-link:hover .toc-hash, .toc-link.is-active .toc-hash {
+  opacity: 1;
+  color: var(--color-accent);
+}
+
 /* ── Prose Renderer Typography ───────────────────────────── */
 .prose-wrapper {
   margin-bottom: 64px;
@@ -243,6 +393,7 @@ function calculateReadingTime(article: any): string {
   margin-top: 2.2em;
   margin-bottom: 0.8em;
   line-height: 1.25;
+  scroll-margin-top: 100px;
 }
 
 .prose :deep(h2) {
@@ -285,13 +436,32 @@ function calculateReadingTime(article: any): string {
   background: rgba(15, 63, 47, 0.06);
 }
 
+/* ── Enhanced Blockquotes & Callouts (Feature 5) ──────────── */
 .prose :deep(blockquote) {
+  position: relative;
   margin: 2em 0;
-  padding: 18px 24px;
-  background: var(--color-surface);
+  padding: 20px 24px;
+  background: rgba(15, 63, 47, 0.04);
+  border: 1px solid rgba(15, 63, 47, 0.15);
   border-left: 3px solid var(--color-accent);
   font-style: italic;
   color: var(--color-text);
+}
+
+.prose :deep(blockquote::before) {
+  content: "// NOTE";
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  margin-bottom: 8px;
+}
+
+.prose :deep(blockquote p) {
+  margin-bottom: 0;
 }
 
 .prose :deep(code) {
