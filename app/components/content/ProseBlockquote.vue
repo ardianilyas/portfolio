@@ -3,17 +3,16 @@
     <div class="callout-header">
       // {{ calloutTitle }}
     </div>
-    <div class="callout-body" ref="bodyRef">
-      <slot />
+    <div class="callout-body">
+      <component :is="renderCleanedContent" />
     </div>
   </blockquote>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, useSlots, onMounted, onUpdated } from 'vue'
+import { computed, useSlots, h, type VNode } from 'vue'
 
 const slots = useSlots()
-const bodyRef = ref<HTMLElement | null>(null)
 
 function getTextFromVNodes(vnodes: any[]): string {
   let str = ''
@@ -52,22 +51,25 @@ const calloutTitle = computed(() => {
   }
 })
 
-// Clean [!TYPE] marker text from rendered DOM paragraph
-function cleanMarkerText() {
-  if (!bodyRef.value) return
-  const paragraphs = bodyRef.value.querySelectorAll('p')
-  paragraphs.forEach(p => {
-    p.innerHTML = p.innerHTML.replace(/^\[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION|INFO)\]\s*/gi, '')
+// Clean [!TYPE] marker text directly in VNode AST for instant SSR & Client rendering
+function cleanVNodes(vnodes: VNode[]): VNode[] {
+  if (!vnodes || !Array.isArray(vnodes)) return vnodes
+  return vnodes.map(node => {
+    if (typeof node.children === 'string') {
+      const cleanedText = node.children.replace(/^\[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION|INFO)\]\s*/gi, '')
+      return h(node.type as any, node.props, cleanedText)
+    }
+    if (Array.isArray(node.children)) {
+      return h(node.type as any, node.props, cleanVNodes(node.children as VNode[]))
+    }
+    return node
   })
 }
 
-onMounted(() => {
-  cleanMarkerText()
-})
-
-onUpdated(() => {
-  cleanMarkerText()
-})
+const renderCleanedContent = () => {
+  const rawNodes = slots.default ? slots.default() : []
+  return h('div', { class: 'callout-content-inner' }, cleanVNodes(rawNodes))
+}
 </script>
 
 <style scoped>
