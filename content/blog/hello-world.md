@@ -16,7 +16,11 @@ Welcome to my system journal and blog! I decided to build this writing space to 
 
 Building high-throughput systems requires careful evaluation of trade-offs between **latency**, **consistency**, and **developer ergonomics**. 
 
+> [!NOTE]
 > Microservices add operational complexity. Always start with a well-structured modular monolith unless team boundaries dictate otherwise.
+
+> [!TIP]
+> Use Redis pipelines to batch key-value lookups and reduce RTT latency by up to 80%.
 
 ### Backend Infrastructure
 
@@ -25,6 +29,9 @@ Our backend services rely on decoupled micro-architecture principles:
 - **State Management**: Distributed caching via Redis with strict eviction policies.
 - **Event Streaming**: Asynchronous event processing via Apache Kafka for decoupled domain logic.
 - **Database Indexing**: Optimized B-Tree and GIN indexes in PostgreSQL.
+
+> [!WARNING]
+> Never expose unauthenticated internal database ports directly to public network interfaces.
 
 ```ts
 interface ServiceConfig {
@@ -48,11 +55,17 @@ fetchClusterHealth({ endpoint: "https://api.internal/health", timeoutMs: 3000, r
 
 Delivering 60fps animations while maintaining a minimal bundle footprint requires strict adherence to modern browser standards.
 
+> [!IMPORTANT]
+> Always enable HTTP/2 or HTTP/3 multiplexing when loading dozens of static assets.
+
 ### Key Optimization Strategies
 
 1. **DOM Recycle Loops**: Virtualizing large datasets to maintain sub-16ms frame budgets.
 2. **CSS View Transitions**: Leveraging native `@view-transition` rules for fluid page routes.
 3. **Sub-resource Preloading**: Fetching critical font subsets (`Geist Mono`) upfront.
+
+> [!CAUTION]
+> Avoid triggering synchronous layout thrashing inside continuous scroll event handlers.
 
 ```bash
 # Verify bundle size footprint
