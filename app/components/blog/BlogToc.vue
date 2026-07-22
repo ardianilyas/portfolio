@@ -35,7 +35,7 @@ defineProps({
 </script>
 
 <style scoped>
-/* ── Desktop Left Hanging TOC Sidebar (Absolute Outside Container) ── */
+/* ── Desktop Left Hanging Sticky TOC Sidebar ──────────────── */
 .toc-sidebar {
   display: none;
 }
@@ -45,9 +45,11 @@ defineProps({
     display: block;
     position: absolute;
     top: 220px;
-    right: calc(100% + 40px); /* Hangs outside the left boundary of centered container */
+    bottom: 120px; /* Spans full height of container so sticky inner box can stick */
+    right: calc(100% + 40px);
     width: 220px;
     z-index: 20;
+    pointer-events: none;
   }
 
   .toc-sidebar-inner {
@@ -59,6 +61,7 @@ defineProps({
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-left: 3px solid var(--color-accent);
+    pointer-events: auto;
   }
 }
 
