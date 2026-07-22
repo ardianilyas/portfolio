@@ -1,19 +1,19 @@
 <template>
   <blockquote :class="['custom-callout', `callout-${calloutType}`]">
     <div class="callout-header">
-      <span class="callout-icon"></span>
-      <span class="callout-title">// {{ calloutTitle }}</span>
+      // {{ calloutTitle }}
     </div>
-    <div class="callout-body">
+    <div class="callout-body" ref="bodyRef">
       <slot />
     </div>
   </blockquote>
 </template>
 
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
+import { ref, computed, useSlots, onMounted, onUpdated } from 'vue'
 
 const slots = useSlots()
+const bodyRef = ref<HTMLElement | null>(null)
 
 function getTextFromVNodes(vnodes: any[]): string {
   let str = ''
@@ -51,6 +51,23 @@ const calloutTitle = computed(() => {
     default: return 'NOTE'
   }
 })
+
+// Clean [!TYPE] marker text from rendered DOM paragraph
+function cleanMarkerText() {
+  if (!bodyRef.value) return
+  const paragraphs = bodyRef.value.querySelectorAll('p')
+  paragraphs.forEach(p => {
+    p.innerHTML = p.innerHTML.replace(/^\[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION|INFO)\]\s*/gi, '')
+  })
+}
+
+onMounted(() => {
+  cleanMarkerText()
+})
+
+onUpdated(() => {
+  cleanMarkerText()
+})
 </script>
 
 <style scoped>
@@ -58,8 +75,8 @@ const calloutTitle = computed(() => {
   position: relative;
   margin: 2em 0;
   padding: 20px 24px;
-  background: rgba(15, 63, 47, 0.04);
-  border: 1px solid rgba(15, 63, 47, 0.15);
+  background: rgba(15, 63, 47, 0.03);
+  border: 1px solid rgba(15, 63, 47, 0.12);
   border-left: 3px solid var(--color-accent);
   font-style: normal;
   color: var(--color-text);
@@ -67,25 +84,12 @@ const calloutTitle = computed(() => {
 }
 
 .callout-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.callout-icon {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-accent);
-}
-
-.callout-title {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: var(--color-accent);
+  margin-bottom: 10px;
 }
 
 .callout-body :deep(p) {
@@ -95,61 +99,56 @@ const calloutTitle = computed(() => {
   color: var(--color-text-2);
 }
 
-/* ── Callout Types Color Themes ─────────────────────────── */
+/* ── Color Themes per Type ─────────────────────────────── */
+
+/* NOTE (Dark Green) */
+.callout-note {
+  background: rgba(15, 63, 47, 0.03);
+  border-color: rgba(15, 63, 47, 0.12);
+  border-left-color: var(--color-accent);
+}
+.callout-note .callout-header {
+  color: var(--color-accent);
+}
 
 /* TIP (Emerald Green) */
 .callout-tip {
-  background: rgba(16, 185, 129, 0.05);
-  border-color: rgba(16, 185, 129, 0.2);
-  border-left-color: #10B981;
+  background: rgba(16, 185, 129, 0.04);
+  border-color: rgba(16, 185, 129, 0.18);
+  border-left-color: #059669;
 }
-.callout-tip .callout-icon,
-.callout-tip .callout-title {
-  background: #10B981;
+.callout-tip .callout-header {
   color: #059669;
-}
-.callout-tip .callout-icon {
-  background: #10B981;
 }
 
 /* WARNING (Amber Gold) */
 .callout-warning {
-  background: rgba(217, 119, 6, 0.05);
-  border-color: rgba(217, 119, 6, 0.2);
+  background: rgba(217, 119, 6, 0.04);
+  border-color: rgba(217, 119, 6, 0.18);
   border-left-color: #D97706;
 }
-.callout-warning .callout-title {
+.callout-warning .callout-header {
   color: #D97706;
 }
-.callout-warning .callout-icon {
-  background: #D97706;
-}
 
-/* IMPORTANT (Slate Blue) */
+/* IMPORTANT / INFO (Slate Blue) */
 .callout-important, .callout-info {
-  background: rgba(37, 99, 235, 0.05);
-  border-color: rgba(37, 99, 235, 0.2);
+  background: rgba(37, 99, 235, 0.04);
+  border-color: rgba(37, 99, 235, 0.18);
   border-left-color: #2563EB;
 }
-.callout-important .callout-title,
-.callout-info .callout-title {
+.callout-important .callout-header,
+.callout-info .callout-header {
   color: #2563EB;
-}
-.callout-important .callout-icon,
-.callout-info .callout-icon {
-  background: #2563EB;
 }
 
 /* CAUTION (Rose Red) */
 .callout-caution {
-  background: rgba(225, 29, 72, 0.05);
-  border-color: rgba(225, 29, 72, 0.2);
+  background: rgba(225, 29, 72, 0.04);
+  border-color: rgba(225, 29, 72, 0.18);
   border-left-color: #E11D48;
 }
-.callout-caution .callout-title {
+.callout-caution .callout-header {
   color: #E11D48;
-}
-.callout-caution .callout-icon {
-  background: #E11D48;
 }
 </style>

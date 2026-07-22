@@ -392,18 +392,6 @@ function getWordCount(article: any): string {
   color: var(--color-text);
 }
 
-.prose :deep(blockquote::before) {
-  content: "// NOTE";
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  font-style: normal;
-  letter-spacing: 0.08em;
-  color: var(--color-accent);
-  margin-bottom: 8px;
-}
-
 .prose :deep(blockquote p) {
   margin-bottom: 0;
 }
