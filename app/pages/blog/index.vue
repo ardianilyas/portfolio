@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { useAsyncData } from '#imports'
 
-const { data: posts } = await useAsyncData('blog-posts', () => {
+const { data: posts } = await useAsyncData('blog-posts-list', () => {
   return queryCollection('blog').all()
 })
 </script>

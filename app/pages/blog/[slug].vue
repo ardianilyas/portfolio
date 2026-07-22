@@ -32,12 +32,14 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRoute, useAsyncData } from '#imports'
 
 const route = useRoute()
+const slug = computed(() => route.params.slug as string)
 
-const { data: post } = await useAsyncData('post-' + route.path, () => {
-  return queryCollection('blog').path(route.path).first()
+const { data: post } = await useAsyncData(`post-detail-${slug.value}`, () => {
+  return queryCollection('blog').path(`/blog/${slug.value}`).first()
 })
 </script>
 
