@@ -25,7 +25,6 @@
             class="navbar-link"
             :class="{ 'navbar-link--active': activeSection === link.id }"
             @click="handleNavClick(link, $event)"
-            v-magnetic="0.15"
           >
             {{ link.label }}
           </NuxtLink>
@@ -39,7 +38,6 @@
           href="mailto:ardianilyas@gmail.com"
           class="navbar-cta hidden md:inline-flex"
           aria-label="Get in touch via email"
-          v-magnetic="0.2"
         >
           Get in touch
         </a>

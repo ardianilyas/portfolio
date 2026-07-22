@@ -1,17 +1,11 @@
 <template>
   <div class="blog-post-container is-visible">
-    <!-- 1. Top Reading Progress Bar -->
-    <div class="scroll-progress-bar" :style="{ width: `${scrollProgress}%` }"></div>
-
-    <!-- Header Navigation -->
-    <div class="blog-header fade-up">
-      <NuxtLink to="/blog" class="back-link group" aria-label="Back to Articles">
-        <svg class="back-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-        </svg>
-        <span>Back to Articles</span>
-      </NuxtLink>
-    </div>
+    <!-- 1. Top Reading Progress Bar (Teleported to Body to bypass transform stacking context) -->
+    <ClientOnly>
+      <Teleport to="body">
+        <div class="scroll-progress-bar" :style="{ width: `${scrollProgress}%` }"></div>
+      </Teleport>
+    </ClientOnly>
 
     <!-- Main Content Layout Grid -->
     <div class="blog-layout-grid fade-up fade-up-1">
@@ -36,6 +30,14 @@
       <!-- Main Article Body -->
       <main class="blog-main">
         <article v-if="post" class="post-article">
+          <!-- Back Link Inside Article Container -->
+          <NuxtLink to="/blog" class="back-link group" aria-label="Back to Articles">
+            <svg class="back-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>Back to Articles</span>
+          </NuxtLink>
+
           <!-- Eyebrow Tag -->
           <div class="post-eyebrow">
             <span class="eyebrow-dot"></span>
