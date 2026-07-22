@@ -15,10 +15,23 @@ import { computed, useSlots } from 'vue'
 
 const slots = useSlots()
 
+function getTextFromVNodes(vnodes: any[]): string {
+  let str = ''
+  if (!vnodes || !Array.isArray(vnodes)) return str
+  for (const node of vnodes) {
+    if (typeof node.children === 'string') {
+      str += node.children
+    } else if (Array.isArray(node.children)) {
+      str += getTextFromVNodes(node.children)
+    }
+  }
+  return str
+}
+
 // Detect callout type from slot content text
 const calloutType = computed(() => {
   const defaultSlot = slots.default ? slots.default() : []
-  const text = JSON.stringify(defaultSlot)
+  const text = getTextFromVNodes(defaultSlot)
   
   if (text.includes('[!WARNING]') || text.includes('WARNING:')) return 'warning'
   if (text.includes('[!TIP]') || text.includes('TIP:')) return 'tip'
