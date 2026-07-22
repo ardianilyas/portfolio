@@ -38,8 +38,23 @@ import { useRoute, useAsyncData } from '#imports'
 const route = useRoute()
 const slug = computed(() => route.params.slug as string)
 
-const { data: post } = await useAsyncData(`post-detail-${slug.value}`, () => {
-  return queryCollection('blog').path(`/blog/${slug.value}`).first()
+const { data: post } = await useAsyncData(`post-detail-${slug.value}`, async () => {
+  try {
+    // 1. Try querying by path /blog/:slug
+    let item = await queryCollection('blog').path(`/blog/${slug.value}`).first()
+    if (item) return item
+
+    // 2. Fallback query by stem (blog/:slug)
+    item = await queryCollection('blog').where('stem', '=', `blog/${slug.value}`).first()
+    if (item) return item
+
+    // 3. Fallback query all and find by slug match
+    const all = await queryCollection('blog').all()
+    return all.find((p: any) => p.stem?.endsWith(slug.value) || p.path?.endsWith(slug.value)) || null
+  } catch (err) {
+    console.error('Error fetching blog post:', err)
+    return null
+  }
 })
 </script>
 
@@ -60,6 +75,7 @@ const { data: post } = await useAsyncData(`post-detail-${slug.value}`, () => {
   color: var(--color-text-2);
   margin-bottom: 32px;
   transition: color 0.2s;
+  text-decoration: none;
 }
 .back-link:hover {
   color: var(--color-text);

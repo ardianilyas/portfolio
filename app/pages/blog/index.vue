@@ -17,13 +17,13 @@
       </div>
       <NuxtLink
         v-for="article in posts"
-        :key="article.path"
-        :to="article.path"
+        :key="article.path || article.stem || article.title"
+        :to="getPostUrl(article)"
         class="blog-card"
       >
         <div class="blog-card-meta">
           <span class="blog-date">{{ article.date ? new Date(article.date).toLocaleDateString() : '' }}</span>
-          <div class="blog-tags">
+          <div class="blog-tags" v-if="article.tags">
             <span v-for="tag in article.tags" :key="tag" class="blog-tag">{{ tag }}</span>
           </div>
         </div>
@@ -38,9 +38,21 @@
 <script setup lang="ts">
 import { useAsyncData } from '#imports'
 
-const { data: posts } = await useAsyncData('blog-posts-list', () => {
-  return queryCollection('blog').all()
+const { data: posts } = await useAsyncData('blog-posts-list', async () => {
+  try {
+    const result = await queryCollection('blog').all()
+    return result || []
+  } catch (err) {
+    console.error('Error querying blog collection:', err)
+    return []
+  }
 })
+
+function getPostUrl(article: any): string {
+  if (article.path) return article.path
+  if (article.stem) return '/' + article.stem
+  return '/blog'
+}
 </script>
 
 <style scoped>
@@ -60,6 +72,7 @@ const { data: posts } = await useAsyncData('blog-posts-list', () => {
   color: var(--color-text-2);
   margin-bottom: 32px;
   transition: color 0.2s;
+  text-decoration: none;
 }
 .back-link:hover {
   color: var(--color-text);
@@ -82,6 +95,12 @@ const { data: posts } = await useAsyncData('blog-posts-list', () => {
   flex-direction: column;
   gap: 24px;
 }
+.no-posts {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--color-text-3);
+  padding: 32px 0;
+}
 .blog-card {
   display: block;
   padding: 32px;
@@ -89,6 +108,7 @@ const { data: posts } = await useAsyncData('blog-posts-list', () => {
   border: 1px solid var(--color-border);
   border-radius: 16px;
   transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  text-decoration: none;
 }
 .blog-card:hover {
   transform: translateY(-2px);
