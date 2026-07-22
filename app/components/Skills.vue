@@ -1,8 +1,8 @@
 <template>
   <section id="skills" aria-labelledby="skills-heading" class="bg-[var(--color-surface)] relative" ref="skillsSection">
     
-    <!-- Desktop: sticky scroll reveal -->
-    <div v-if="!isMobile" class="sticky top-0 h-screen flex flex-col justify-center px-6 md:px-0">
+    <!-- Unified Sticky Scroll Reveal (Mobile & Desktop) -->
+    <div class="sticky top-0 h-screen flex flex-col justify-center px-6 md:px-0">
       <div class="max-w-[1100px] mx-auto w-full">
         <p class="scroll-reveal-prose">
           <span
@@ -20,53 +20,17 @@
       </div>
     </div>
 
-    <!-- Mobile: cascade reveal on scroll -->
-    <div v-else class="flex flex-col justify-center items-center min-h-screen px-6">
-      <div class="max-w-[1100px] mx-auto w-full">
-        <p class="scroll-reveal-prose">
-          <span
-            v-for="(word, index) in words"
-            :key="index"
-            class="prose-word mobile-word"
-            :class="{ 
-              'is-skill': word.isSkill,
-              'is-active': isVisible 
-            }"
-            :style="{ transitionDelay: `${Math.min(index * 0.016, 0.35).toFixed(3)}s` }"
-          >
-            {{ word.text }}
-          </span>
-        </p>
-      </div>
-    </div>
-
   </section>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useIntersectionObserver } from '@vueuse/core'
 
 const skillsSection = ref<HTMLElement | null>(null)
 const scrollProgress = ref(0)
-const isMobile = ref(false)
-const isVisible = ref(false)
-
-// Use intersection observer to trigger mobile animation
-useIntersectionObserver(
-  skillsSection,
-  ([{ isIntersecting }]) => {
-    if (isIntersecting) isVisible.value = true
-  },
-  { threshold: 0.15 } // Trigger when 15% is visible
-)
-
-const checkMobile = () => {
-  isMobile.value = window.innerWidth < 768
-}
 
 const handleScroll = () => {
-  if (!skillsSection.value || isMobile.value) return
+  if (!skillsSection.value) return
   
   const rect = skillsSection.value.getBoundingClientRect()
   const windowHeight = window.innerHeight
@@ -82,14 +46,11 @@ const handleScroll = () => {
 }
 
 onMounted(() => {
-  checkMobile()
-  window.addEventListener('resize', checkMobile, { passive: true })
   window.addEventListener('scroll', handleScroll, { passive: true })
   handleScroll() 
 })
 
 onUnmounted(() => {
-  window.removeEventListener('resize', checkMobile)
   window.removeEventListener('scroll', handleScroll)
 })
 
@@ -109,22 +70,22 @@ const words = proseRaw.split(' ').map(w => {
 </script>
 
 <style scoped>
-/* Desktop: tall enough to scroll through */
+/* Mobile scroll height: 220vh for snappy, natural scroll pacing */
 #skills {
-  height: 100vh; /* mobile: just viewport height */
+  height: 220vh;
 }
 
+/* Desktop scroll height: 350vh for smooth scroll pacing */
 @media (min-width: 768px) {
   #skills {
-    height: 400vh;
+    height: 350vh;
   }
 }
 
 /* ── Scroll Reveal Prose ───────────────────────────────────────── */
 .scroll-reveal-prose {
   font-family: var(--font-sans);
-  /* Increased lower bound so it fills the screen more on mobile */
-  font-size: clamp(34px, 9vw, 76px);
+  font-size: clamp(32px, 8.5vw, 76px);
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.04em;
@@ -140,33 +101,18 @@ const words = proseRaw.split(' ').map(w => {
 
 /* ── Individual Words ───────────────────────────────────────── */
 .prose-word {
-  color: var(--color-border-2); /* Lighter gray by default */
-  transition: color 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
-              text-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: color, transform, opacity;
+  color: var(--color-border-2);
+  transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              text-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: color, transform;
 }
 
 .prose-word.is-active {
-  color: var(--color-text); /* Solid dark when scrolled/revealed */
+  color: var(--color-text);
 }
 
-/* ── Mobile Transition Animation ───────────────────────────── */
-.mobile-word {
-  opacity: 0;
-  transform: translateY(12px);
-  /* The transition delay is capped at 350ms max for snappy entry */
-  transition-property: opacity, transform, color;
-  transition-duration: 0.45s;
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.mobile-word.is-active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ── Skill Words ───────────────────────────────────────── */
+/* ── Skill Words Highlight ─────────────────────────────────────── */
 .prose-word.is-skill {
   font-weight: 600; 
   color: var(--color-border-2);
@@ -174,7 +120,6 @@ const words = proseRaw.split(' ').map(w => {
 
 .prose-word.is-skill.is-active {
   color: #0F3F2F;
-  text-shadow: 0 4px 12px rgba(15, 63, 47, 0.15); /* Subtle dark green glow when revealed */
+  text-shadow: 0 4px 16px rgba(15, 63, 47, 0.18);
 }
-
 </style>
