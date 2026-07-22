@@ -1,40 +1,43 @@
 <template>
   <NuxtLink
     :to="'/projects/' + slug"
-    class="project-row"
-    :class="{ 'project-row--first': isFirst }"
-    :aria-label="`${name} — view source on GitHub`"
+    class="bento-card"
+    :class="{ 'bento-card--featured': isFeatured }"
+    :aria-label="`${name} — view project details`"
   >
-    <!-- Full Card Background Logo -->
-    <div class="project-bg-logo" aria-hidden="true">
+    <!-- Background Watermark/Logo -->
+    <div class="bento-bg-watermark" aria-hidden="true">
       <img v-if="logo" :src="logo" alt="" class="bg-logo-img" />
       <span v-else class="bg-logo-text">{{ name.charAt(0) }}</span>
     </div>
 
-    <!-- Col 1: Index number -->
-    <div class="project-col project-col-index" aria-hidden="true">
-      <span class="project-index">{{ index }}</span>
+    <!-- Card Header: Index & Arrow -->
+    <div class="bento-card-header">
+      <div class="bento-meta">
+        <span class="bento-index">{{ index }}</span>
+        <span v-if="year" class="bento-year">{{ year }}</span>
+      </div>
+
+      <span class="bento-arrow" aria-hidden="true">
+        <svg class="arrow-svg arrow-main" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+        </svg>
+        <svg class="arrow-svg arrow-clone" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+        </svg>
+      </span>
     </div>
 
-    <!-- Col 2: Content -->
-    <div class="project-col project-col-body">
-      <div class="project-head">
-        <h3 class="project-name">{{ name }}</h3>
-        
-        <span class="project-arrow" aria-hidden="true">
-          <svg class="arrow-svg arrow-main" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
-          </svg>
-          <svg class="arrow-svg arrow-clone" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
-          </svg>
-        </span>
-      </div>
-      
-      <p class="project-desc">{{ description }}</p>
-      
-      <div class="project-tags" aria-label="Technologies used">
-        <span v-for="tag in tags" :key="tag" class="project-tag">{{ tag }}</span>
+    <!-- Card Body: Title & Description -->
+    <div class="bento-card-body">
+      <h3 class="bento-title">{{ name }}</h3>
+      <p class="bento-desc">{{ description }}</p>
+    </div>
+
+    <!-- Card Footer: Tech Tags -->
+    <div class="bento-card-footer">
+      <div class="bento-tags" aria-label="Technologies used">
+        <span v-for="tag in tags" :key="tag" class="bento-tag">{{ tag }}</span>
       </div>
     </div>
   </NuxtLink>
@@ -48,181 +51,97 @@ defineProps<{
   github: string
   slug: string
   index: string
-  isFirst?: boolean
+  year?: string
+  isFeatured?: boolean
   logo?: string
 }>()
 </script>
 
 <style scoped>
-/* ── Row ─────────────────────────────────────────────── */
-.project-row {
-  display: grid;
-  grid-template-columns: 48px 1fr; /* Mobile: 2 Columns */
-  padding: 0;
-  margin: 0;
-  margin-top: -1px; /* Prevent double borders */
-  border: 1px solid var(--color-border);
-  text-decoration: none;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
-  cursor: pointer;
+/* ── Bento Card Base ──────────────────────────────────── */
+.bento-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px;
+  min-height: 280px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  text-decoration: none;
   overflow: hidden;
-  /* Hardware acceleration hints to prevent lag */
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.3s ease, 
+              background 0.3s ease;
   will-change: transform;
   transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
 @media (min-width: 768px) {
-  .project-row {
-    grid-template-columns: 64px 1fr; /* Desktop: 2 Columns */
+  .bento-card {
+    padding: 36px;
+    min-height: 320px;
   }
 }
 
-.project-row:hover {
-  background: rgba(242, 232, 207, 0.35);
-  box-shadow: 0 16px 40px rgba(15, 63, 47, 0.04);
-  border-color: var(--color-accent);
-  transform: translateY(-2px) translateZ(0);
-  z-index: 10;
+/* Featured Card Variation (Bento Diversity) */
+.bento-card--featured {
+  background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-surface) 100%);
+  border-color: var(--color-border-2);
 }
 
-.project-row:active {
-  transform: scale(0.995) translateY(0) translateZ(0);
+.bento-card:hover {
+  transform: translateY(-4px) translateZ(0);
+  border-color: var(--color-accent);
+  box-shadow: 0 20px 40px -15px rgba(15, 63, 47, 0.08);
+}
+
+.bento-card:active {
+  transform: scale(0.99) translateY(-2px);
   transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
 }
 
-/* ── Columns ─────────────────────────────────────────── */
-.project-col {
-  display: flex;
-}
-
-/* Col 1: Index */
-.project-col-index {
-  padding: 36px 0 36px 24px;
-}
-@media (min-width: 768px) {
-  .project-col-index { padding: 44px 0 44px 32px; }
-}
-
-.project-index {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--color-text-3);
-  letter-spacing: 0.04em;
-  padding-top: 4px;
-  user-select: none;
-}
-
-/* Col 2: Body */
-.project-col-body {
-  padding: 36px 24px 36px 0;
-  flex-direction: column;
-  justify-content: center;
-  gap: 12px;
-  z-index: 1; /* Content sits above background logo */
-  pointer-events: none; /* Let hover events pass if needed, but not necessary here */
-}
-@media (min-width: 768px) {
-  .project-col-body { padding: 44px 32px 44px 0; gap: 16px; }
-}
-
-.project-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between; /* Space out name and arrow */
-  gap: 16px;
-}
-
-.project-name {
-  font-family: var(--font-sans);
-  font-size: clamp(18px, 2vw, 24px);
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  color: var(--color-text-2);
-  margin: 0;
-  line-height: 1.2;
-  transition: color 0.2s;
-}
-
-.project-desc {
-  font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--color-text-3);
-  line-height: 1.6;
-  margin: 0;
-  max-width: 480px;
-}
-
-.project-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: auto;
-}
-
-.project-tag {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--color-text-3);
-  padding: 4px 8px;
-  border: 1px solid rgba(15, 63, 47, 0.15);
-  border-radius: 9999px;
-  white-space: nowrap;
-}
-
-/* ── Full Background Logo ────────────────────────────── */
-.project-bg-logo {
-  position: absolute;
-  inset: 0; /* Fill entire card */
+/* ── Card Header ─────────────────────────────────────── */
+.bento-card-header {
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Align to the right side of the card */
-  z-index: 0;
-  pointer-events: none;
-  padding-right: 15%; /* Keep it visually on the right */
+  justify-content: space-between;
+  z-index: 2;
 }
 
-.bg-logo-img {
-  height: 80%; /* Keep it within bounds so it doesn't crop when skewed */
-  width: auto;
-  max-width: 60%;
-  object-fit: contain;
-  object-position: center right;
-  opacity: 0.06;
-  /* Removed heavy filter: grayscale(100%) to fix lag */
-  transform: skewY(-10deg) translateZ(0); 
-  transition: opacity 0.5s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  transform-origin: center right;
-  will-change: transform, opacity;
-  backface-visibility: hidden; /* Fix jagged edges */
+.bento-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.bg-logo-text {
-  font-family: var(--font-sans);
-  font-size: 200px; /* Massive fallback text */
-  font-weight: 800;
-  color: var(--color-accent); 
-  opacity: 0.03;
-  line-height: 1;
-  transform: skewY(-10deg) translateY(10%);
-  transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  margin-right: -40px; /* Bleed off the edge */
+.bento-index {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-accent);
+  letter-spacing: 0.05em;
+  background: var(--color-accent-dim);
+  padding: 4px 10px;
+  border-radius: 9999px;
 }
 
-/* ── Arrow ──────────────────────────────────────────── */
-
-.project-arrow {
+.bento-year {
+  font-family: var(--font-mono);
+  font-size: 12px;
   color: var(--color-text-3);
-  flex-shrink: 0;
-  margin-top: 2px;
-  width: 16px;
-  height: 16px;
-  position: relative;
-  overflow: hidden;
+}
+
+/* ── Arrow Button ────────────────────────────────────── */
+.bento-arrow {
   display: inline-flex;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-3);
+  overflow: hidden;
   transition: color 0.25s ease;
 }
 
@@ -236,30 +155,103 @@ defineProps<{
   transform: translate(-100%, 100%);
 }
 
-/* ── Hover Effects ────────────────────────────────────── */
-.project-row:hover .project-name {
+.bento-card:hover .bento-arrow {
   color: var(--color-accent);
 }
 
-.project-row:hover .project-arrow {
-  color: var(--color-accent);
-}
-
-.project-row:hover .arrow-main {
+.bento-card:hover .arrow-main {
   transform: translate(100%, -100%);
 }
 
-.project-row:hover .arrow-clone {
+.bento-card:hover .arrow-clone {
   transform: translate(0, 0);
 }
 
-.project-row:hover .bg-logo-img {
-  opacity: 0.15; /* Replaces the need for filter animation */
-  transform: skewY(-10deg) scale(1.05) translateX(-20px) translateZ(0); 
+/* ── Card Body ───────────────────────────────────────── */
+.bento-card-body {
+  position: relative;
+  z-index: 2;
+  margin-top: 24px;
+  margin-bottom: 24px;
 }
 
-.project-row:hover .bg-logo-text {
-  opacity: 0.08;
-  transform: skewY(-10deg) scale(1.1) translateY(10%) translateX(10px);
+.bento-title {
+  font-family: var(--font-sans);
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--color-text);
+  margin: 0 0 10px 0;
+  line-height: 1.25;
+  transition: color 0.2s;
+}
+
+.bento-card:hover .bento-title {
+  color: var(--color-accent);
+}
+
+.bento-desc {
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  font-weight: 400;
+  color: var(--color-text-2);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 520px;
+}
+
+/* ── Card Footer / Tech Tags ─────────────────────────── */
+.bento-card-footer {
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+}
+
+.bento-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.bento-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-2);
+  background: var(--color-surface);
+  padding: 4px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+/* ── Background Watermark/Logo ───────────────────────── */
+.bento-bg-watermark {
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: skewY(-6deg) scale(1);
+}
+
+.bg-logo-img {
+  height: 160px;
+  width: auto;
+  object-fit: contain;
+}
+
+.bg-logo-text {
+  font-family: var(--font-sans);
+  font-size: 180px;
+  font-weight: 800;
+  color: var(--color-accent);
+  line-height: 1;
+}
+
+.bento-card:hover .bento-bg-watermark {
+  opacity: 0.12;
+  transform: skewY(-6deg) scale(1.08) translate(-10px, -10px);
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <section id="portfolio" aria-labelledby="portfolio-heading" class="bg-[var(--color-surface)] py-8 md:py-16" ref="projectsSection">
+  <section id="portfolio" aria-labelledby="portfolio-heading" class="bg-[var(--color-surface)] py-12 md:py-24" ref="projectsSection">
 
     <SectionHeader 
       :title="$t('portfolio.heading')" 
@@ -7,7 +7,8 @@
     />
 
     <div class="projects-wrap" :class="{ 'is-visible': isVisible }">
-      <div class="projects-list max-w-[1100px] mx-auto fade-up fade-up-1">
+      <!-- Bento Grid Container -->
+      <div class="bento-grid max-w-[1100px] mx-auto fade-up fade-up-1">
 
         <ProjectCard
           v-for="(project, i) in projects"
@@ -17,9 +18,11 @@
           :tags="project.tech"
           :github="project.github"
           :slug="project.slug"
+          :year="project.year"
           :index="String(i + 1).padStart(2, '0')"
-          :is-first="i === 0"
+          :is-featured="i === 0"
           :logo="project.logo"
+          :class="getBentoSpan(i)"
         />
 
       </div>
@@ -31,6 +34,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
+import { projects } from '~/data/projects'
 
 const projectsSection = ref(null)
 const isVisible = ref(false)
@@ -43,7 +47,11 @@ useIntersectionObserver(
   { threshold: 0.1 }
 )
 
-import { projects } from '~/data/projects'
+function getBentoSpan(index: number): string {
+  // Cell 0 (Decko) spans 2 columns at desktop for a strong hero focal point
+  if (index === 0) return 'md:col-span-2'
+  return 'md:col-span-1'
+}
 </script>
 
 <style scoped>
@@ -57,11 +65,21 @@ import { projects } from '~/data/projects'
   }
 }
 
-.projects-list {
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
   padding-bottom: 72px;
 }
 
-/* Visibility triggers for animations */
+@media (min-width: 768px) {
+  .bento-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+
+/* Visibility triggers for entrance animations */
 .projects-wrap:not(.is-visible) .fade-up {
   opacity: 0;
   transform: translateY(20px);
