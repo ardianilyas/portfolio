@@ -68,7 +68,6 @@ async function copyCode() {
   position: relative;
   margin: 2.5em 0;
   border: 1px solid var(--color-border);
-  background: var(--color-surface); /* Matches light theme */
   transition: border-color 0.2s ease;
 }
 
@@ -149,6 +148,5 @@ pre {
   font-family: var(--font-mono);
   font-size: 13.5px;
   line-height: 1.6;
-  background: transparent !important; /* Let wrapper handle background or shiki light inline */
 }
 </style>
