@@ -22,15 +22,24 @@
         <span class="hero-status-text">Available for new opportunities</span>
       </div>
 
-      <!-- Headline -->
+      <!-- Headline (Short & Interactive - 6 words max) -->
       <div class="hero-headline-wrap fade-up fade-up-2">
         <h1 class="hero-headline">
           <span
             v-for="(word, i) in headlineWords"
             :key="i"
             class="hero-word"
-            :class="{ 'hero-word--accent': word.accent }"
-          >{{ word.text }}</span>
+            :class="{ 
+              'hero-word--accent': word.accent, 
+              'hero-word--italic': word.italic,
+              'hero-word--interactive': word.interactive 
+            }"
+            @click="word.interactive && cycleWord(word)"
+            :title="word.interactive ? 'Click to cycle options' : ''"
+          >
+            {{ word.text }}
+            <span v-if="word.interactive" class="interactive-hint" aria-hidden="true">↺</span>
+          </span>
         </h1>
       </div>
 
@@ -85,13 +94,37 @@ function scrollTo(id: string) {
   }
 }
 
-// ── Headline words ──────────────────────────────────────
-const headlineWords = [
-  { text: "Hi,", accent: false },
-  { text: "I'm", accent: false },
-  { text: 'Ardian', accent: true },
-  { text: 'Ilyas.', accent: true },
-]
+// ── Interactive Headline Words (6 words total) ─────────
+interface HeadlineWord {
+  text: string
+  accent: boolean
+  italic?: boolean
+  interactive?: boolean
+  alternates?: string[]
+  altIndex?: number
+}
+
+const headlineWords = ref<HeadlineWord[]>([
+  { text: 'Crafting', accent: false },
+  { 
+    text: 'software', 
+    accent: true, 
+    italic: true, 
+    interactive: true, 
+    alternates: ['software', 'systems', 'products', 'web apps'], 
+    altIndex: 0 
+  },
+  { text: 'with', accent: false },
+  { text: 'speed', accent: true },
+  { text: '&', accent: false },
+  { text: 'precision.', accent: true },
+])
+
+function cycleWord(word: HeadlineWord) {
+  if (!word.alternates || word.altIndex === undefined) return
+  word.altIndex = (word.altIndex + 1) % word.alternates.length
+  word.text = word.alternates[word.altIndex]
+}
 
 
 </script>
@@ -224,8 +257,36 @@ const headlineWords = [
   color: var(--color-accent);
 }
 
-.hero-headline .hero-word--accent:hover {
-  color: var(--color-accent);
+.hero-word--italic {
+  font-style: italic;
+  padding-right: 0.08em; /* Italic clearance */
+}
+
+.hero-word--interactive {
+  cursor: pointer;
+  border-bottom: 2px dashed rgba(15, 63, 47, 0.35);
+  padding-bottom: 2px;
+  transition: border-color 0.2s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hero-word--interactive:hover {
+  border-bottom-color: var(--color-accent);
+}
+
+.interactive-hint {
+  font-family: var(--font-mono);
+  font-size: 0.35em;
+  font-style: normal;
+  vertical-align: super;
+  opacity: 0.5;
+  margin-left: 4px;
+  display: inline-block;
+  transition: transform 0.4s ease, opacity 0.2s ease;
+}
+
+.hero-word--interactive:hover .interactive-hint {
+  transform: rotate(180deg);
+  opacity: 1;
 }
 
 @media (max-width: 767px) {
