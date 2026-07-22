@@ -20,8 +20,8 @@ export const projects: Project[] = [
     tech: ['Vue', 'TypeScript', 'TailwindCSS'],
     github: 'https://github.com/ardianilyas/decko',
     live: null,
-    shortDescription: 'Presentation and slide deck builder with modern web technologies.',
-    description: 'A presentation tool built for the modern web.',
+    shortDescription: 'AI-powered presentation generator that turns topic prompts into structured 7–10 chapter slide decks instantly.',
+    description: 'An AI-integrated presentation generation platform that turns simple topic prompts (e.g., "Laravel Basics") into comprehensive 7 to 10 chapter slide decks complete with structured content and modern web slide layouts.',
     heroClass: 'bg-gradient-to-br from-zinc-800 to-black',
     galleryClasses: ['bg-gradient-to-tr from-zinc-100 to-zinc-300'],
     logo: '/projects/decko.png'
