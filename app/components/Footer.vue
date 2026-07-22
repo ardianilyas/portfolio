@@ -148,10 +148,10 @@ const year = new Date().getFullYear()
 /* ── Headline ─────────────────────────────────────────── */
 .footer-headline {
   font-family: var(--font-sans);
-  font-size: clamp(36px, 5.5vw, 72px);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
+  font-size: clamp(44px, 7.5vw, 100px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
   color: #f2e8cf;
   margin: 0 0 40px;
 }
