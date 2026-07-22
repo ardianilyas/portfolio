@@ -27,12 +27,6 @@ export default defineNuxtConfig({
       }
     }
   },
-  mdc: {
-    highlight: {
-      theme: 'vitesse-light',
-      langs: ['js', 'ts', 'vue', 'css', 'html', 'json', 'bash', 'yaml', 'md']
-    }
-  },
   css: ["~/assets/css/main.css"],
   runtimeConfig: {
     spotifyClientId: process.env.SPOTIFY_CLIENT_ID || '',
