@@ -144,7 +144,7 @@ onMounted(() => {
 
 /* ── Color Themes per Type ─────────────────────────────── */
 
-/* NOTE (Dark Green) */
+/* NOTE (Dark Green - Preserved current color) */
 .callout-note {
   background: rgba(15, 63, 47, 0.03);
   border-color: rgba(15, 63, 47, 0.12);
@@ -156,9 +156,9 @@ onMounted(() => {
 
 /* TIP (Emerald Green) */
 .callout-tip {
-  background: rgba(16, 185, 129, 0.05);
-  border-color: rgba(16, 185, 129, 0.2);
-  border-left-color: #059669;
+  background: rgba(16, 185, 129, 0.07);
+  border-color: rgba(16, 185, 129, 0.25);
+  border-left-color: #10B981;
 }
 .callout-tip .callout-header {
   color: #059669;
@@ -166,8 +166,8 @@ onMounted(() => {
 
 /* WARNING (Amber Gold) */
 .callout-warning {
-  background: rgba(217, 119, 6, 0.05);
-  border-color: rgba(217, 119, 6, 0.2);
+  background: rgba(217, 119, 6, 0.07);
+  border-color: rgba(217, 119, 6, 0.25);
   border-left-color: #D97706;
 }
 .callout-warning .callout-header {
@@ -176,8 +176,8 @@ onMounted(() => {
 
 /* IMPORTANT / INFO (Slate Blue) */
 .callout-important, .callout-info {
-  background: rgba(37, 99, 235, 0.05);
-  border-color: rgba(37, 99, 235, 0.2);
+  background: rgba(37, 99, 235, 0.07);
+  border-color: rgba(37, 99, 235, 0.25);
   border-left-color: #2563EB;
 }
 .callout-important .callout-header,
@@ -187,8 +187,8 @@ onMounted(() => {
 
 /* CAUTION (Rose Red) */
 .callout-caution {
-  background: rgba(225, 29, 72, 0.05);
-  border-color: rgba(225, 29, 72, 0.2);
+  background: rgba(225, 29, 72, 0.07);
+  border-color: rgba(225, 29, 72, 0.25);
   border-left-color: #E11D48;
 }
 .callout-caution .callout-header {

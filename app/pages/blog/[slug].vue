@@ -382,14 +382,7 @@ function getWordCount(article: any): string {
 
 /* ── Blockquotes ─────────────────────────────────────────── */
 .prose :deep(blockquote) {
-  position: relative;
   margin: 2em 0;
-  padding: 20px 24px;
-  background: rgba(15, 63, 47, 0.04);
-  border: 1px solid rgba(15, 63, 47, 0.15);
-  border-left: 3px solid var(--color-accent);
-  font-style: italic;
-  color: var(--color-text);
 }
 
 .prose :deep(blockquote p) {
