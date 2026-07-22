@@ -2,17 +2,21 @@
   <div class="project-detail-page bg-[var(--color-bg)] min-h-screen relative" v-if="project">
     <CustomCursor />
     
-    <!-- Floating Back Button -->
-    <NuxtLink 
-      to="/#portfolio" 
-      class="back-floating-btn group"
-      aria-label="Back to projects"
-    >
-      <svg class="back-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-      </svg>
-      <span class="back-text">Back</span>
-    </NuxtLink>
+    <!-- Floating Back Button (Teleported to body to escape transform: translateZ(0) containing block) -->
+    <ClientOnly>
+      <Teleport to="body">
+        <NuxtLink 
+          to="/#portfolio" 
+          class="back-floating-btn group"
+          aria-label="Back to projects"
+        >
+          <svg class="back-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          <span class="back-text">Back</span>
+        </NuxtLink>
+      </Teleport>
+    </ClientOnly>
 
     <!-- Main Hero Header -->
     <header class="project-hero">
