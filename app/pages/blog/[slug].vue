@@ -1,6 +1,6 @@
 <template>
   <div class="blog-post-container is-visible">
-    <!-- 1. Scroll Progress Bar (Top Fixed) -->
+    <!-- 1. Top Reading Progress Bar -->
     <div class="scroll-progress-bar" :style="{ width: `${scrollProgress}%` }"></div>
 
     <!-- Header Navigation -->
@@ -13,76 +13,97 @@
       </NuxtLink>
     </div>
 
-    <!-- Main Content Layout -->
-    <main class="blog-content fade-up fade-up-1">
-      <article v-if="post" class="post-article">
-        <!-- Eyebrow Tag -->
-        <div class="post-eyebrow">
-          <span class="eyebrow-dot"></span>
-          <span>// ARTICLE READOUT</span>
-        </div>
-
-        <!-- Post Title -->
-        <h1 class="post-title">{{ post.title }}</h1>
-
-        <!-- Post Meta Bar -->
-        <div class="post-meta">
-          <div class="meta-left">
-            <span class="post-date">{{ formatDate(post.date) }}</span>
-            <span class="meta-divider">•</span>
-            <span class="reading-time">{{ calculateReadingTime(post) }}</span>
-          </div>
-          <div class="post-tags" v-if="post.tags && post.tags.length">
-            <span v-for="tag in post.tags" :key="tag" class="post-tag">
-              #{{ tag }}
-            </span>
-          </div>
-        </div>
-
-        <!-- 2. Table of Contents (Inline & Side Widget) -->
-        <nav v-if="tocLinks && tocLinks.length > 0" class="toc-box" aria-label="Table of Contents">
+    <!-- Main Content Layout Grid -->
+    <div class="blog-layout-grid fade-up fade-up-1">
+      <!-- 2. Sticky Left Sidebar TOC for Desktop -->
+      <aside v-if="post && tocLinks && tocLinks.length > 0" class="toc-sidebar" aria-label="Table of Contents">
+        <div class="toc-sidebar-inner">
           <div class="toc-header">
             <span class="toc-dot"></span>
-            <span class="toc-title">// TABLE OF CONTENTS</span>
+            <span class="toc-title">// CONTENTS</span>
           </div>
           <ul class="toc-list">
             <li v-for="link in tocLinks" :key="link.id" :class="['toc-item', `depth-${link.depth}`]">
               <a :href="`#${link.id}`" class="toc-link" :class="{ 'is-active': activeTocId === link.id }">
                 <span class="toc-hash">#</span>
-                <span>{{ link.text }}</span>
+                <span class="toc-text">{{ link.text }}</span>
               </a>
             </li>
           </ul>
-        </nav>
-
-        <!-- Rendered Article Prose -->
-        <div class="prose-wrapper">
-          <ContentRenderer :value="post" class="prose" />
         </div>
+      </aside>
 
-        <!-- Post Footer CTA -->
-        <footer class="post-footer">
-          <NuxtLink to="/blog" class="footer-back-btn">
-            ← Back to all articles
+      <!-- Main Article Body -->
+      <main class="blog-main">
+        <article v-if="post" class="post-article">
+          <!-- Eyebrow Tag -->
+          <div class="post-eyebrow">
+            <span class="eyebrow-dot"></span>
+            <span>// ARTICLE READOUT</span>
+          </div>
+
+          <!-- Post Title -->
+          <h1 class="post-title">{{ post.title }}</h1>
+
+          <!-- Post Meta Bar -->
+          <div class="post-meta">
+            <div class="meta-left">
+              <span class="post-date">{{ formatDate(post.date) }}</span>
+              <span class="meta-divider">•</span>
+              <span class="reading-time">{{ calculateReadingTime(post) }}</span>
+            </div>
+            <div class="post-tags" v-if="post.tags && post.tags.length">
+              <span v-for="tag in post.tags" :key="tag" class="post-tag">
+                #{{ tag }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Inline TOC for Mobile / Tablet -->
+          <nav v-if="tocLinks && tocLinks.length > 0" class="toc-inline-mobile" aria-label="Table of Contents Mobile">
+            <div class="toc-header">
+              <span class="toc-dot"></span>
+              <span class="toc-title">// TABLE OF CONTENTS</span>
+            </div>
+            <ul class="toc-list">
+              <li v-for="link in tocLinks" :key="link.id" :class="['toc-item', `depth-${link.depth}`]">
+                <a :href="`#${link.id}`" class="toc-link" :class="{ 'is-active': activeTocId === link.id }">
+                  <span class="toc-hash">#</span>
+                  <span>{{ link.text }}</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Rendered Article Prose -->
+          <div class="prose-wrapper">
+            <ContentRenderer :value="post" class="prose" />
+          </div>
+
+          <!-- Post Footer CTA -->
+          <footer class="post-footer">
+            <NuxtLink to="/blog" class="footer-back-btn">
+              ← Back to all articles
+            </NuxtLink>
+          </footer>
+        </article>
+
+        <!-- 404 / Not Found -->
+        <div v-else class="not-found-card">
+          <span class="not-found-code">// 404_NOT_FOUND</span>
+          <h2 class="not-found-title">Article not found</h2>
+          <p class="not-found-desc">The article you are looking for does not exist or has been relocated.</p>
+          <NuxtLink to="/blog" class="not-found-btn">
+            Return to Blog
           </NuxtLink>
-        </footer>
-      </article>
-
-      <!-- 404 / Not Found -->
-      <div v-else class="not-found-card">
-        <span class="not-found-code">// 404_NOT_FOUND</span>
-        <h2 class="not-found-title">Article not found</h2>
-        <p class="not-found-desc">The article you are looking for does not exist or has been relocated.</p>
-        <NuxtLink to="/blog" class="not-found-btn">
-          Return to Blog
-        </NuxtLink>
-      </div>
-    </main>
+        </div>
+      </main>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute, useAsyncData } from '#imports'
 
 const route = useRoute()
@@ -118,9 +139,16 @@ const tocLinks = computed(() => {
 // Scroll Progress Tracker
 function handleScroll() {
   if (typeof window === 'undefined') return
-  const totalHeight = document.documentElement.scrollHeight - window.innerHeight
-  if (totalHeight > 0) {
-    scrollProgress.value = Math.min(100, Math.max(0, (window.scrollY / totalHeight) * 100))
+  const docHeight = document.documentElement.scrollHeight
+  const winHeight = window.innerHeight
+  const totalScrollable = docHeight - winHeight
+  
+  if (totalScrollable > 0) {
+    const currentScroll = Math.max(0, window.scrollY)
+    const pct = (currentScroll / totalScrollable) * 100
+    scrollProgress.value = Math.min(100, Math.max(0, pct))
+  } else {
+    scrollProgress.value = 0
   }
 
   // Active TOC Highlight
@@ -142,13 +170,18 @@ function handleScroll() {
 onMounted(() => {
   if (typeof window !== 'undefined') {
     window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
+    window.addEventListener('resize', handleScroll, { passive: true })
+    nextTick(() => {
+      handleScroll()
+      setTimeout(handleScroll, 300)
+    })
   }
 })
 
 onUnmounted(() => {
   if (typeof window !== 'undefined') {
     window.removeEventListener('scroll', handleScroll)
+    window.removeEventListener('resize', handleScroll)
   }
 })
 
@@ -172,19 +205,21 @@ function calculateReadingTime(article: any): string {
 </script>
 
 <style scoped>
-/* ── Scroll Progress Bar ─────────────────────────────────── */
+/* ── Top Reading Progress Bar ────────────────────────────── */
 .scroll-progress-bar {
   position: fixed;
   top: 0;
   left: 0;
-  height: 3px;
+  height: 4px;
   background: var(--color-accent);
-  z-index: 9999;
-  transition: width 0.08s linear;
+  box-shadow: 0 0 10px rgba(15, 63, 47, 0.5);
+  z-index: 10000;
+  transition: width 0.05s ease-out;
+  pointer-events: none;
 }
 
 .blog-post-container {
-  max-width: 820px;
+  max-width: 1180px;
   margin: 0 auto;
   padding: 120px 24px 100px;
   min-height: 100vh;
@@ -199,7 +234,7 @@ function calculateReadingTime(article: any): string {
   font-size: 14px;
   font-weight: 500;
   color: var(--color-text-2);
-  margin-bottom: 32px;
+  margin-bottom: 36px;
   text-decoration: none;
   transition: color 0.2s ease, transform 0.2s ease;
 }
@@ -217,7 +252,144 @@ function calculateReadingTime(article: any): string {
   transform: translateX(-3px);
 }
 
-/* ── Eyebrow ─────────────────────────────────────────────── */
+/* ── Layout Grid (Sidebar TOC + Article) ─────────────────── */
+.blog-layout-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+@media (min-width: 1100px) {
+  .blog-layout-grid {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+}
+
+/* ── Desktop Sticky Left TOC Sidebar ─────────────────────── */
+.toc-sidebar {
+  display: none;
+}
+
+@media (min-width: 1100px) {
+  .toc-sidebar {
+    display: block;
+    position: sticky;
+    top: 120px;
+    align-self: start;
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+  }
+}
+
+.toc-sidebar-inner {
+  padding: 20px 18px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+}
+
+/* ── Mobile Inline TOC ───────────────────────────────────── */
+.toc-inline-mobile {
+  display: block;
+  margin: 0 0 36px;
+  padding: 20px 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+}
+
+@media (min-width: 1100px) {
+  .toc-inline-mobile {
+    display: none;
+  }
+}
+
+/* ── Shared TOC Styles ───────────────────────────────────── */
+.toc-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.toc-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--color-accent);
+  border-radius: 50%;
+}
+
+.toc-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toc-item.depth-3 {
+  padding-left: 14px;
+}
+
+.toc-link {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  color: var(--color-text-2);
+  text-decoration: none;
+  line-height: 1.4;
+  transition: all 0.2s ease;
+}
+
+.toc-hash {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-3);
+  opacity: 0.5;
+  transition: opacity 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.toc-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.toc-link:hover, .toc-link.is-active {
+  color: var(--color-accent);
+  font-weight: 500;
+  transform: translateX(3px);
+}
+
+.toc-link:hover .toc-hash, .toc-link.is-active .toc-hash {
+  opacity: 1;
+  color: var(--color-accent);
+}
+
+/* ── Main Article Layout ─────────────────────────────────── */
+.blog-main {
+  min-width: 0; /* Prevents overflow in grid */
+}
+
+/* Eyebrow */
 .post-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -237,7 +409,7 @@ function calculateReadingTime(article: any): string {
   background: var(--color-accent);
 }
 
-/* ── Post Title & Meta ───────────────────────────────────── */
+/* Post Title & Meta */
 .post-title {
   font-family: var(--font-sans);
   font-size: clamp(32px, 5.5vw, 54px);
@@ -253,7 +425,7 @@ function calculateReadingTime(article: any): string {
   justify-content: space-between;
   align-items: center;
   padding-bottom: 24px;
-  margin-bottom: 36px;
+  margin-bottom: 40px;
   border-bottom: 1px solid var(--color-border);
   flex-wrap: wrap;
   gap: 12px;
@@ -296,81 +468,6 @@ function calculateReadingTime(article: any): string {
   color: var(--color-text-2);
   border-radius: 0;
   border: 1px solid var(--color-border);
-}
-
-/* ── Table of Contents Box ──────────────────────────────── */
-.toc-box {
-  margin: 0 0 44px;
-  padding: 20px 24px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-left: 3px solid var(--color-accent);
-  border-radius: 0;
-}
-
-.toc-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-
-.toc-dot {
-  width: 5px;
-  height: 5px;
-  background: var(--color-accent);
-  border-radius: 50%;
-}
-
-.toc-title {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--color-accent);
-}
-
-.toc-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.toc-item.depth-3 {
-  padding-left: 16px;
-}
-
-.toc-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-sans);
-  font-size: 14px;
-  color: var(--color-text-2);
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.toc-hash {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--color-text-3);
-  opacity: 0.5;
-  transition: opacity 0.2s ease, color 0.2s ease;
-}
-
-.toc-link:hover, .toc-link.is-active {
-  color: var(--color-accent);
-  font-weight: 500;
-  transform: translateX(3px);
-}
-
-.toc-link:hover .toc-hash, .toc-link.is-active .toc-hash {
-  opacity: 1;
-  color: var(--color-accent);
 }
 
 /* ── Prose Renderer Typography ───────────────────────────── */
@@ -436,7 +533,7 @@ function calculateReadingTime(article: any): string {
   background: rgba(15, 63, 47, 0.06);
 }
 
-/* ── Enhanced Blockquotes & Callouts (Feature 5) ──────────── */
+/* ── Blockquotes ─────────────────────────────────────────── */
 .prose :deep(blockquote) {
   position: relative;
   margin: 2em 0;
