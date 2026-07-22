@@ -22,8 +22,15 @@ export default defineNuxtConfig({
       markdown: {
         highlight: {
           theme: 'vitesse-light',
+          langs: ['js', 'ts', 'vue', 'css', 'html', 'json', 'bash', 'yaml', 'md']
         }
       }
+    }
+  },
+  mdc: {
+    highlight: {
+      theme: 'vitesse-light',
+      langs: ['js', 'ts', 'vue', 'css', 'html', 'json', 'bash', 'yaml', 'md']
     }
   },
   css: ["~/assets/css/main.css"],
