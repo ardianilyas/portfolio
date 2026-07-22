@@ -127,7 +127,12 @@ const navLinks: NavItem[] = [
 ]
 
 const setLinkRef = (id: string, el: any) => {
-  if (el) linkRefs[id] = el as HTMLElement
+  if (el) {
+    const rawEl = el.$el ? el.$el : el
+    if (rawEl && typeof rawEl === 'object' && 'offsetLeft' in rawEl) {
+      linkRefs[id] = rawEl as HTMLElement
+    }
+  }
 }
 
 const pillStyle = reactive({
