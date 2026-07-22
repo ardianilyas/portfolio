@@ -232,29 +232,32 @@ function cycleWord(word: HeadlineWord) {
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.hero-headline:hover .hero-word {
-  opacity: 0.15;
-  filter: blur(8px);
-  transform: scale(0.95);
-}
-
 .hero-word {
   display: inline-block;
-  color: var(--color-text); /* Solid black */
+  color: var(--color-text);
   cursor: default;
   position: relative;
-  transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease, text-shadow 0.3s ease;
 }
 
-.hero-headline .hero-word:hover {
-  opacity: 1;
-  filter: blur(0);
-  transform: scale(1.1) translateY(-8px) rotate(-2deg);
+.hero-word:hover {
+  transform: translateY(-4px);
   z-index: 10;
 }
 
 .hero-word--accent {
+  color: var(--color-text);
+  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Highlight green text on headline hover */
+.hero-headline:hover .hero-word--accent {
   color: var(--color-accent);
+  text-shadow: 0 4px 20px rgba(15, 63, 47, 0.2);
+}
+
+.hero-word--accent:hover {
+  transform: translateY(-4px) scale(1.02);
 }
 
 .hero-word--italic {
@@ -266,11 +269,12 @@ function cycleWord(word: HeadlineWord) {
   cursor: pointer;
   border-bottom: 2px dashed rgba(15, 63, 47, 0.35);
   padding-bottom: 2px;
-  transition: border-color 0.2s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: border-color 0.2s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hero-word--interactive:hover {
   border-bottom-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .interactive-hint {
@@ -290,13 +294,8 @@ function cycleWord(word: HeadlineWord) {
 }
 
 @media (max-width: 767px) {
-  .hero-headline:hover .hero-word {
-    opacity: 0.25;
-    filter: blur(4px);
-    transform: scale(0.98);
-  }
-  .hero-headline .hero-word:hover {
-    transform: scale(1.05) translateY(-4px) rotate(-1deg);
+  .hero-word:hover {
+    transform: translateY(-2px);
   }
 }
 
