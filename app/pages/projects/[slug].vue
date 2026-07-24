@@ -1,6 +1,5 @@
 <template>
   <div class="project-detail-page bg-[var(--color-bg)] min-h-screen relative" v-if="project">
-    <CustomCursor />
     
     <!-- Main Hero Header -->
     <header class="project-hero">

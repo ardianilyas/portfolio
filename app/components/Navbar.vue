@@ -162,6 +162,9 @@ watch(() => route.path, (newPath) => {
   if (newPath.startsWith('/blog')) {
     activeSection.value = 'blog'
     updatePill()
+  } else if (newPath.startsWith('/projects')) {
+    activeSection.value = 'portfolio'
+    updatePill()
   } else if (newPath === '/') {
     onScroll()
   } else {
