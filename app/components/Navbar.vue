@@ -250,30 +250,27 @@ onUnmounted(() => {
 /* ── Shell ───────────────────────────────────────────── */
 .navbar {
   position: fixed;
-  top: 16px;
-  left: 50%;
-  transform: translate(-50%, 0);
-  width: calc(100% - 32px);
-  max-width: 900px;
+  top: 0;
+  left: 0;
+  width: 100%;
   z-index: 100;
-  height: 60px;
+  height: 64px;
   background: transparent;
+  border-bottom: 1px solid transparent;
   transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid transparent;
-  border-radius: 0;
 }
 
 .navbar--scrolled {
   background: rgba(250, 250, 248, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-color: var(--color-border);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  border-bottom-color: var(--color-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
 /* ── Inner layout ─────────────────────────────────────── */
 .navbar-inner {
-  max-width: 1100px;
+  max-width: 1180px;
   margin: 0 auto;
   padding: 0 24px;
   height: 100%;
@@ -429,13 +426,13 @@ onUnmounted(() => {
 /* ── Mobile menu ───────────────────────────────────────── */
 .mobile-menu {
   position: absolute;
-  top: calc(100% + 8px);
+  top: 100%;
   left: 0;
   right: 0;
   background: rgba(250, 250, 248, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
   border-radius: 0;
   padding: 8px 0;
