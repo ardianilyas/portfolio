@@ -260,15 +260,15 @@ onUnmounted(() => {
   background: transparent;
   transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid transparent;
-  border-radius: 9999px;
+  border-radius: 0;
 }
 
 .navbar--scrolled {
-  background: rgba(250, 250, 248, 0.75);
+  background: rgba(250, 250, 248, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 8px 32px rgba(0, 0, 0, 0.05);
+  border-color: var(--color-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
 }
 
 /* ── Inner layout ─────────────────────────────────────── */
@@ -325,7 +325,7 @@ onUnmounted(() => {
   background: transparent;
   border: 1px solid transparent;
   padding: 4px;
-  border-radius: 9999px;
+  border-radius: 0;
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 
@@ -339,8 +339,8 @@ onUnmounted(() => {
   left: 0;
   height: calc(100% - 8px);
   background: var(--color-accent);
-  border-radius: 9999px;
-  box-shadow: 0 4px 12px rgba(15, 63, 47, 0.15);
+  border-radius: 0;
+  box-shadow: 0 2px 8px rgba(15, 63, 47, 0.15);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), width 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
   pointer-events: none;
   z-index: 0;
@@ -355,7 +355,7 @@ onUnmounted(() => {
   letter-spacing: -0.01em;
   color: var(--color-text-2);
   padding: 8px 16px;
-  border-radius: 9999px;
+  border-radius: 0;
   transition: color 0.3s ease;
   text-decoration: none;
 }
@@ -377,7 +377,7 @@ onUnmounted(() => {
   color: #f2e8cf;
   background: var(--color-accent);
   padding: 10px 20px;
-  border-radius: 9999px;
+  border-radius: 0;
   transition: opacity 0.2s, transform 0.2s ease, box-shadow 0.2s ease;
   text-decoration: none;
 }
@@ -417,7 +417,7 @@ onUnmounted(() => {
   width: 22px;
   height: 1.5px;
   background: var(--color-text);
-  border-radius: 1px;
+  border-radius: 0;
   transition: transform 0.25s ease, opacity 0.25s ease;
   transform-origin: center;
 }
@@ -432,12 +432,12 @@ onUnmounted(() => {
   top: calc(100% + 8px);
   left: 0;
   right: 0;
-  background: rgba(250, 250, 248, 0.9);
+  background: rgba(250, 250, 248, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 8px 32px rgba(0, 0, 0, 0.05);
-  border-radius: 24px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  border-radius: 0;
   padding: 8px 0;
   overflow: hidden;
 }
