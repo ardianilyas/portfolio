@@ -14,12 +14,13 @@
     </div>
 
     <div class="hero-inner" :class="{ 'is-visible': isVisible }">
-      <!-- Status badge (moved to top) -->
+      <!-- Status badge (Noticeable 0px Matrix Live Badge) -->
       <div class="hero-status fade-up fade-up-1 mb-8" aria-label="Availability status">
-        <svg class="status-spark" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor" />
-        </svg>
-        <span class="hero-status-text">Available for new opportunities</span>
+        <span class="status-pulse-wrap">
+          <span class="status-pulse-ping"></span>
+          <span class="status-pulse-dot"></span>
+        </span>
+        <span class="hero-status-text">AVAILABLE FOR NEW OPPORTUNITIES</span>
       </div>
 
       <!-- Headline (Short & Interactive - 6 words max) -->
@@ -414,31 +415,70 @@ function cycleWord(word: HeadlineWord) {
   transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
 }
 
-/* ── Status badge ─────────────────────────────────────── */
+/* ── Status badge (Noticeable 0px Matrix Live Badge) ───── */
 .hero-status {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 0;
-  background: transparent;
-  border: none;
+  gap: 10px;
+  padding: 8px 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  user-select: none;
 }
 
-.status-spark {
-  color: var(--color-accent);
-  animation: spark-spin 8s linear infinite;
+.hero-status:hover {
+  transform: translateY(-2px);
+  border-color: rgba(15, 63, 47, 0.4);
+  border-left-color: var(--color-accent);
+  box-shadow: 0 8px 24px rgba(15, 63, 47, 0.08);
 }
 
-@keyframes spark-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.status-pulse-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+}
+
+.status-pulse-dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  background: #10B981;
+  border-radius: 50%;
+}
+
+.status-pulse-ping {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: rgba(16, 185, 129, 0.4);
+  border-radius: 50%;
+  animation: radar-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes radar-ping {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  75%, 100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
 }
 
 .hero-status-text {
-  font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   color: var(--color-accent);
 }
 
