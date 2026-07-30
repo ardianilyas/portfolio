@@ -174,9 +174,9 @@ const tools = [
 
 .bento-card:hover {
   transform: translateY(-2px);
-  background: rgba(242, 232, 207, 0.35); /* Light brown tint matching project card */
-  box-shadow: 0 16px 40px rgba(15, 63, 47, 0.04);
-  border-color: var(--color-accent);
+  background: var(--color-bg);
+  box-shadow: 0 12px 30px rgba(15, 63, 47, 0.05);
+  border-color: rgba(15, 63, 47, 0.35);
   z-index: 5;
 }
 
@@ -287,9 +287,9 @@ const tools = [
 }
 
 .bento-card:hover .tool-icon-wrapper {
-  transform: scale(1.08) translateY(-2px);
-  background-color: rgba(242, 232, 207, 0.5);
-  border-color: #0F3F2F;
+  transform: scale(1.04) translateY(-1px);
+  background-color: var(--color-surface);
+  border-color: rgba(15, 63, 47, 0.35);
 }
 
 .tool-icon {

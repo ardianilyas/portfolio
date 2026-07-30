@@ -3,12 +3,18 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
+  site: {
+    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://ardianilyas.com',
+    name: 'Ardian Ilyas'
+  },
   modules: [
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
-    '@nuxt/content'
+    '@nuxt/content',
+    '@nuxtjs/sitemap'
   ],
   i18n: {
+    baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://ardianilyas.com',
     locales: [
       { code: 'en', file: 'en.json', name: 'English' },
       { code: 'id', file: 'id.json', name: 'Bahasa Indonesia' }

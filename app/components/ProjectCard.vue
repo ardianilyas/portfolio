@@ -152,7 +152,8 @@ defineProps<{
 .arrow-svg {
   position: absolute;
   inset: 0;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 
 .arrow-clone {

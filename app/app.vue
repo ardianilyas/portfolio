@@ -28,17 +28,75 @@
 </template>
 
 <script setup lang="ts">
+  const route = useRoute()
+  const siteUrl = 'https://ardianilyas.com'
+
+  const i18nHead = useLocaleHead({
+    addDirAttribute: true,
+    addSeoAttributes: true
+  })
+
+  useSeoMeta({
+    titleTemplate: (titleChunk) => {
+      return titleChunk && titleChunk !== 'Ardian Ilyas — Full Stack Engineer'
+        ? `${titleChunk} | Ardian Ilyas`
+        : 'Ardian Ilyas — Full Stack Engineer'
+    },
+    description: 'Full-stack engineer specializing in TypeScript, Go, and modern web architecture. Building complete products end-to-end — from backend systems to polished UIs.',
+    ogSiteName: 'Ardian Ilyas Portfolio',
+    ogType: 'website',
+    ogImage: `${siteUrl}/hero-visual.png`,
+    twitterCard: 'summary_large_image',
+    twitterCreator: '@ardianilyas',
+    twitterImage: `${siteUrl}/hero-visual.png`
+  })
+
   useHead({
-    title: "Ardian Ilyas — Full Stack Engineer",
-    meta: [
+    htmlAttrs: computed(() => ({
+      lang: i18nHead.value.htmlAttrs?.lang || 'en',
+      dir: i18nHead.value.htmlAttrs?.dir || 'ltr'
+    })),
+    link: computed(() => [
       {
-        name: "description",
-        content:
-          "Full-stack engineer specializing in TypeScript, Go, and modern web architecture. Building complete products end-to-end — from backend systems to polished UIs.",
+        rel: 'canonical',
+        href: `${siteUrl}${route.path}`
       },
+      ...(i18nHead.value.link || [])
+    ]),
+    meta: computed(() => [
       { name: "theme-color", content: "#FAFAF8" },
       { name: "color-scheme", content: "light" },
-    ],
+      ...(i18nHead.value.meta || [])
+    ]),
+    script: [
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'Person',
+              '@id': `${siteUrl}/#person`,
+              'name': 'Ardian Ilyas',
+              'jobTitle': 'Full Stack Engineer',
+              'url': siteUrl,
+              'sameAs': [
+                'https://github.com/ardianilyas',
+                'https://linkedin.com/in/ardianilyas'
+              ],
+              'knowsAbout': ['TypeScript', 'Go', 'PHP', 'Laravel', 'Vue.js', 'Nuxt.js', 'System Architecture']
+            },
+            {
+              '@type': 'WebSite',
+              '@id': `${siteUrl}/#website`,
+              'url': siteUrl,
+              'name': 'Ardian Ilyas Portfolio & System Journal',
+              'publisher': { '@id': `${siteUrl}/#person` }
+            }
+          ]
+        })
+      }
+    ]
   })
 </script>
 

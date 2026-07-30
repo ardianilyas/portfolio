@@ -108,6 +108,47 @@ const { data: post } = await useAsyncData(`post-detail-${slug.value}`, async () 
   }
 })
 
+const siteUrl = 'https://ardianilyas.com'
+
+useSeoMeta({
+  title: computed(() => post.value?.title ? post.value.title : 'Article Not Found'),
+  description: computed(() => post.value?.description || 'Read article on Ardian Ilyas system journal.'),
+  ogTitle: computed(() => post.value?.title ? `${post.value.title} — Ardian Ilyas` : 'Article Not Found'),
+  ogDescription: computed(() => post.value?.description || ''),
+  ogType: 'article',
+  articlePublishedTime: computed(() => post.value?.date ? new Date(post.value.date).toISOString() : undefined),
+  twitterCard: 'summary_large_image',
+})
+
+useHead({
+  script: computed(() => {
+    if (!post.value) return []
+    return [
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BlogPosting',
+          'headline': post.value.title,
+          'description': post.value.description,
+          'datePublished': post.value.date,
+          'url': `${siteUrl}/blog/${slug.value}`,
+          'author': {
+            '@type': 'Person',
+            'name': 'Ardian Ilyas',
+            'url': siteUrl
+          },
+          'publisher': {
+            '@type': 'Person',
+            'name': 'Ardian Ilyas',
+            'url': siteUrl
+          }
+        })
+      }
+    ]
+  })
+})
+
 // Extract Table of Contents links
 const tocLinks = computed(() => {
   if (!post.value) return []

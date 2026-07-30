@@ -20,7 +20,7 @@
           <span class="status-pulse-ping"></span>
           <span class="status-pulse-dot"></span>
         </span>
-        <span class="hero-status-text">AVAILABLE FOR NEW OPPORTUNITIES</span>
+        <span class="hero-status-text">FRESH GRADUATE · AVAILABLE FOR OPPORTUNITIES</span>
       </div>
 
       <!-- Headline (Short & Interactive - 6 words max) -->
@@ -46,13 +46,13 @@
 
       <!-- Sub -->
       <p class="hero-sub fade-up fade-up-3">
-        A Full-Stack Developer transforming complex requirements
-        into high-performing digital products with TypeScript, Go, and modern web frameworks.
+        Fresh Graduate & Full-Stack Developer specializing in TypeScript, Go, and PHP/Laravel.
+        Building complete products end-to-end — from backend systems to polished user interfaces.
       </p>
 
       <!-- CTAs -->
       <div class="hero-actions fade-up fade-up-4">
-        <a href="#portfolio" class="btn-primary" @click.prevent="scrollTo('portfolio')" v-magnetic="0.15">
+        <a href="#portfolio" class="btn-primary" @click.prevent="scrollTo('portfolio')">
           {{ $t('hero.view_work') }}
           <span class="btn-icon" aria-hidden="true">
             <svg class="btn-arrow-svg arrow-main" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -63,7 +63,7 @@
             </svg>
           </span>
         </a>
-        <a href="mailto:ardianilyas@gmail.com" class="btn-ghost" v-magnetic="0.15">
+        <a href="mailto:ardianilyas@gmail.com" class="btn-ghost">
           Get in touch
         </a>
       </div>
@@ -107,19 +107,18 @@ interface HeadlineWord {
 }
 
 const headlineWords = ref<HeadlineWord[]>([
-  { text: 'Crafting', accent: false },
+  { text: "Hi, I'm", accent: false },
+  { text: 'Ardian', accent: true },
+  { text: 'Ilyas', accent: true, italic: true },
+  { text: '— building', accent: false },
   { 
-    text: 'software', 
+    text: 'backend systems', 
     accent: true, 
-    italic: true, 
     interactive: true, 
-    alternates: ['software', 'systems', 'products', 'web apps'], 
+    alternates: ['backend systems', 'full-stack apps', 'clean APIs', 'web products'], 
     altIndex: 0 
   },
-  { text: 'with', accent: false },
-  { text: 'speed', accent: true },
-  { text: '&', accent: false },
-  { text: 'precision.', accent: true },
+  { text: 'with speed & precision.', accent: false },
 ])
 
 function cycleWord(word: HeadlineWord) {
@@ -364,7 +363,8 @@ function cycleWord(word: HeadlineWord) {
 .btn-arrow-svg {
   position: absolute;
   inset: 0;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 
 .arrow-main {
@@ -385,13 +385,11 @@ function cycleWord(word: HeadlineWord) {
 
 .btn-primary:hover {
   opacity: 0.95;
-  transform: translateY(-2px);
   box-shadow: 0 10px 20px -10px rgba(15, 63, 47, 0.4);
 }
 
 .btn-primary:active {
-  transform: scale(0.97) translateY(0);
-  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
+  opacity: 0.9;
 }
 
 .btn-ghost {
@@ -402,17 +400,16 @@ function cycleWord(word: HeadlineWord) {
   background: transparent;
   padding: 12px 28px;
   border: 1px solid var(--color-border);
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-ghost:hover {
   background: var(--color-surface);
-  transform: translateY(-2px);
+  border-color: var(--color-accent);
 }
 
 .btn-ghost:active {
-  transform: scale(0.97) translateY(0);
-  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
+  opacity: 0.9;
 }
 
 /* ── Status badge (Noticeable 0px Matrix Live Badge) ───── */

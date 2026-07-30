@@ -79,6 +79,14 @@
 <script setup lang="ts">
 import { useAsyncData } from '#imports'
 
+useSeoMeta({
+  title: 'Blog & System Journal',
+  description: 'Technical articles, system architecture deep dives, TypeScript patterns, and backend engineering notes by Ardian Ilyas.',
+  ogTitle: 'Blog & System Journal — Ardian Ilyas',
+  ogDescription: 'Technical articles, system architecture deep dives, TypeScript patterns, and backend engineering notes by Ardian Ilyas.',
+  ogType: 'website'
+})
+
 const { data: posts } = await useAsyncData('blog-posts-list', async () => {
   try {
     const result = await queryCollection('blog').all()

@@ -22,7 +22,7 @@
         <!-- Eyebrow Tag -->
         <div class="project-eyebrow fade-up">
           <span class="eyebrow-dot"></span>
-          <span>// PROJECT CASE STUDY</span>
+          <span>// PERSONAL PROJECT CASE STUDY</span>
         </div>
 
         <h1 class="project-title fade-up fade-up-1">
@@ -45,41 +45,69 @@
           </a>
         </div>
 
+        <!-- Fresh-Grad Metadata Strip -->
+        <div class="project-meta-strip fade-up fade-up-4">
+          <div class="meta-item">
+            <span class="meta-label">// CATEGORY</span>
+            <span class="meta-val">Personal Project</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">// MY ROLE</span>
+            <span class="meta-val">Solo Developer (End-to-End)</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">// YEAR</span>
+            <span class="meta-val">{{ project.year }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">// CORE STACK</span>
+            <span class="meta-val">{{ project.tech.slice(0, 3).join(' · ') }}</span>
+          </div>
+        </div>
+
       </div>
     </header>
 
     <!-- Main Content Body -->
     <main class="max-w-[1100px] mx-auto px-6 md:px-10 pb-24">
 
-      <!-- Section 1: Problem & Solution -->
-      <section v-if="project.problem || project.solution" class="overview-section fade-up">
-        <h2 class="section-tag">// PROJECT OVERVIEW</h2>
+      <!-- Section 1: Motivation, Learning Goal & Technical Solution (Bento Matrix) -->
+      <section v-if="project.whyIBuiltThis || project.problem || project.solution" class="overview-section fade-up">
+        <h2 class="section-tag">// WHY I BUILT THIS & LEARNING GOAL</h2>
         <div class="overview-grid">
-          <div v-if="project.problem" class="overview-card">
+          <div class="overview-card bento-card-hover md:col-span-2">
             <div class="overview-label">
               <span class="overview-index">01</span>
-              <span>THE PROBLEM</span>
+              <span>WHY I BUILT THIS</span>
             </div>
-            <p class="overview-text">{{ project.problem }}</p>
+            <p class="overview-text">{{ project.whyIBuiltThis || project.problem }}</p>
           </div>
-          <div v-if="project.solution" class="overview-card overview-card--accent">
+          <div v-if="project.learningGoal" class="overview-card bento-card-hover md:col-span-1">
             <div class="overview-label">
-              <span class="overview-index overview-index--light">02</span>
-              <span>THE SOLUTION</span>
+              <span class="overview-index">02</span>
+              <span>TARGET LEARNING GOAL</span>
+            </div>
+            <p class="overview-text">{{ project.learningGoal }}</p>
+          </div>
+          <div v-if="project.solution" class="overview-card overview-card--accent bento-card-hover md:col-span-3">
+            <div class="overview-label">
+              <span class="overview-index overview-index--light">{{ project.learningGoal ? '03' : '02' }}</span>
+              <span>MY APPROACH & TECHNICAL SOLUTION</span>
             </div>
             <p class="overview-text overview-text--light">{{ project.solution }}</p>
           </div>
         </div>
       </section>
 
-      <!-- Section 2: Key Features -->
+      <!-- Section 2: Key Features (Dynamic Bento Matrix Grid) -->
       <section v-if="project.features && project.features.length" class="features-section fade-up">
         <h2 class="section-tag">// KEY FEATURES</h2>
         <div class="features-grid">
           <div
             v-for="(feature, i) in project.features"
             :key="feature.title"
-            class="feature-card"
+            class="feature-card bento-card-hover"
+            :class="getFeatureBentoSpan(i, project.features.length)"
           >
             <div class="feature-num">FEATURE // 0{{ i + 1 }}</div>
             <h3 class="feature-title">{{ feature.title }}</h3>
@@ -98,7 +126,7 @@
         </div>
       </section>
 
-      <!-- Section 4 (was 5): Timeline -->
+      <!-- Section 4: Timeline -->
       <section v-if="project.timeline && project.timeline.length" class="timeline-section fade-up">
         <h2 class="section-tag">// DEVELOPMENT TIMELINE</h2>
         <div class="timeline-track">
@@ -119,6 +147,23 @@
               </div>
               <p v-if="item.description" class="timeline-desc">{{ item.description }}</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Key Takeaways & Reflection -->
+      <section class="takeaways-section fade-up">
+        <h2 class="section-tag">// KEY TAKEAWAYS & REFLECTION</h2>
+        <div class="takeaways-grid">
+          <div class="takeaway-card">
+            <div class="takeaway-badge">// 01 · ARCHITECTURE</div>
+            <h3 class="takeaway-title">System & API Ergonomics</h3>
+            <p class="takeaway-text">Deepened understanding of end-to-end type safety, structured API contracts, and modular codebase organization.</p>
+          </div>
+          <div class="takeaway-card">
+            <div class="takeaway-badge">// 02 · CRAFT</div>
+            <h3 class="takeaway-title">Code Quality & Precision</h3>
+            <p class="takeaway-text">Enforced component modularity, clean error handling, and high-contrast, accessible UI design standards.</p>
           </div>
         </div>
       </section>
@@ -181,8 +226,58 @@ const nextProject = computed(() => {
   return db[currentIndex + 1]
 })
 
+function getFeatureBentoSpan(index: number, total: number): string {
+  if (total === 3) {
+    return 'md:col-span-2'
+  }
+  if (total === 4) {
+    return 'md:col-span-3'
+  }
+  if (total === 5) {
+    if (index < 2) return 'md:col-span-3'
+    return 'md:col-span-2'
+  }
+  if (total >= 6) {
+    if (index === 0) return 'md:col-span-4'
+    if (index === 1) return 'md:col-span-2'
+    return 'md:col-span-2'
+  }
+  return 'md:col-span-3'
+}
+
+const siteUrl = 'https://ardianilyas.com'
+
+useSeoMeta({
+  title: computed(() => project.value ? `${project.value.name} — Case Study` : 'Project Not Found'),
+  description: computed(() => project.value?.description || 'Project case study by Ardian Ilyas.'),
+  ogTitle: computed(() => project.value ? `${project.value.name} — Engineering Case Study` : 'Project Not Found'),
+  ogDescription: computed(() => project.value?.description || ''),
+  ogType: 'article',
+  twitterCard: 'summary_large_image'
+})
+
 useHead({
-  title: project.value ? `${project.value.name} — Case Study` : 'Project Not Found',
+  script: computed(() => {
+    if (!project.value) return []
+    return [
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'CreativeWork',
+          'name': project.value.name,
+          'description': project.value.description,
+          'url': `${siteUrl}/projects/${project.value.slug}`,
+          'author': {
+            '@type': 'Person',
+            'name': 'Ardian Ilyas',
+            'url': siteUrl
+          },
+          'keywords': project.value.tags ? project.value.tags.join(', ') : undefined
+        })
+      }
+    ]
+  })
 })
 
 onMounted(() => {
@@ -321,7 +416,7 @@ onMounted(() => {
 }
 
 @media (min-width: 768px) {
-  .overview-grid { grid-template-columns: 1fr 1fr; }
+  .overview-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
 .overview-card {
@@ -330,6 +425,18 @@ onMounted(() => {
   border: 1px solid var(--color-border);
   margin-top: -1px;
   margin-left: -1px;
+}
+
+.bento-card-hover {
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+
+.bento-card-hover:hover {
+  z-index: 2;
+  border-color: var(--color-accent) !important;
+  box-shadow: 0 8px 30px rgba(15, 63, 47, 0.08);
 }
 
 .overview-card--accent {
@@ -389,11 +496,7 @@ onMounted(() => {
 }
 
 @media (min-width: 768px) {
-  .features-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (min-width: 1100px) {
-  .features-grid { grid-template-columns: repeat(3, 1fr); }
+  .features-grid { grid-template-columns: repeat(6, 1fr); }
 }
 
 .feature-card {
@@ -573,6 +676,94 @@ onMounted(() => {
   background: var(--color-surface);
   border-color: var(--color-accent);
   transform: translateY(-2px);
+}
+
+/* ── Fresh-Grad Metadata Strip ───────────────────────────── */
+.project-meta-strip {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
+}
+
+@media (min-width: 768px) {
+  .project-meta-strip {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--color-text-2);
+  text-transform: uppercase;
+}
+
+.meta-val {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ── Key Takeaways & Reflection Section ───────────────────── */
+.takeaways-section {
+  margin-bottom: 48px;
+}
+
+.takeaways-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .takeaways-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+
+.takeaway-card {
+  padding: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.takeaway-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+}
+
+.takeaway-title {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.takeaway-text {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--color-text-2);
+  line-height: 1.6;
+  margin: 0;
 }
 
 .pagination-placeholder {

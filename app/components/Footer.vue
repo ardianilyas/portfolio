@@ -89,21 +89,21 @@ const year = new Date().getFullYear()
 /* ── Background text ─────────────────────────────────── */
 .footer-bg-text {
   position: absolute;
-  bottom: -2vw;
+  bottom: -1.5vw;
   left: 50%;
   transform: translateX(-50%);
+  width: 100vw;
+  text-align: center;
   font-family: var(--font-sans);
-  /* Mobile: smaller so it doesn't overflow */
-  font-size: clamp(40px, 12vw, 18vw);
-  font-weight: 800;
-  letter-spacing: -0.05em;
-  color: rgba(242, 232, 207, 0.05);
+  font-size: clamp(54px, 20.2vw, 24.5vw);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+  color: rgba(242, 232, 207, 0.06);
   white-space: nowrap;
   pointer-events: none;
   z-index: 0;
   user-select: none;
-  /* Prevent bg text from contributing to scroll width */
-  max-width: 100%;
   overflow: hidden;
 }
 
@@ -179,7 +179,8 @@ const year = new Date().getFullYear()
 
 .footer-email-arrow {
   flex-shrink: 0;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 
 .footer-email-link:hover .footer-email-arrow {
@@ -240,7 +241,8 @@ const year = new Date().getFullYear()
 
 .footer-bar-arrow {
   flex-shrink: 0;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 
 .footer-bar-link:hover .footer-bar-arrow {

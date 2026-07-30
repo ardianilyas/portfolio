@@ -23,6 +23,8 @@ export interface Project {
   logo?: string;
   problem?: string;
   solution?: string;
+  whyIBuiltThis?: string;
+  learningGoal?: string;
   features?: Feature[];
   timeline?: TimelineItem[];
 }
@@ -40,6 +42,8 @@ export const projects: Project[] = [
     heroClass: 'bg-gradient-to-br from-zinc-800 to-black',
     galleryClasses: ['bg-gradient-to-tr from-zinc-100 to-zinc-300'],
     logo: '/projects/decko.png',
+    whyIBuiltThis: 'Creating slides manually is repetitive and tedious. I wanted to eliminate the blank-page struggle by building a fast tool that converts simple topic prompts into structured, customizable presentation outlines.',
+    learningGoal: 'Mastering AI API integrations with Vue 3, parsing structured JSON schema responses, and building flexible drag-and-drop presentation component layouts.',
     problem: 'Creating presentation decks is repetitive and time-consuming. Most people spend hours structuring content, formatting slides, and organizing chapters before writing a single word of substance.',
     solution: 'Decko eliminates the blank-slide problem by letting you type a single topic prompt and instantly generating a fully structured, 7–10 chapter presentation with slide layouts ready to present or customize.',
     features: [
@@ -74,6 +78,8 @@ export const projects: Project[] = [
     description: 'A heavily interactive, motion-rich personal portfolio built to showcase engineering skill and design taste through micro-animations.',
     heroClass: 'bg-gradient-to-br from-zinc-800 to-black',
     galleryClasses: ['bg-gradient-to-tr from-zinc-100 to-zinc-300', 'bg-gradient-to-bl from-zinc-200 to-zinc-400', 'bg-gradient-to-br from-zinc-100 to-zinc-200'],
+    whyIBuiltThis: 'Generic portfolio templates fail to show technical personality and engineering craft. I built this from scratch as a design system showcase to demonstrate frontend polish, animation physics, and SEO fundamentals.',
+    learningGoal: 'Building SSR-safe Nuxt 3 plugin architectures, custom Vue directives (magnetic spring physics), and Nuxt Content integration for Markdown publishing.',
     problem: 'Generic portfolio templates feel impersonal and fail to demonstrate real engineering depth. Most developer portfolios are just a resume in HTML with no distinct character or proof of front-end craft.',
     solution: 'Built a fully custom portfolio from scratch — designed as a design system showcase in itself. Every detail from scroll physics to typography was a deliberate engineering and aesthetic decision.',
     features: [
@@ -112,6 +118,8 @@ export const projects: Project[] = [
     description: 'Full-stack donation platform tailored for creators, featuring real-time stream overlays, payment integration, and a type-safe API layer.',
     heroClass: 'bg-gradient-to-br from-indigo-900 to-purple-900',
     galleryClasses: ['bg-gradient-to-tr from-indigo-50 to-purple-100', 'bg-gradient-to-bl from-indigo-100 to-purple-200', 'bg-gradient-to-br from-purple-50 to-indigo-100'],
+    whyIBuiltThis: 'Commercial creator donation tools are closed third-party services with high platform fees. I wanted to build a self-hostable, full-stack alternative with live WebSockets stream overlays.',
+    learningGoal: 'Implementing real-time WebSockets event broadcasting, end-to-end type safety with tRPC + Drizzle, and payment gateway webhooks (Xendit) with idempotent transaction handling.',
     problem: 'Existing donation tools (Trakteer, Saweria) are closed platforms with rigid layouts. Streamers and creators need a self-hosted, fully customizable donation experience with real-time overlays for their streams.',
     solution: 'Zavo is a self-hostable full-stack donation platform where creators own their data. Built with end-to-end type safety, real-time WebSocket overlays, and a native Xendit payment gateway integration.',
     features: [
@@ -146,6 +154,8 @@ export const projects: Project[] = [
     description: 'Content monetization platform with real-time broadcasting, queue-based background processing, and a robust payment gateway architecture.',
     heroClass: 'bg-gradient-to-br from-emerald-900 to-teal-900',
     galleryClasses: ['bg-gradient-to-tr from-emerald-50 to-teal-100', 'bg-gradient-to-bl from-emerald-100 to-teal-200', 'bg-gradient-to-br from-teal-50 to-emerald-100'],
+    whyIBuiltThis: 'Indonesian creators need a high-performance monetization backend that can process high-concurrency content drops during live broadcasts without falling over.',
+    learningGoal: 'Building high-throughput PHP backend systems using Laravel Octane + Swoole for persistent worker memory, broadcasting with Laravel Reverb, and Redis queue locking.',
     problem: 'Indonesian content creators lack a local-first, low-latency monetization platform that handles high-concurrency content drops without third-party intermediaries eating into their revenue.',
     solution: 'Patungan is a high-throughput content monetization platform powered by Laravel Octane + Swoole, enabling thousands of concurrent users to participate in content drops with real-time event broadcasting and automated payout pipelines.',
     features: [
@@ -180,6 +190,8 @@ export const projects: Project[] = [
     description: 'Expense tracking application focused on performance, featuring a fully type-safe API, optimistic UI updates, and clean data visualization.',
     heroClass: 'bg-gradient-to-br from-blue-900 to-cyan-900',
     galleryClasses: ['bg-gradient-to-tr from-blue-50 to-cyan-100', 'bg-gradient-to-bl from-blue-100 to-cyan-200', 'bg-gradient-to-br from-cyan-50 to-blue-100'],
+    whyIBuiltThis: 'Commercial personal finance apps are bloated with advertisements and tracking. I wanted a fast, private expense tracker with instant optimistic UI feedback.',
+    learningGoal: 'Mastering optimistic UI mutations with tRPC & React Query, PostgreSQL schema design with Drizzle ORM, and category aggregation logic.',
     problem: 'Most expense tracking apps feel bloated or require cloud accounts. There is no simple, fast, self-hostable tracker with a developer-grade type-safe API and optimistic UI interactions.',
     solution: 'Bux is a lean, self-hostable expense tracker built on the T3 stack. It prioritizes instant feedback with optimistic UI mutations, a fully type-safe API surface, and clean spending visualizations.',
     features: [
