@@ -112,13 +112,12 @@ const headlineWords = ref<HeadlineWord[]>([
   { text: 'Ilyas', accent: true, italic: true },
   { text: '— building', accent: false },
   { 
-    text: 'backend systems', 
+    text: 'backend systems.', 
     accent: true, 
     interactive: true, 
-    alternates: ['backend systems', 'full-stack apps', 'clean APIs', 'web products'], 
+    alternates: ['backend systems.', 'full-stack apps.', 'clean APIs.', 'web products.'], 
     altIndex: 0 
   },
-  { text: 'with speed & precision.', accent: false },
 ])
 
 function cycleWord(word: HeadlineWord) {
