@@ -26,7 +26,7 @@
             :class="{ 'navbar-link--active': activeSection === link.id }"
             @click="handleNavClick(link, $event)"
           >
-            {{ link.label }}
+            {{ $t(`nav.${link.id}`) }}
           </NuxtLink>
         </nav>
       </div>
@@ -39,7 +39,7 @@
           class="navbar-cta hidden md:inline-flex"
           aria-label="Get in touch via email"
         >
-          Get in touch
+          {{ $t('nav.get_in_touch') }}
         </a>
         
         <button
@@ -74,7 +74,7 @@
           :class="{ 'mobile-link--active': activeSection === link.id }"
           @click="handleNavClick(link, $event)"
         >
-          {{ link.label }}
+          {{ $t(`nav.${link.id}`) }}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
           </svg>
@@ -84,7 +84,7 @@
           class="mobile-link mobile-link--accent"
           @click="isOpen = false"
         >
-          Get in touch
+          {{ $t('nav.get_in_touch') }}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
           </svg>

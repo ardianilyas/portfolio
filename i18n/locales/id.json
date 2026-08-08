@@ -1,8 +1,36 @@
 {
+  "nav": {
+    "skills": "Keahlian",
+    "tools": "Alat",
+    "portfolio": "Proyek",
+    "projects": "Proyek",
+    "blog": "Blog",
+    "get_in_touch": "Hubungi Saya"
+  },
   "hero": {
-    "role": "// Junior Web Developer",
+    "greeting": "Halo, Saya",
+    "building": "— membangun",
+    "status": "Tersedia untuk Peluang Kerja",
+    "popover": {
+      "badge": "LULUSAN BARU",
+      "ready": "Siap Bergabung",
+      "focus_label": "Fokus",
+      "focus_val": "Full-Stack · Software Engineer",
+      "stack_label": "Teknologi",
+      "stack_val": "TypeScript, Go, PHP/Laravel, Vue/Nuxt",
+      "model_label": "Model Kerja",
+      "model_val": "Remote · Hybrid · On-Site",
+      "cta": "Hubungi Saya"
+    },
+    "sub": "Lulusan Baru & Full-Stack Developer spesialis TypeScript, Go, dan PHP/Laravel. Membangun produk lengkap end-to-end — dari sistem backend hingga antarmuka pengguna yang terpoles.",
     "view_work": "Lihat Portofolio",
-    "github": "GitHub ↗"
+    "get_in_touch": "Hubungi Saya",
+    "alternates": {
+      "backend": "sistem backend.",
+      "fullstack": "aplikasi full-stack.",
+      "apis": "API modular.",
+      "products": "produk web."
+    }
   },
   "skills": {
     "label": "// KEAHLIAN",
@@ -15,9 +43,18 @@
   "portfolio": {
     "label": "// PORTOFOLIO",
     "heading": "Proyek Pilihan",
-    "view_github": "Lihat di GitHub"
+    "view_github": "Lihat di GitHub",
+    "view_live": "Demo Langsung"
   },
-  "nav": {
-    "blog": "Blog"
+  "footer": {
+    "pre": "Tersedia untuk Peluang Q3/Q4 2026",
+    "headline_prefix": "Mencari seorang",
+    "headline_suffix": "untuk membangun aplikasi web Anda?",
+    "copy_email": "Salin Email",
+    "copied": "Tersalin ke papan klip!",
+    "social": {
+      "github": "GitHub",
+      "email": "Email"
+    }
   }
 }

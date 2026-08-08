@@ -14,13 +14,13 @@
     <!-- Main Content Wrapper —— transform: translateZ(0) promotes this to its own GPU
          compositing layer which prevents the fixed footer behind it from flashing
          through during smooth-scroll repaints. Navbar is above this so it is unaffected. -->
-    <main id="main-content" class="relative z-10 bg-[var(--color-bg)] mb-[60vh] md:mb-[65vh]" style="transform: translateZ(0);">
+    <main id="main-content" class="relative z-10 bg-[var(--color-bg)] mb-[68vh] md:mb-[72vh]" style="transform: translateZ(0);">
 
       <NuxtPage />
     </main>
 
     <!-- Footer fixed behind main content -->
-    <div class="fixed bottom-0 left-0 w-full h-[60vh] md:h-[65vh] z-0 overflow-hidden" style="max-width:100vw;">
+    <div class="fixed bottom-0 left-0 w-full h-[68vh] md:h-[72vh] z-0 overflow-hidden" style="max-width:100vw;">
       <Footer />
     </div>
 

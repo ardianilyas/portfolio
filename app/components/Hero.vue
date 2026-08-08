@@ -14,13 +14,58 @@
     </div>
 
     <div class="hero-inner" :class="{ 'is-visible': isVisible }">
-      <!-- Status badge (Noticeable 0px Matrix Live Badge) -->
-      <div class="hero-status fade-up fade-up-1 mb-8" aria-label="Availability status">
-        <span class="status-pulse-wrap">
-          <span class="status-pulse-ping"></span>
-          <span class="status-pulse-dot"></span>
-        </span>
-        <span class="hero-status-text">FRESH GRADUATE · AVAILABLE FOR OPPORTUNITIES</span>
+      <!-- Status badge (Sleek Glass Pill with Interactive Details) -->
+      <div class="hero-status-wrapper fade-up fade-up-1 mb-8">
+        <button
+          class="hero-status-pill"
+          :class="{ 'is-open': showDetails }"
+          @click="toggleDetails"
+          :aria-expanded="showDetails"
+          aria-label="View availability details"
+        >
+          <span class="status-pulse-wrap" aria-hidden="true">
+            <span class="status-pulse-ping"></span>
+            <span class="status-pulse-dot"></span>
+          </span>
+          <span class="hero-status-text">{{ $t('hero.status') }}</span>
+          <span class="status-chevron" :class="{ 'is-rotated': showDetails }" aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+        </button>
+
+        <!-- Interactive Popover Drawer -->
+        <Transition name="popover-slide">
+          <div v-if="showDetails" class="status-popover" role="dialog" aria-label="Availability details">
+            <div class="popover-header">
+              <span class="popover-badge">{{ $t('hero.popover.badge') }}</span>
+              <span class="popover-status-tag">{{ $t('hero.popover.ready') }}</span>
+            </div>
+            <div class="popover-grid">
+              <div class="popover-item">
+                <span class="popover-label">{{ $t('hero.popover.focus_label') }}</span>
+                <span class="popover-val">{{ $t('hero.popover.focus_val') }}</span>
+              </div>
+              <div class="popover-item">
+                <span class="popover-label">{{ $t('hero.popover.stack_label') }}</span>
+                <span class="popover-val">{{ $t('hero.popover.stack_val') }}</span>
+              </div>
+              <div class="popover-item">
+                <span class="popover-label">{{ $t('hero.popover.model_label') }}</span>
+                <span class="popover-val">{{ $t('hero.popover.model_val') }}</span>
+              </div>
+            </div>
+            <div class="popover-footer">
+              <a href="mailto:ardianilyas@gmail.com" class="popover-cta-link">
+                <span>{{ $t('hero.popover.cta') }}</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </Transition>
       </div>
 
       <!-- Headline (Short & Interactive - 6 words max) -->
@@ -46,8 +91,7 @@
 
       <!-- Sub -->
       <p class="hero-sub fade-up fade-up-3">
-        Fresh Graduate & Full-Stack Developer specializing in TypeScript, Go, and PHP/Laravel.
-        Building complete products end-to-end — from backend systems to polished user interfaces.
+        {{ $t('hero.sub') }}
       </p>
 
       <!-- CTAs -->
@@ -64,7 +108,7 @@
           </span>
         </a>
         <a href="mailto:ardianilyas@gmail.com" class="btn-ghost">
-          Get in touch
+          {{ $t('hero.get_in_touch') }}
         </a>
       </div>
 
@@ -73,11 +117,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 
 const heroSection = ref<HTMLElement | null>(null)
 const isVisible = ref(true)
+const showDetails = ref(false)
+
+function toggleDetails() {
+  showDetails.value = !showDetails.value
+}
 
 useIntersectionObserver(
   heroSection,
@@ -106,24 +155,32 @@ interface HeadlineWord {
   altIndex?: number
 }
 
-const headlineWords = ref<HeadlineWord[]>([
-  { text: "Hi, I'm", accent: false },
+const { t } = useI18n()
+const altIndex = ref(0)
+
+const alternatesList = computed(() => [
+  t('hero.alternates.backend'),
+  t('hero.alternates.fullstack'),
+  t('hero.alternates.apis'),
+  t('hero.alternates.products')
+])
+
+const headlineWords = computed<HeadlineWord[]>(() => [
+  { text: t('hero.greeting'), accent: false },
   { text: 'Ardian', accent: true },
   { text: 'Ilyas', accent: true, italic: true },
-  { text: '— building', accent: false },
+  { text: t('hero.building'), accent: false },
   { 
-    text: 'backend systems.', 
+    text: alternatesList.value[altIndex.value] || alternatesList.value[0], 
     accent: true, 
     interactive: true, 
-    alternates: ['backend systems.', 'full-stack apps.', 'clean APIs.', 'web products.'], 
-    altIndex: 0 
+    alternates: alternatesList.value, 
+    altIndex: altIndex.value 
   },
 ])
 
 function cycleWord(word: HeadlineWord) {
-  if (!word.alternates || word.altIndex === undefined) return
-  word.altIndex = (word.altIndex + 1) % word.alternates.length
-  word.text = word.alternates[word.altIndex]
+  altIndex.value = (altIndex.value + 1) % alternatesList.value.length
 }
 
 
@@ -411,25 +468,36 @@ function cycleWord(word: HeadlineWord) {
   opacity: 0.9;
 }
 
-/* ── Status badge (Noticeable 0px Matrix Live Badge) ───── */
-.hero-status {
+/* ── Status Pill & Interactive Popover Drawer ────────────── */
+.hero-status-wrapper {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 20;
+}
+
+.hero-status-pill {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 16px;
+  padding: 8px 18px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-left: 3px solid var(--color-accent);
-  border-radius: 0;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
-  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  border-radius: 9999px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
   user-select: none;
+  color: var(--color-text);
+  outline: none;
 }
 
-.hero-status:hover {
+.hero-status-pill:hover,
+.hero-status-pill.is-open {
   transform: translateY(-2px);
-  border-color: rgba(15, 63, 47, 0.4);
-  border-left-color: var(--color-accent);
+  background: #ffffff;
+  border-color: rgba(15, 63, 47, 0.3);
   box-shadow: 0 8px 24px rgba(15, 63, 47, 0.08);
 }
 
@@ -452,9 +520,9 @@ function cycleWord(word: HeadlineWord) {
 
 .status-pulse-ping {
   position: absolute;
-  width: 14px;
-  height: 14px;
-  background: rgba(16, 185, 129, 0.4);
+  width: 16px;
+  height: 16px;
+  background: rgba(16, 185, 129, 0.35);
   border-radius: 50%;
   animation: radar-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
@@ -462,20 +530,145 @@ function cycleWord(word: HeadlineWord) {
 @keyframes radar-ping {
   0% {
     transform: scale(0.6);
-    opacity: 0.8;
+    opacity: 0.9;
   }
   75%, 100% {
-    transform: scale(1.6);
+    transform: scale(1.7);
     opacity: 0;
   }
 }
 
 .hero-status-text {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.status-chevron {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-3);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+}
+
+.status-chevron.is-rotated {
+  transform: rotate(180deg);
   color: var(--color-accent);
+}
+
+.hero-status-pill:hover .status-chevron {
+  color: var(--color-accent);
+}
+
+/* ── Popover Drawer ────────────── */
+.status-popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
+  max-width: 90vw;
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 16px 36px -8px rgba(15, 63, 47, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+  text-align: left;
+  z-index: 30;
+}
+
+.popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 12px;
+}
+
+.popover-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+  background: rgba(15, 63, 47, 0.08);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.popover-status-tag {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: #10B981;
+}
+
+.popover-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.popover-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.popover-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-3);
+}
+
+.popover-val {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.popover-footer {
+  padding-top: 10px;
+  border-top: 1px dashed var(--color-border);
+}
+
+.popover-cta-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--color-accent);
+  color: #f2e8cf;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.popover-cta-link:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+/* ── Popover Slide Animation ────────────── */
+.popover-slide-enter-active,
+.popover-slide-leave-active {
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.popover-slide-enter-from,
+.popover-slide-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -8px) scale(0.96);
 }
 
 /* ── Entrance animation ───────────────────────────────── */

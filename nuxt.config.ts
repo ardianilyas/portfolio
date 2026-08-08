@@ -15,6 +15,7 @@ export default defineNuxtConfig({
   ],
   i18n: {
     baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://ardianilyas.com',
+    strategy: 'no_prefix',
     locales: [
       { code: 'en', file: 'en.json', name: 'English' },
       { code: 'id', file: 'id.json', name: 'Bahasa Indonesia' }

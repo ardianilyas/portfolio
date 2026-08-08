@@ -1,8 +1,36 @@
 {
+  "nav": {
+    "skills": "Skills",
+    "tools": "Tools",
+    "portfolio": "Projects",
+    "projects": "Projects",
+    "blog": "Blog",
+    "get_in_touch": "Get in touch"
+  },
   "hero": {
-    "role": "// Junior Web Developer",
+    "greeting": "Hi, I'm",
+    "building": "— building",
+    "status": "Available for Opportunities",
+    "popover": {
+      "badge": "FRESH GRADUATE",
+      "ready": "Ready to Start",
+      "focus_label": "Focus",
+      "focus_val": "Full-Stack · Software Engineer",
+      "stack_label": "Stack",
+      "stack_val": "TypeScript, Go, PHP/Laravel, Vue/Nuxt",
+      "model_label": "Work Model",
+      "model_val": "Remote · Hybrid · On-Site",
+      "cta": "Get in touch"
+    },
+    "sub": "Fresh Graduate & Full-Stack Developer specializing in TypeScript, Go, and PHP/Laravel. Building complete products end-to-end — from backend systems to polished user interfaces.",
     "view_work": "View Work",
-    "github": "GitHub ↗"
+    "get_in_touch": "Get in touch",
+    "alternates": {
+      "backend": "backend systems.",
+      "fullstack": "full-stack apps.",
+      "apis": "clean APIs.",
+      "products": "web products."
+    }
   },
   "skills": {
     "label": "// SKILLS",
@@ -15,9 +43,18 @@
   "portfolio": {
     "label": "// PORTFOLIO",
     "heading": "Selected Projects",
-    "view_github": "View on GitHub"
+    "view_github": "View on GitHub",
+    "view_live": "Live Demo"
   },
-  "nav": {
-    "blog": "Blog"
+  "footer": {
+    "pre": "Available for Q3/Q4 2026 Opportunities",
+    "headline_prefix": "Looking for a",
+    "headline_suffix": "to build your next web application?",
+    "copy_email": "Copy Email",
+    "copied": "Copied to clipboard!",
+    "social": {
+      "github": "GitHub",
+      "email": "Email"
+    }
   }
 }
